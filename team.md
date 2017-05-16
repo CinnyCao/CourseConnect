@@ -5,5 +5,5 @@
 2. Ryan Scarr - scarrrya
 3. Evan Chen - cheneva2
 4. Cinny Cao - caohuimi
-5. Samuel Gao - gaoyong1
+5. Yong Xin (Samuel) Gao - gaoyong1
 6. Tao Gao - gaotao2
