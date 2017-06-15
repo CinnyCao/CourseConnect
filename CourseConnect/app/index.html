@@ -23,28 +23,34 @@
 </head>
 
 <body>
+  <!--Search Bar-->
+  <!--<nav class="navbar navbar-inverse">-->
+  
+  <div id="registration">
+    <button type="button" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-primary">SignUp</button>
+  </div>
+  <form class="form-inline">
+    <!--Logo-->
+    <div class="form-group" id="logo">
+      <img src="img/logo.png" alt="">
+    </div>
 
-  <!-- Master nav bar -->
-  <nav id="app-navbar" class="navbar navbar-fixed-top navbar-inverse" ng-controller="NavbarCtrl">
-    <div class="container">
-      <div class="nav navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-            data-target="#navbar-menus" aria-expanded="false" aria-haspopup="true" aria-controls="navbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" ng-class="{active: isActive('/')}" href="#/">Home</a>
-      </div>
-      <div id="navbar-menus" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li ng-class="{active: isActive('/desktop')}"><a href="#/search">Search Connection</a></li>
-          <li ng-class="{active: isActive('/cloud')}"><a href="#/login">Login</a></li>
-          <li ng-class="{active: isActive('/deploy')}"><a href="#/signUp">SignUp</a></li>
-        </ul>
-      </div><!-- /.nav-collapse -->
-    </div><!-- /.container -->
-  </nav><!-- /.navbar -->
+    <div class="form-group">
+      <label class="sr-only" for="courseCode">Course Code</label>
+      <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="exampleInputPassword3">Semester</label>
+      <input type="semester" class="form-control" id="semesterInput" placeholder="Semester">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="exampleInputPassword3">Year</label>
+      <input type="Year" class="form-control" id="yearInput" placeholder="Year">
+    </div>
+    <button type="submit" class="btn btn-default">Search</button>
+  </form>
+  <!--</nav>-->
 
 
   <!-- Multiview container -->

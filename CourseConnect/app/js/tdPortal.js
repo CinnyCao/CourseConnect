@@ -15,7 +15,7 @@ var tdPortal = angular.module('courseConnect', [
 tdPortal.config(['$routeProvider', function($routeProvider) {
     $routeProvider
     .when('/', {
-      templateUrl: '/templates/PageNotFound.html',
+      templateUrl: '/templates/HomePage.html',
       controller: 'HomeCtrl'
     })
     .otherwise({
