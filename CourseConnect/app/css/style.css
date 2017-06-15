@@ -1,0 +1,519 @@
+/*
+ * Style tweaks - index.html
+ * ----------------------------------------------------------------------------
+ */
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.nav-sidebar > div > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 20px;
+}
+
+.nav-sidebar > div > li > a:hover {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+div.sidebar > div > ul > li > a.active,
+.nav-sidebar > li > a:focus,
+.nav-sidebar > div > li > a.active,
+.nav-sidebar > div > li > a:focus {
+  color: #fff;
+  background-color: #428fca;
+  text-decoration: none;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+#test-cate-label {
+  padding-right: 20px;
+  padding-left: 40px;
+  color: rgb(120, 120, 120);
+  display: block;
+  font-size: 105%;
+}
+
+#test-cate-label:hover {
+  text-decoration: underline;
+}
+
+/* Icon Up */
+.hvr-icon-up:before {
+  left: 7%;
+}
+
+/* Icon Down */
+.hvr-icon-down:before {
+  left: 7%;
+}
+
+html, body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+body {
+  padding-top: 70px;
+  padding-right: 15%;
+  padding-left: 15%;
+}
+
+#app-navbar {
+  font-size: medium;
+}
+
+/*
+ * Style tweaks - SummaryView.html
+ * ----------------------------------------------------------------------------
+ */
+
+@media (min-width: 768px) {
+  #summary-title h1 {
+      font-size: 45px;
+  }
+
+  .jumbotron p {
+    font-size: larger;
+  }
+}
+
+/*
+ * Style tweaks - ProductView.html
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+
+/* Sidebar navigation */
+
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.nav-sidebar > div > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 20px;
+}
+
+.nav-sidebar > div > li > a:hover {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+div.sidebar > div > ul > li > a.active,
+.nav-sidebar > li > a:focus,
+.nav-sidebar > div > li > a.active,
+.nav-sidebar > div > li > a:focus {
+  color: #fff;
+  background-color: #428fca;
+  text-decoration: none;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+#test-cate-label {
+  padding-right: 20px;
+  padding-left: 40px;
+  color: rgb(120, 120, 120);
+  display: block;
+  font-size: 105%;
+}
+
+#test-cate-label:hover {
+  text-decoration: underline;
+}
+
+/* Icon Up */
+.hvr-icon-up:before {
+  left: 7%;
+}
+
+/* Icon Down */
+.hvr-icon-down:before {
+  left: 7%;
+}
+
+#suite-legend-panel {
+    height: 400px;
+    overflow-y: auto;
+}
+
+@media (max-height: 800px) {
+  #suite-legend-panel {
+    height: 200px;
+    overflow-y: auto;
+  }
+}
+
+html, body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+body {
+  padding-top: 70px;
+  padding-right: 15%;
+  padding-left: 15%;
+}
+
+#app-navbar {
+  font-size: medium;
+}
+
+.nav-tabs {
+  font-size: large;
+}
+
+/*
+ * Style tweaks - SummaryView.html
+ * ----------------------------------------------------------------------------
+ */
+
+@media (min-width: 768px) {
+  #summary-title h1 {
+      font-size: 45px;
+      /*font-weight:*/
+  }
+
+  .jumbotron p {
+    font-size: larger;
+  }
+}
+
+/*
+ * Style tweaks - ProductView.html
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Graphics
+ */
+
+#charts-panel h3 {
+    margin: 0px 0px;
+}
+
+#charts-panel .chart-thumbnail {
+  margin-bottom: 5%;
+}
+
+#err-skip-chart {
+  margin-bottom: 130px;
+}
+
+/* Stacked bar charts*/
+
+.chart-legends {
+  margin-left: 8%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+#charts-panel canvas {
+  margin: 10px, 10px;
+}
+
+/*
+ * Style tweaks - SuiteView.html
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * Main content
+ */
+
+.main {
+  width: 100%;
+  margin-left: 10%;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
+/*
+ * Dashboards of Latest results
+ */
+
+.dashboards-latest {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dashboard-latest a {
+  margin-bottom: 0;
+  font-size: 120%;
+}
+
+.main p {
+  margin-bottom: 0px;
+}
+
+.page-header .sub-header {
+  padding-left: 15px;
+  border: none;
+}
+
+
+/*
+ * Details panel
+ */
+.sub-header {
+  font-size: 20px;
+}
+
+#details-panel {
+  height: 800px;
+  overflow-y: auto;
+}
+
+@media (max-height: 900px) {
+  #details-panel {
+    height: 500px;
+    overflow-y: auto;
+  }
+}
+
+#dropdownResult {
+  position: relative;
+}
+
+#dropdownResult .btn-xs {
+  margin-left: 5px;
+  padding: 0px 3px;
+}
+
+.main .stack-trace { /* dropdown */
+  position: relative;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+/* popover */
+div .popover {
+  width: 350px;
+}
+
+div .popover-content {
+  overflow: auto;
+}
+
+
+/*
+ * Style tweaks - HistoryView.html
+ * ----------------------------------------------------------------------------
+ */
+
+.page-header {
+  margin-top: 0;
+  padding: 20px;
+}
+
+#go-back-btn {
+  font-weight: bold;
+}
+
+
+/*
+ * Style tweaks - CompareView.html
+ * ----------------------------------------------------------------------------
+ */
+
+#comparison-legends .comp-legend {
+  display: block;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#no-build-prompt{
+  text-align: center;
+  margin: 10%;
+}
+
+#info-panel .comp-tag-desc {
+  padding-top: 10px;
+}
+
+#info-panel .comp-tag-desc p{
+  margin: 0;
+}
+
+/*
+ * Style tweaks - SiteUnderConstruction.html
+ * ----------------------------------------------------------------------------
+ */
+
+ div .site-under-constr > img {
+  height: 80%;
+  width: 80%;
+ }
+
+/*
+* Style tweaks - PerformanceView.html
+* ----------------------------------------------------------------------------
+*/
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.padding-right {
+  padding-right: 10px;
+}
+
+.padding-top {
+  padding-top: 10px;
+}
+
+.padding-left {
+  padding-left: 15px;
+}
+
+.padding-bottom {
+  padding-bottom: 15px;
+}
+
+.table-hover tr#clickable {
+  cursor: pointer;
+}
+
+.panel-group div#clickable {
+  cursor: pointer;
+}
+
+tbody.body {
+    display:block;
+    min-height:100px;
+    max-height:500px;
+    overflow-y:auto;
+}
+
+thead.heading, tbody.body tr.scrollableRow {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+
+#tableTab {
+  overflow-y: auto;
+}
+
+.selected {
+  background-color: #e3fefd;
+}
+
+.table-heading {
+  background-color: #f7f7f7;
+}
+
+.table-hover > tbody > tr.table-heading:hover {
+  background-color: #f7f7f7;
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: #e3fefd;
+}
+
+.panel-default > .panel-heading {
+  color: #444444;
+}
+
+.panel-default > .panel-heading:hover {
+  color: #000;
+  background-color: #e8e8e8;
+  border-color: #d9d9d9 ;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.sub-script {
+  font-size: 14px;
+  margin: 8px 0 0;
+}
