@@ -14,11 +14,14 @@ var tdPortal = angular.module('courseConnect', [
 
 tdPortal.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-    .when('/', {
-      templateUrl: '/templates/HomePage.html',
-      controller: 'HomeCtrl'
-    })
-    .otherwise({
-      templateUrl: '/templates/PageNotFound.html'
-    });
+        .when('/', {
+            templateUrl: '/templates/HomePage.html',
+            controller: 'HomeCtrl'
+        })
+        .when('/chattest', {
+            templateUrl: '/templates/ChatRoom.html'
+        })
+        .otherwise({
+            templateUrl: '/templates/PageNotFound.html'
+        });
   }]);
