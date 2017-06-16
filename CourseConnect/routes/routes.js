@@ -44,11 +44,10 @@ exports.requestDbConnection = function(callback) {
 /*
  *  ================ App routes (API) ================
  */
-
-/*
- * Heartbeat test
- */
 exports.api = function(req, res) {
   res.status(200).send('<h3>Course Connect API is running...</h3>');
 };
+
+var ctrlChat = require('./ctrl-chat');
+exports.chatServices = ctrlChat;
 

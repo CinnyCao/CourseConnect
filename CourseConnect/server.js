@@ -13,8 +13,8 @@ var http = require('http'),                 // Http interface
     bodyParser = require('body-parser'),    // Parse data body in post request
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
-    portal = require('./routes/routes.js'); // Routes handlers
-
+    portal = require('./routes/routes.js'), // Routes handlers
+    session = require('express-session'); // Session
 
 /*
  * ==== Create Express app server ========
@@ -38,11 +38,23 @@ app.use(errorhandler({ dumpExceptions:true, showStack:true }));
 // parse application/json 
 app.use(bodyParser.json());
 
+// Set up to use a session
+app.use(session({
+    secret: 'super_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}));
 
 /*
  * App routes (API) - route-handlers implemented in routes/*
  */
 app.get('/api', portal.api);
+app.get('/name', portal.chatServices.getName);
+app.post('/name', portal.chatServices.setName);
+app.get('/logout', portal.chatServices.logout);
+app.post('/addmsg', portal.chatServices.addMessage);
+app.get('/messages', portal.chatServices.getMessages);
 
 // location of app's static content
 app.use(express.static(__dirname + "/app"));

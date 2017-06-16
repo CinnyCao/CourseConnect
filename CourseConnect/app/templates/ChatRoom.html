@@ -1,3 +1,39 @@
+<!--DeadSimpleChat-->
 <div class="" align="center">
   <iframe src="http://deadsimplechat.com/+8EWvw" frameborder="0" width="800px" height="600px"></iframe>
+</div>
+
+<br><br><br>
+<!--A Customized Chat-->
+<link rel="stylesheet" href="css/style-chat.css">
+<script src="/js/controllers/ctrl-chat.js"></script>
+
+<div id="name-form">
+    <p>Enter a nick name</p>
+    <input type="text" name="user-name" id="user-name" />
+    <input type="button" name="post-name" id="post-name" value="Enter" ng-click="vm.onPostNameClicked" />
+</div>
+
+<div id="avatar_picker">
+    <p>Please select an avatar</p>
+    <img class="avatar" src="img/avatars/avatar1.png" onclick="setNameAndAvatar(this)">
+    <img class="avatar" src="img/avatars/avatar2.png" onclick="setNameAndAvatar(this)">
+    <img class="avatar" src="img/avatars/avatar3.png" onclick="setNameAndAvatar(this)">
+    <img class="avatar" src="img/avatars/avatar4.png" onclick="setNameAndAvatar(this)">
+    <img class="avatar" src="img/avatars/avatar5.png" onclick="setNameAndAvatar(this)">
+    <img class="avatar" src="img/avatars/avatar6.png" onclick="setNameAndAvatar(this)">
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <p class="welcome">Welcome, <b><span class="name"></span></b></p>
+        <input type="button" class="logout" name="pause" id="pause" value="Stop Updates" />
+        <input type="button" class="logout" name="logout" id="logout" value="Forget me" />
+        <div style="clear:both"></div>
+    </div>
+    <div id="chatbox"></div>
+    <form name="message" action="">
+        <input name="usermsg" type="text" id="usermsg" size="63" />
+        <input name="submitmsg" type="button"  id="submitmsg" value="Send" />
+    </form>
 </div>
