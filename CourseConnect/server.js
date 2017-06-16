@@ -13,7 +13,8 @@ var http = require('http'),                 // Http interface
     bodyParser = require('body-parser'),    // Parse data body in post request
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
-    portal = require('./routes/routes.js'); // Routes handlers
+    portal = require('./routes/routes.js'), // Routes handlers
+    mysql = require('mysql');               // Embedded MySQL
 
 
 /*
