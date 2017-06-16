@@ -1,0 +1,25 @@
+{
+  "name": "course-connect",
+  "version": "0.0.01",
+  "description": "This is the final project for CSCC01-Software Engineering.",
+  "main": "server.js",
+  "scripts": {
+    "postinstall": "bower install --allow-root",
+    "prestart": "npm install --allow-root",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "author": "Samuel Gao",
+  "dependencies": {
+    "async": "^1.4.2",
+    "body-parser": "^1.15.0",
+    "bower": "^1.4.1",
+    "compression": "^1.5.2",
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.3",
+    "jenkins": "^0.17.0",
+    "mongodb": "^2.1.18",
+    "morgan": "^1.6.1",
+    "mysql": "^2.9.0"
+  }
+}
