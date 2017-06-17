@@ -54,7 +54,7 @@ exports.api = function(req, res) {
 
 exports.authenticate = function(req, res) {
   exports.requestDbConnection(function(connection) {
-    var result = connection.query("SELECT * FROM " + config.dbname + " WHERE `Email`='" + req.body.email + "';", function (err, result) {
+    var result = connection.query("SELECT * FROM Users WHERE `Email`='" + req.body.email + "';", function (err, result) {
       if (err) throw err;
       console.log("Result: " + result);
       res.status(200).send(result);

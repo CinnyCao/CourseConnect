@@ -6,7 +6,7 @@ module.exports = {
 
   /* DB config */
   dbhost: 'localhost',
-  dbname: 'Users',
+  dbname: 'CourseConnectDb',
   dbuser: 'root',
   dbpwd: '60templebar'
 
