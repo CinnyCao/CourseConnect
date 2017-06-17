@@ -43,7 +43,8 @@ app.use(bodyParser.json());
  * App routes (API) - route-handlers implemented in routes/*
  */
 app.get('/api', portal.api);
-app.get('/authenticate', portal.authenticate);
+
+// User login authentication - authentication implemented in routes
 app.post('/authenticate', portal.authenticate);
 
 // location of app's static content

@@ -54,10 +54,13 @@ exports.api = function(req, res) {
 
 exports.authenticate = function(req, res) {
   exports.requestDbConnection(function(connection) {
-    var result = connection.query("SELECT * FROM Users WHERE `Email`='" + req.body.email + "';", function (err, result) {
-      if (err) throw err;
-      console.log("Result: " + result);
-      res.status(200).send(result);
+    var query = "SELECT * FROM Users WHERE `Email`='" + req.body.email + "';";
+    var result = connection.query(query, function (err, result) {
+      if (err) console.log("Failed to execute authenticate query. Query: " + query);
+      console.log("Authenticate query executed. Result: " + result);
+      if (result[0]["Password"] == req.body.pwd) {
+        res.status(200).send("match");
+      }
     });
   })
 }
