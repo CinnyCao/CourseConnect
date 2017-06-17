@@ -5,7 +5,8 @@
 var tdPortal = angular.module('courseConnect', [
   'ngRoute',
   'Directives',
-  'Filters'
+  'Filters',
+  'CtrlUserLogin'
 ]);
 
 
