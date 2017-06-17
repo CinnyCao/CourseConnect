@@ -52,3 +52,13 @@ exports.api = function(req, res) {
   res.status(200).send('<h3>Course Connect API is running...</h3>');
 };
 
+exports.authenticate = function(req, res) {
+  exports.requestDbConnection(function(connection) {
+    var result = connection.query("SELECT * FROM " + config.dbname + " WHERE `Email`='" + req.body.email + "';", function (err, result) {
+      if (err) throw err;
+      console.log("Result: " + result);
+      res.status(200).send(result);
+    });
+  })
+}
+

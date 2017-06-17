@@ -13,8 +13,7 @@ var http = require('http'),                 // Http interface
     bodyParser = require('body-parser'),    // Parse data body in post request
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
-    portal = require('./routes/routes.js'), // Routes handlers
-    mysql = require('mysql');               // Embedded MySQL
+    portal = require('./routes/routes.js'); // Routes handlers
 
 
 /*
@@ -44,6 +43,8 @@ app.use(bodyParser.json());
  * App routes (API) - route-handlers implemented in routes/*
  */
 app.get('/api', portal.api);
+app.get('/authenticate', portal.authenticate);
+app.post('/authenticate', portal.authenticate);
 
 // location of app's static content
 app.use(express.static(__dirname + "/app"));

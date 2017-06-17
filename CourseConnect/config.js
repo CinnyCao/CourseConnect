@@ -5,9 +5,9 @@ module.exports = {
   env: 'dev',   // alternative modes: test, production
 
   /* DB config */
-  dbhost: 'input DB here',
-  dbname: 'input DB here',
-  dbuser: 'input DB here',
-  dbpwd: 'input DB here'
+  dbhost: 'localhost',
+  dbname: 'Users',
+  dbuser: 'root',
+  dbpwd: '60templebar'
 
  } // end .exports
