@@ -16,6 +16,10 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
     .when('/', {
       templateUrl: '/templates/HomePage.html'
     })
+    .when('/signup', {
+      templateUrl: '/templates/signUp.html',
+      controller: 'SignUpCtrl'
+    })
     .when('/login', {
       templateUrl: '/templates/login.html',
       controller: 'LoginCtrl'
