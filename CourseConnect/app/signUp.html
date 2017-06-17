@@ -29,14 +29,15 @@
     </div>
 
     <div class="form-group">
-      <label class="sr-only" for="userName">UserName (Your Email Address)</label> <input id="userNameInput" class="form-control" type="UserName">
+      <label class="sr-only" for="userName">UserName (Your Email Address)</label> <input id="userNameInput" class="form-control" type="UserName" maxlength="255">
     </div>
     <div class="form-group">
-      <label class="sr-only" for="password">Password</label> <input id="passwordInput" class="form-control" type="passWord">
+      <label class="sr-only" for="password">Password</label> <input id="passwordInput" class="form-control" type="passWord" maxlength="10">
     </div>
     <div class = "form-group">
-    <label class="sr-only" for="FirstName">FirstName</label><input id="firstNameInput" class="form-control" type="firstName">
-    <label class="sr-only" for="LastName">LastName</label><input id="lastNameInput" class="form-control" type="lastName">
+    <label class="sr-only" for="FirstName">FirstName</label><input id="firstNameInput" class="form-control" type="firstName" maxlength="10">
+    <label class="sr-only" for="LastName">LastName</label><input id="lastNameInput" class="form-control" type="lastName" maxlength="10">
+    <label class="sr-only" for="UTorid">UTorid (Optional)</label><input id="utoridInput" class="form-control" type="UTorid" maxlength="10">
     </div>
      <div class = "form-group">
     <label class="sr-only" for="safetyQuestion1">Choose Your First Safety Question</label>
@@ -46,31 +47,31 @@
     <option value="Hero">Who is your childhood hero?</option>
     <option value="FavTeacher">Who is your favorite teacher at elementary school?</option>
     </select>
-      <label class="sr-only" for="answer2Question1">Answer</label> <input id="answerInput1" class="form-control" type="answer">
+      <label class="sr-only" for="answer2Question1">Answer</label> <input id="answerInput1" class="form-control" type="answer" maxlength="15">
     </div>
      <div class = "form-group">
-    <label class="sr-only" for="safetyQuestion1">Choose Your Second Safety Question</label>
+    <label class="sr-only" for="safetyQuestion2">Choose Your Second Safety Question</label>
     <select id="safetyQ2">
     <option value="Bank">Which bank did you open your first account?</option>
     <option value="Supermarket">Which supermarket do you shop the most often?</option>
     <option value="Company">Which company do you want to work for after you graduate?</option>
     <option value="HighSchool">Which school did you complete grade 12?</option>
     </select>
-      <label class="sr-only" for="answer2Question2">Answer</label> <input id="answerInput2" class="form-control" type="answer">
+      <label class="sr-only" for="answer2Question2">Answer</label> <input id="answerInput2" class="form-control" type="answer" maxlength="15">
     </div>
     <div class = "form-group">
-    <label class="sr-only" for="safetyQuestion1">Choose Your Third Safety Question</label>
+    <label class="sr-only" for="safetyQuestion3">Choose Your Third Safety Question</label>
     <select id="safetyQ3">
     <option value="Food">What type of food is your favorite?</option>
     <option value="Ethnicity">What is/are your cultural background(s)?</option>
     <option value="FavCourse">Which course do you like the most in university?</option>
     <option value="TourCity">Where is your favorite destination for tourism?</option>
     </select>
-      <label class="sr-only" for="answer2Question3">Answer</label> <input id="answerInput3" class="form-control" type="answer">
+      <label class="sr-only" for="answer2Question3">Answer</label> <input id="answerInput3" class="form-control" type="answer" maxlength="15">
     </div>
    
     <button class="btn btn-default" type="submit">Register</button>
-    <p><strong>Note:</strong> You have to fill out all the blank above in this page.</p>
+    <p><strong>Note:</strong> You have to fill out all the blank above in this page except for UTorid.</p>
 
     <p>We highly recommend you to enter your email assigned by University of Toronto so we can better connect you with your courses.</p>
 
