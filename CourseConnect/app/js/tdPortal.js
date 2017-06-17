@@ -18,6 +18,13 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
       templateUrl: '/templates/HomePage.html',
       controller: 'HomeCtrl'
     })
+    .when('/login', {
+      templateUrl: '/templates/login.html',
+      controller: 'LoginCtrl'
+    })
+    .when('/loggedin', {
+      templateUrl: '/templates/loggedin.html'
+    })
     .otherwise({
       templateUrl: '/templates/PageNotFound.html'
     });
