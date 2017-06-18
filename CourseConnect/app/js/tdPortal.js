@@ -6,6 +6,7 @@ var tdPortal = angular.module('courseConnect', [
     'ngRoute',
     'Directives',
     'Filters',
+    'CtrlIndex',
     'CtrlChat'
 ]);
 
@@ -15,7 +16,7 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
         .when('/', {
             templateUrl: '/templates/HomePage.html'
         })
-        .when('/chattest', {
+        .when('/chat/:courseid', {
             templateUrl: '/templates/ChatRoom.html',
             controller: 'ChatCtrl'
         })

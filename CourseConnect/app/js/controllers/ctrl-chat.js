@@ -30,8 +30,8 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all resources
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', 'ChatService',
-    function ($scope, $location, ChatService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService',
+    function ($scope, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
         // get name of classroom
@@ -42,6 +42,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', 'ChatService',
 
         $scope.init = function () {
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
+            // $scope.var_room = $scope.getRoomData($routeParams.courseid);
             $scope.var_room_name = $scope.getRoomName();
             $scope.var_user_list = ChatService.getAllClassMates();
         };
