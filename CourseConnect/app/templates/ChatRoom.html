@@ -68,6 +68,12 @@
                         </a>
                     </div>
                     <p>Others</p>
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
+                        <a class="user_card_li" href="">
+                            <img src="{{ user.profilePic }}" alt="{{ user.name }}" class="img-thumbnail">
+                            <p>{{ user.name }}</p>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
