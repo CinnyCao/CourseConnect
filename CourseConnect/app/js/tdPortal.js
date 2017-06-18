@@ -24,6 +24,9 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
     .when('/loggedin', {
       templateUrl: '/templates/loggedin.html'
     })
+    .when('/userprofile', {
+      templateUrl: '/templates/userprofile.html'
+    })
     .otherwise({
       templateUrl: '/templates/PageNotFound.html'
     });
