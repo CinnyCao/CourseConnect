@@ -8,6 +8,6 @@ module.exports = {
   dbhost: 'localhost',
   dbname: 'CourseConnectDb',
   dbuser: 'root',
-  dbpwd: 'gt940907'
+  dbpwd: '60templebar'
 
  } // end .exports

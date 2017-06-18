@@ -75,25 +75,20 @@ exports.authenticate = function(req, res) {
 }
 
 exports.signupCheck = function(req, res){
-    exports.requestDbConnection(function(connection){
-        var query = "INSERT INTO Users(Email, LastName, FirstName, UTorId, Password) VALUES ('" + req.body.username + "', '"
-        + req.body.ln+"', '" +req.body.fn+"', '" + req.body.uid + "', '" +req.body.pwd + "')";
-        var result = connection.query(query, function(err, result){
-            console.log(query);
-            if(err){ /*If the err is related to inserting an existent primary key, the function should return false. For any
-            of the other err, 404 should be thrown*/
-                console.log("Failed with error message: " + err.prototype.message + " "+ err.prototype.name);
-                res.status(200).send(false);
-            }/*else{
-
-            }*/
-
-            /*If there is no error with the query, the function should return true*/
-            console.log("Insert Query is executed. Result: " + result);
-            console.log(result.length);
-            res.status(200).send(true);
-
-        });
-    })
+  exports.requestDbConnection(function(connection){
+    var query = "INSERT INTO Users(Email, LastName, FirstName, Password) VALUES ('" + req.body.username + "', '"+ req.body.ln+"', '" +req.body.fn+"', '" +req.body.pwd + "')";
+    var result = connection.query(query, function(err, result){
+      console.log(err[0]);
+      if(err){ 
+        // If the err is related to inserting an existent primary key, the function should return false. For any
+        // of the other err, 404 should be thrown
+        // console.log("Failed with error message: " + err.prototype.message + " "+ err.prototype.name);
+        res.status(200).send(err);
+      }
+      // console.log("Insert Query is executed. Result: " + result);
+      // console.log(result.length);
+      res.status(200).send(true);
+    });
+  })
 }
 
