@@ -63,6 +63,7 @@ exports.authenticate = function(req, res) {
       console.log("Authenticate query executed. Result: " + result);
       console.log(result.length);
       if (result.length == 0) {
+          console.log("False message");
         res.status(200).send(false);
       } else if (result[0]["Password"] != req.body.pwd) {
         res.status(200).send(false);
@@ -71,5 +72,28 @@ exports.authenticate = function(req, res) {
       }
     });
   })
+}
+
+exports.signupCheck = function(req, res){
+    exports.requestDbConnection(function(connection){
+        var query = "INSERT INTO Users(Email, LastName, FirstName, UTorId, Password) VALUES ('" + req.body.username + "', '"
+        + req.body.ln+"', '" +req.body.fn+"', '" + req.body.uid + "', '" +req.body.pwd + "')";
+        var result = connection.query(query, function(err, result){
+            console.log(query);
+            if(err){ /*If the err is related to inserting an existent primary key, the function should return false. For any
+            of the other err, 404 should be thrown*/
+                console.log("Failed with error message: " + err.prototype.message + " "+ err.prototype.name);
+                res.status(200).send(false);
+            }/*else{
+
+            }*/
+
+            /*If there is no error with the query, the function should return true*/
+            console.log("Insert Query is executed. Result: " + result);
+            console.log(result.length);
+            res.status(200).send(true);
+
+        });
+    })
 }
 

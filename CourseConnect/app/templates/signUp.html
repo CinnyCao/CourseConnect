@@ -1,18 +1,28 @@
 <div class="container">
+<div class="alert alert-danger alert-dismissable" id="FailedAlert1">
+    <button type="button" class="close" data-hide="alert">&times;</button>
+    <strong>Signup Failed!</strong> Your account has already been enrolled.
+  </div>
+  <div class="alert alert-danger alert-dismissable" id="FailedAlert2">
+    <button type="button" class="close" data-hide="alert">&times;</button>
+    <strong>Signup Failed!</strong> The password you re-entered does not match the original one.
+  </div>
+  </div>
+  <div class="container" ng-app="CtrlUserSignup" ng-controller="SignupCtrl">
   <div class="row">
     <div class="col-md-6">
       <form>
         <div class="form-group">
           <label for="userName">UserName (Your Email Address)</label> 
-          <input id="userNameInput" class="form-control" type="UserName">
+          <input id="userNameInput" class="form-control" type="UserName" ng-model="username">
         </div>
         <div class = "form-group">
           <label for="FirstName">First Name</label>
-          <input id="firstNameInput" class="form-control" type="firstName">
+          <input id="firstNameInput" class="form-control" type="firstName" ng-model="firstName">
           <label for="LastName">Last Name</label>
-          <input id="lastNameInput" class="form-control" type="lastName">
+          <input id="lastNameInput" class="form-control" type="lastName" ng-model="lastName">
           <label for="UTorid">UTorid (Optional)</label>
-          <input id="utoridInput" class="form-control" type="UTorid">
+          <input id="utoridInput" class="form-control" type="UTorid" ng-model="utorid">
         </div>
       </form>
     </div>
@@ -20,47 +30,52 @@
       <form>
         <div class="form-group">
           <label for="password">Password</label> 
-          <input id="passwordInput" class="form-control" type="passWord">
+          <input id="passwordInput" class="form-control" type="passWord" ng-model="password">
+        </div>
+        <div class="form-group">
+          <label for="rePassword">Re-enter Password</label> 
+          <input id="rePasswordInput" class="form-control" type="PassWord" ng-model="repassword">
         </div>
         <div class = "form-group">
           <label for="safetyQuestion1">Choose Your First Safety Question</label>
-          <select id="safetyQ1">
+          <select id="safetyQ1" ng-model="sq1">
             <option value="Parents">What is your mother's maiden name?</option>
             <option value="BirthCity">In which city were you born?</option>
             <option value="Hero">Who is your childhood hero?</option>
             <option value="FavTeacher">Who is your favorite teacher at elementary school?</option>
           </select>
-          <label for="answer2Question1">Answer</label> <input id="answerInput1" class="form-control" type="answer">
+          <label for="answer2Question1">Answer</label> <input id="answerInput1" class="form-control" type="answer" ng-model="A1">
         </div>
         <div class = "form-group">
           <label for="safetyQuestion2">Choose Your Second Safety Question</label>
-          <select id="safetyQ2">
+          <select id="safetyQ2" ng-model="sq2">
             <option value="Bank">Which bank did you open your first account?</option>
             <option value="Supermarket">Which supermarket do you shop the most often?</option>
             <option value="Company">Which company do you want to work for after you graduate?</option>
             <option value="HighSchool">Which school did you complete grade 12?</option>
           </select>
-          <label for="answer2Question2">Answer</label> <input id="answerInput2" class="form-control" type="answer">
+          <label for="answer2Question2">Answer</label> <input id="answerInput2" class="form-control" type="answer" ng-model="A2">
         </div>
         <div class = "form-group">
           <label for="safetyQuestion3">Choose Your Third Safety Question</label>
-          <select id="safetyQ3">
+          <select id="safetyQ3" ng-model="sq3">
             <option value="Food">What type of food is your favorite?</option>
             <option value="Ethnicity">What is/are your cultural background(s)?</option>
             <option value="FavCourse">Which course do you like the most in university?</option>
             <option value="TourCity">Where is your favorite destination for tourism?</option>
           </select>
-          <label for="answer2Question3">Answer</label> <input id="answerInput3" class="form-control" type="answer">
+          <label for="answer2Question3">Answer</label> <input id="answerInput3" class="form-control" type="answer" ng-model="A3">
         </div>
       </form>
     </div>
   </div>
   <form>
-    <button class="btn btn-default" type="submit">Register</button>
+    <button class="btn btn-default" type="submit" ng-click="signup()">Register</button>
   </form>
   <p><strong>Note:</strong> You have to fill out all the blank above in this page except for UTorid.</p>
 
   <p>We highly recommend you to enter your email assigned by University of Toronto so we can better connect you with your courses.</p>
 
   <p>After you finish all your information, you can click "Register" button to continue.</p>
+</div>
 </div>
