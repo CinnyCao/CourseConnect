@@ -36,7 +36,7 @@ exports.requestDbConnection = function(callback) {
       resBody["error"] = "Failed to connect to database."
       res.status(502).send(resBody);
     } else {
-      console.log("Connected to database.");
+      console.log("SUCCESS: Connected to database.");
       callback(connection);
     }});
 };
@@ -57,17 +57,18 @@ exports.authenticate = function(req, res) {
     var query = "SELECT * FROM Users WHERE `Email`='" + req.body.email + "';";
     var result = connection.query(query, function (err, result) {
       if (err) {
-       console.log("Failed to execute authenticate query. Query: " + query);
+       console.log("ERROR: Failed to execute authenticate query. Query: " + query);
        res.status(404).send("Auth query failed");
      }
-      console.log("Authenticate query executed. Result: " + result);
-      console.log(result.length);
+      console.log("SUCCESS: Authenticate query executed. Result: " + result);
       if (result.length == 0) {
-          console.log("False message");
+          console.log("ERROR: Login email wasn't found in the database. Result: " + result);
         res.status(200).send(false);
       } else if (result[0]["Password"] != req.body.pwd) {
+        console.log("ERROR: Password entered doesn't match password on database. Result: " + result);
         res.status(200).send(false);
       } else {
+        console.log("SUCCESS: User logged in.");
         res.status(200).send(true);
       }
     });
@@ -80,15 +81,14 @@ exports.signupCheck = function(req, res){
     var result = connection.query(query, function(err, result){
       if(err){
         if(err.code != "ER_DUP_ENTRY"){ 
-          // If the err is related to inserting an existent primary key, the function should return false. For any
-          // of the other err, 404 should be thrown
-          // console.log("Failed with error message: " + err.prototype.message + " "+ err.prototype.name);
-        res.status(404).send("Auth query failed");
+          console.log("ERROR: Query failed to execute. Query: " + query);
+          res.status(404).send("Auth query failed");
         } else if (err.code == "ER_DUP_ENTRY") {
+          console.log("ERROR: Failed to execute signupCheck. Query: " + query + "\nMessage: " + err);
           res.status(200).send(false);
         }
-      }
-       else {
+      } else {
+        console.log("SUCCESS: Signup user created. Query: " + query);
         res.status(200).send(true);
       }
     });
