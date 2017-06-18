@@ -46,6 +46,7 @@ app.get('/api', portal.api);
 
 // User login authentication - authentication implemented in routes
 app.post('/authenticate', portal.authenticate);
+app.get('/authenticate', portal.authenticate);
 
 // User sign up and authenticate account info, signUp implemented in routes
 app.post('/signupCheck', portal.signupCheck);
