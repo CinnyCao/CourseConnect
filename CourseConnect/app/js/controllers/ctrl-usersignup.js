@@ -19,7 +19,6 @@ userSignupCtrls.controller('SignUpCtrl', ['$scope', '$http', function($scope, $h
             if (res.data == false) {
                 $('#FailedAlert').show();
             } else if (res.data == true) {
-                console.log(res.data + "else executed");
                 window.location.href = '/';
             }
         });

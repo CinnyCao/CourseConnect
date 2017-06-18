@@ -77,7 +77,7 @@ exports.authenticate = function(req, res) {
 
 exports.signupCheck = function(req, res){
   exports.requestDbConnection(function(connection){
-    var query = "INSERT INTO Users(Email, LastName, FirstName, Password) VALUES ('" + req.body.username + "', '"+ req.body.ln+"', '" +req.body.fn+"', '" +req.body.pwd + "')";
+    var query = "INSERT INTO Users (Email, LastName, FirstName, Password) VALUES ('" + req.body.username + "', '"+ req.body.ln+"', '" +req.body.fn+"', '" +req.body.pwd + "');";
     var result = connection.query(query, function(err, result){
       if(err){
         if(err.code != "ER_DUP_ENTRY"){ 
