@@ -6,7 +6,8 @@ var tdPortal = angular.module('courseConnect', [
   'ngRoute',
   'Directives',
   'Filters',
-  'CtrlUserLogin'
+  'CtrlUserLogin',
+  'CtrlUserSignup'
 ]);
 
 
@@ -16,6 +17,10 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
     $routeProvider
     .when('/', {
       templateUrl: '/templates/HomePage.html'
+    })
+    .when('/signup', {
+      templateUrl: '/templates/signUp.html',
+      controller: 'SignUpCtrl'
     })
     .when('/login', {
       templateUrl: '/templates/login.html',
