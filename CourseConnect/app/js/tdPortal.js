@@ -5,16 +5,14 @@
 var tdPortal = angular.module('courseConnect', [
   'ngRoute',
   'Directives',
-  'Filters',
-  'CtrlNavbar'
+  'Filters'
 ]);
 
 /* App route */
 tdPortal.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: '/templates/HomePage.html',
-            controller: 'HomeCtrl'
+            templateUrl: '/templates/HomePage.html'
         })
         .when('/chattest', {
             templateUrl: '/templates/ChatRoom.html',
