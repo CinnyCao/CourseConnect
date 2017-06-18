@@ -1,89 +1,70 @@
-body {
-    font:12px arial;
-    color: #222;
-    text-align:center;
-    padding:35px; }
-
-form, p, span {
-    margin:0;
-    padding:0; }
-
-input { font:12px arial; }
-
-a {
-    color:#0000FF;
-    text-decoration:none; }
-
-a:hover { text-decoration:underline; }
-
-#wrapper, #loginform {
-    margin:0 auto;
-    padding-bottom:25px;
-    background:#EBF4FB;
-    width:504px;
-    border:1px solid #ACD8F0; }
-
-#loginform { padding-top:18px; }
-
-#loginform p { margin: 5px; }
-
-#chatbox {
-    text-align:left;
-    margin:0 auto;
-    margin-bottom:25px;
-    padding:10px;
-    background:#fff;
-    height:270px;
-    width:430px;
-    border:1px solid #ACD8F0;
-    overflow-y:auto;
-    overflow-x:hidden;
+.chat_room {
+    background-color: #ACD8F0;
+    text-align: center;
+    border: 1px solid #ACD8F0;
+    padding-top: 10px;
 }
 
-#usermsg {
-    width:395px;
-    border:1px solid #ACD8F0; }
+.forum_tab {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 5px;
+}
 
-#submit { width: 60px; }
+.forum_tab p {
+    font-size: 12px;
+}
 
-.error { color: #ff0000; }
+.forum_tab:hover, .forum_tab .forum_name_selected {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
 
-#menu { padding:12.5px 25px 12.5px 25px; }
-
-.welcome { float:left; }
-
-.logout { float:right; }
-
-.msgln { margin:0 0 2px 0; }
-
-#avatar_picker {
-    border: 1px solid black;
-    padding: 10px;
-    width: 250px;
-    position: fixed;
-    background-color: white;
-    left: 0;
-    right: 0;
-    margin: auto;
-    box-shadow: 10px 6px 8px #888888;
+.forum_tab input {
     display: none;
 }
 
-.avatar {
+.forum_tab img {
+    height: 50px;
     width: 50px;
-    margin: 10px;
-    cursor: pointer;
 }
 
-.avatar:hover {
-    border: 1px solid #888888;
+.chatbox {
+    width: 95%;
+    height: 65vh;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ACD8F0;
 }
 
-.inline_pic {
-    width: 16px;
-    vertical-align: middle;
+.chat_message_input {
+    border: 1px solid #ACD8F0;
+    padding: 4px;
+    margin: 20px 0px;
 }
 
-.message {
+.contact_prof_btn {
+    margin: 5px 0;
+}
+
+.user_list {
+    text-align: left;
+}
+
+.user_card_li, .user_card_li:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.user_card_li img {
+    display: inline-block;
+    width: 45px;
     margin-bottom: 5px;
+}
+
+.user_card_li p {
+    display: inline-block;
+    font-size: 18px;
+    vertical-align: bottom;
 }
