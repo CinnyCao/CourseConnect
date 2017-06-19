@@ -3,6 +3,8 @@
 /* App Modules of TD-Portal */
 
 var tdPortal = angular.module('courseConnect', [
+    'ngAnimate',
+    'ui.bootstrap',
     'ngRoute',
     'Directives',
     'Filters',
