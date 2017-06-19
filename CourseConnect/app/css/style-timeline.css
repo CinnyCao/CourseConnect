@@ -9,8 +9,8 @@
 }
 
 #timeTag h3 {
-  font-weight: bold;
-  color: #696969; /* dimgrey */
+    font-weight: bold;
+    color: #696969; /* dimgrey */
 }
 
 .timeline {
@@ -120,8 +120,8 @@
 }
 
 .timeline div.panel {
-  margin: 15px 15px;
-  padding: 0px;
+    margin: 15px 15px;
+    padding: 0px;
 }
 
 .timeline-badge.primary {
@@ -159,55 +159,55 @@
 }
 
 #loadMore {
-  text-align: center;
-  padding: 4px 4px;
-  width: 128px;
-  margin-left: calc(50% - 64px);
-  margin-bottom: 10%;
-  background-color: #D6D6D6;
-  border-radius: 10px;
+    text-align: center;
+    padding: 4px 4px;
+    width: 128px;
+    margin-left: calc(50% - 64px);
+    margin-bottom: 10%;
+    background-color: #D6D6D6;
+    border-radius: 10px;
 }
 
 @media (max-width: 767px) {
-  #timeTag {
-    margin-left: -20px;
-  }
+    #timeTag {
+        margin-left: -20px;
+    }
 
-  #loadMore {
-    margin-left: -20px;
-  }
+    #loadMore {
+        margin-left: -20px;
+    }
 
-  ul.timeline:before {
-      left: 40px;
-  }
+    ul.timeline:before {
+        left: 40px;
+    }
 
-  ul.timeline > li > .timeline-panel {
-      width: calc(100% - 90px);
-      width: -moz-calc(100% - 90px);
-      width: -webkit-calc(100% - 90px);
-  }
+    ul.timeline > li > .timeline-panel {
+        width: calc(100% - 90px);
+        width: -moz-calc(100% - 90px);
+        width: -webkit-calc(100% - 90px);
+    }
 
-  ul.timeline > li > .timeline-badge {
-      left: 15px;
-      margin-left: 0;
-      top: 16px;
-  }
+    ul.timeline > li > .timeline-badge {
+        left: 15px;
+        margin-left: 0;
+        top: 16px;
+    }
 
-  ul.timeline > li > .timeline-panel {
-      float: right;
-  }
+    ul.timeline > li > .timeline-panel {
+        float: right;
+    }
 
-  ul.timeline > li > .timeline-panel:before {
-      border-left-width: 0;
-      border-right-width: 15px;
-      left: -15px;
-      right: auto;
-  }
+    ul.timeline > li > .timeline-panel:before {
+        border-left-width: 0;
+        border-right-width: 15px;
+        left: -15px;
+        right: auto;
+    }
 
-  ul.timeline > li > .timeline-panel:after {
-      border-left-width: 0;
-      border-right-width: 14px;
-      left: -14px;
-      right: auto;
-  }
+    ul.timeline > li > .timeline-panel:after {
+        border-left-width: 0;
+        border-right-width: 14px;
+        left: -14px;
+        right: auto;
+    }
 }

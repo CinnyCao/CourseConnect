@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="css/style-chat.css">
+
+<div class="row">
+    <!--Padding Trick-->
+    <div class="col-lg-1"></div>
+    <!--Chat Room-->
+    <div class="chat_room col-lg-10">
+        <div class="row">
+            <!--Left Section-->
+            <div class="col-lg-2">
+                <!--Forum Tabs-->
+                <div class="row">
+                    <div class="forum_tab">
+                        <input type="radio" id="forumChatRoom" ng-model="var_forum" value="chatroom">
+                        <label class="forum_tab" for="forumChatRoom">
+                            <img src="img/chatIcon.png" alt="Chat Room">
+                            <p ng-hide="var_forum == 'chatroom'">Chat Room</p>
+                            <p ng-show="var_forum == 'chatroom'" class="forum_name_selected">Chat Room</p>
+                        </label>
+                    </div>
+                    <div class="forum_tab">
+                        <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
+                        <label class="forum_tab" for="forumPosts">
+                            <img src="img/postIcon.png" alt="Posts">
+                            <p ng-hide="var_forum == 'posts'">Posts</p>
+                            <p ng-show="var_forum == 'posts'" class="forum_name_selected">Posts</p>
+                        </label>
+                    </div>
+                    <div class="forum_tab">
+                        <input type="radio" id="forumResources" ng-model="var_forum" value="resources">
+                        <label class="forum_tab" for="forumResources">
+                            <img src="img/fileSharingIcon.png" alt="Resources">
+                            <p ng-hide="var_forum == 'resources'">Resources</p>
+                            <p ng-show="var_forum == 'resources'" class="forum_name_selected">Resources</p>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    space for filters etc
+                    <!--TODO: Fill in this section-->
+                </div>
+            </div>
+            <!--Middle Section-->
+            <div class="col-lg-8">
+                <!--Chat Room Name-->
+                <h1>{{ var_room_name }}</h1>
+                <!--Chat Room Content-->
+                <div class="chat_forum_content" ng-show="var_forum == 'chatroom'">
+                    <div class="chatbox"></div>
+                    <input type="text" class="chat_message_input" ng-model="var_chat_message" size="63"/>
+                    <button type="button" class="btn btn-default" ng-click="">Send</button>
+                </div>
+                <!--// TODO: Posts Content-->
+                <!--// TODO: Resources Content-->
+            </div>
+            <!--Right Section-->
+            <div class="col-lg-2">
+                <!--Contact Prof-->
+                <button type="button" class="contact_prof_btn btn btn-primary">Contact Prof</button>
+                <!--User List-->
+                <div class="user_list_wrapper">
+                    <p>My Classmates</p>
+                    <p>Friends</p>
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1}">
+                        <a class="user_card_li" href="">
+                            <img src="{{ user.profilePic }}" alt="{{ user.name }}" class="img-thumbnail">
+                            <p>{{ user.name }}</p>
+                        </a>
+                    </div>
+                    <p>Others</p>
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
+                        <a class="user_card_li" href="">
+                            <img src="{{ user.profilePic }}" alt="{{ user.name }}" class="img-thumbnail">
+                            <p>{{ user.name }}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Padding Trick-->
+    <div class="col-lg-1"></div>
+</div>
+
