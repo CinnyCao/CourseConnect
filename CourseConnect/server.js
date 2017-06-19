@@ -19,7 +19,7 @@ var http = require('http'),                 // Http interface
 /*
  * ==== Create Express app server ========
  */
- var app = express();
+var app = express();
 
 // Configurations
 
@@ -33,7 +33,7 @@ app.use(morgan('dev'));   // 'default', 'short', 'tiny', 'dev'
 app.use(compression());
 
 // return error details to client - use only during development
-app.use(errorhandler({ dumpExceptions:true, showStack:true })); 
+app.use(errorhandler({dumpExceptions: true, showStack: true}));
 
 // parse application/json 
 app.use(bodyParser.json());
@@ -43,7 +43,7 @@ app.use(session({
     secret: 'super_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: {secure: false}
 }));
 
 /*
@@ -67,7 +67,7 @@ app.use(express.static(__dirname + "/app"));
 
 // ==== Start HTTP server ========
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port %d in %s mode", 
-      app.get('port'), config.env 
+    console.log("Express server listening on port %d in %s mode",
+        app.get('port'), config.env
     );
 });

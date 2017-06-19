@@ -13,7 +13,7 @@ var tdPortal = angular.module('courseConnect', [
 ]);
 
 /* App route */
-tdPortal.config(['$routeProvider', function($routeProvider) {
+tdPortal.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: '/templates/HomePage.html'
@@ -22,19 +22,19 @@ tdPortal.config(['$routeProvider', function($routeProvider) {
             templateUrl: '/templates/ChatRoom.html',
             controller: 'ChatCtrl'
         })
-    .when('/signup', {
-      templateUrl: '/templates/signUp.html',
-      controller: 'SignUpCtrl'
-    })
-    .when('/login', {
-      templateUrl: '/templates/login.html',
-      controller: 'LoginCtrl'
-    })
-    .when('/loggedin', {
-      templateUrl: '/templates/loggedin.html'
-    })
+        .when('/signup', {
+            templateUrl: '/templates/signUp.html',
+            controller: 'SignUpCtrl'
+        })
+        .when('/login', {
+            templateUrl: '/templates/login.html',
+            controller: 'LoginCtrl'
+        })
+        .when('/loggedin', {
+            templateUrl: '/templates/loggedin.html'
+        })
         .otherwise({
             templateUrl: '/templates/PageNotFound.html'
         });
-  }]);
+}]);
 
