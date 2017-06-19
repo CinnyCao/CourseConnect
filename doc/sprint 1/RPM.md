@@ -1,6 +1,6 @@
-### Release 1 Planning Meeting
+# Release 1 Planning Meeting
 ---
-##### June 18th 2017 | 15:20 AM - 17:50 AM
+##### June 18th 2017 | 15:20 - 17:50
 ***
 
 
