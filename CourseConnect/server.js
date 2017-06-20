@@ -13,13 +13,13 @@ var http = require('http'),                 // Http interface
     bodyParser = require('body-parser'),    // Parse data body in post request
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
-    portal = require('./routes/routes.js'); // Routes handlers
-
+    portal = require('./routes/routes.js'), // Routes handlers
+    session = require('express-session'); // Session
 
 /*
  * ==== Create Express app server ========
  */
- var app = express();
+var app = express();
 
 // Configurations
 
@@ -33,16 +33,28 @@ app.use(morgan('dev'));   // 'default', 'short', 'tiny', 'dev'
 app.use(compression());
 
 // return error details to client - use only during development
-app.use(errorhandler({ dumpExceptions:true, showStack:true })); 
+app.use(errorhandler({dumpExceptions: true, showStack: true}));
 
 // parse application/json 
 app.use(bodyParser.json());
 
+// Set up to use a session
+app.use(session({
+    secret: 'super_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: false}
+}));
 
 /*
  * App routes (API) - route-handlers implemented in routes/*
  */
 app.get('/api', portal.api);
+app.get('/name', portal.chatServices.getName);
+app.post('/name', portal.chatServices.setName);
+app.get('/logout', portal.chatServices.logout);
+app.post('/addmsg', portal.chatServices.addMessage);
+app.get('/messages', portal.chatServices.getMessages);
 
 // User login authentication - authentication implemented in routes
 app.post('/authenticate', portal.authenticate);
@@ -55,7 +67,7 @@ app.use(express.static(__dirname + "/app"));
 
 // ==== Start HTTP server ========
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port %d in %s mode", 
-      app.get('port'), config.env 
+    console.log("Express server listening on port %d in %s mode",
+        app.get('port'), config.env
     );
 });
