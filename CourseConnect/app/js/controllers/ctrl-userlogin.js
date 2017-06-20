@@ -12,7 +12,7 @@ userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', function ($scope, $ht
     $scope.login = function () {
         $http.post('/authenticate', {email: $scope.email, pwd: $scope.pwd}).then(function (res) {
             if (res.data == true) {
-                window.location.href = '#/loggedin';
+                window.location.href = '#/userprofile';
             } else if (res.data == false) {
                 $('#loginFailedAlert').show();
             }

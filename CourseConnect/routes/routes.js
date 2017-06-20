@@ -95,3 +95,9 @@ exports.signupCheck = function (req, res) {
     })
 }
 
+exports.userProfileInfo = function (req, res) {
+    exports.requestDbConnection(function (connection) {
+        
+    })
+}
+

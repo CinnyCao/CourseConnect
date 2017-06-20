@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-app="CtrlUserProfile">
 	<div class="row">
 		<h2>User Profile</h2>
 		<div class="col-md-2">
@@ -6,8 +6,8 @@
 			<button type="button" class="btn btn-default">Change profile picture</button>
 		</div>
 		<div class="col-md-10">
-			<div class="col-md-5">
-				<b>Name</b>:<br/>
+			<div class="col-md-5" ng-controller="displayUserInfoCtrl">
+				<b>Name</b>: {{name}}<br/>
 				<b>Email</b>:<br/>
 				<b>Password</b>:<br/>
 				<b>Description</b>:<br/>
