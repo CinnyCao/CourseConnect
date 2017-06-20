@@ -9,5 +9,6 @@ Please check for `doc/phase2` and `doc/sprint 1` folders for required files.
  - doc/sprint 1
     - PB.md
     - RPM.md
+    - SR1.md
 
 Pivotal Tracker link: https://www.pivotaltracker.com/n/projects/2050601
