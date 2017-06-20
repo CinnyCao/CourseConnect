@@ -31,7 +31,8 @@
     "highcharts": "~v4.2.1",
     "Hover": "~2.0.2",
     "angular-animate": "^1.6.4",
-    "angular-bootstrap": "^2.5.0"
+    "angular-bootstrap": "^2.5.0",
+    "ng-scroll-glue": "^2.0.10"
   },
   "resolutions": {
     "angular": "~1.4.3"
