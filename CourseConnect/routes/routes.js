@@ -8,7 +8,9 @@
 var mysql = require('mysql'),      // Nodejs driver for MySQL
     util = require('util'),       // Util lib facilitates console.log()
     async = require('async'),      // Async lib helps asynchronized execution
-    config = require('./../config.js');  // App's local config - port#, etc
+    config = require('./../config.js'),  // App's local config - port#, etc
+    express = require('express');
+    router = express.Router();
 
 
 /*
@@ -42,17 +44,12 @@ exports.requestDbConnection = function (callback) {
     });
 };
 
+
 /*
  *  ================ App routes (API) ================
  */
-exports.api = function (req, res) {
-    res.status(200).send('<h3>Course Connect API is running...</h3>');
-};
 
-var ctrlChat = require('./ctrl-chat');
-exports.chatServices = ctrlChat;
-
-exports.authenticate = function (req, res) {
+var authenticate = function (req, res) {
     exports.requestDbConnection(function (connection) {
         var query = "SELECT * FROM Users WHERE `Email`='" + req.body.email + "';";
         var result = connection.query(query, function (err, result) {
@@ -72,10 +69,10 @@ exports.authenticate = function (req, res) {
                 res.status(200).send(true);
             }
         });
-    })
-}
+    });
+};
 
-exports.signupCheck = function (req, res) {
+var signupCheck = function (req, res) {
     exports.requestDbConnection(function (connection) {
         var query = "INSERT INTO Users (Email, LastName, FirstName, Password) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "');";
         var result = connection.query(query, function (err, result) {
@@ -92,6 +89,21 @@ exports.signupCheck = function (req, res) {
                 res.status(200).send(true);
             }
         });
-    })
-}
+    });
+};
 
+var getChatRoom = function (req, res) {
+    // todo
+};
+
+
+// User login authentication - authentication implemented in routes
+router.post('/authenticate', authenticate);
+// User sign up and authenticate account info, signUp implemented in routes
+router.post('/signupCheck', signupCheck);
+
+// Get data of chat rooms
+router.get('/getchatroom/:roomid', getChatRoom);
+
+
+module.exports = router; // exports whole files as a module
