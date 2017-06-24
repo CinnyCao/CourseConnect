@@ -24,6 +24,12 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
     .when('/userprofile', {
         templateUrl: '/templates/userprofile.html'
     })
+    .when('/courseenroll', {
+        templateUrl: '/templates/courseenrol.html'
+    })
+    .when('/settings', {
+        templateUrl: '/templates/settings.html'
+    })
     .when('/chat/:courseid', {
         templateUrl: '/templates/ChatRoom.html',
         controller: 'ChatCtrl'
