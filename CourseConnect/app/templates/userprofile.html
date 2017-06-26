@@ -1,11 +1,12 @@
-<div class="container" ng-app="CtrlUserProfile">
+<div class="container" ng-app="CtrlUserProfile" ng-controller="UserProfileCtrl">
 	<div class="row">
-		<ul class="nav nav-pills nav-justified">
-    		<li class="active"><a href="#/userprofile">User Profile</a></li>
-    		<li><a href="#/courseenroll">Courses Enrolled</a></li>
-    		<li><a href="#/settings">Settings</a></li>
-  		</ul><br/>
-		<div class="col-md-2" ng-controller="changeProfPicCtrl">
+		<ul class="nav nav-tabs  nav-justified">
+  		<li class="active"><a href="#/userprofile">User Profile</a></li>
+  		<li><a href="#/courseenroll">Courses Enrolled</a></li>
+  		<li><a href="#/settings">Settings</a></li>
+  	</ul><br/>
+    <h2>Hello, {{name}}</h2>
+	<div class="col-md-2">
 			<img src="img/defaultAvatar.png" class="img-thumbnail" width="325" height="257"><br/>
 			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#uploadModal">Change profile picture</button>
 			<div id="uploadModal" class="modal fade" role="dialog">
@@ -17,15 +18,15 @@
 						</div>
 						<div class="modal-body">
 							<form>
-								<input id="image-file" type="file" ng-model="profilepic"/>
-								<button class="btn btn-success" type="submit" ng-click="uploadPic()">Upload</buton>
+								<input id="image-file" type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFile" ng-model="profilepic"/>
+								<button class="btn btn-success" type="submit" ng-click="uploadPic(file)">Upload</buton>
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-10" ng-controller="displayUserInfoCtrl">
+		<div class="col-md-10">
 			<form class="form-vertical">
 				 <div class="form-group">
     				<label class="control-label col-sm-5" for="name">Name:</label>

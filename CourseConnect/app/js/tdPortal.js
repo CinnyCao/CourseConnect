@@ -12,7 +12,8 @@ var tdPortal = angular.module('courseConnect', [
     'CtrlChat',
     'CtrlUserLogin',
     'CtrlUserSignup',
-    'CtrlUserProfile'
+    'CtrlUserProfile',
+    'CtrlSettings'
 ]);
 
 /* App route */
@@ -28,7 +29,8 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/courseenrol.html'
     })
     .when('/settings', {
-        templateUrl: '/templates/settings.html'
+        templateUrl: '/templates/settings.html',
+        controller: 'SettingsCtrl'
     })
     .when('/chat/:courseid', {
         templateUrl: '/templates/ChatRoom.html',

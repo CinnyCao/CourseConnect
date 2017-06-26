@@ -2,6 +2,9 @@
 
 var userProfileCtrls = angular.module('CtrlUserProfile', []);
 
-userProfileCtrls.controller('displayUserInfoCtrl', ['$scope', '$http', function ($scope, $http) {
-	$scope.name = "Kevin Chen";
+userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http', function ($scope, $http) {
+	$scope.name = "Guan Yu Chen";
+	$scope.uploadPic = function(file) {
+		
+	}
 }]);
