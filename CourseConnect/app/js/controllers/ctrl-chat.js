@@ -72,6 +72,13 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             }
         };
 
+        //Button for uploading files
+        $scope.uploadPress = function (){
+
+
+        };
+
+
         $scope.init = function () {
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);
