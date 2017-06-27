@@ -62,6 +62,8 @@ app.post('/authenticate', portal.authenticate);
 // User sign up and authenticate account info, signUp implemented in routes
 app.post('/signupCheck', portal.signupCheck);
 
+app.get('/userinfo', portal.getUserInfo);
+
 // location of app's static content
 app.use(express.static(__dirname + "/app"));
 

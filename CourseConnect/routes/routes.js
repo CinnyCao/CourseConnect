@@ -95,9 +95,17 @@ exports.signupCheck = function (req, res) {
     })
 }
 
-exports.userProfileInfo = function (req, res) {
-    exports.requestDbConnection(function (connection) {
-        
-    })
+exports.getUserInfo = function (req, res) {
+	exports.requestDbConnection(function (connection) {
+		var query = "SELECT * FROM Users WHERE `Email`='guanyukevin.chen@gmail.com'";
+		var result = connection.query(query, function (err, result) {
+			if (err) {
+				console.log("ERROR: Failed to execute query. Query: " + query);
+                res.status(404).send("Auth query failed");
+			}
+			console.log("SUCCESS: Query executed and result sent. Result: " + result);
+			res.status(200).send(result);
+		});
+	})
 }
 
