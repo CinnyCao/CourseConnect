@@ -34,10 +34,42 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
     function ($scope, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
+        $scope.var_messages = [];
+
         // get name of classroom
         $scope.getRoomName = function () {
             // TODO: construct room name from ChatService's room data
             return "CSCC01 Summer 2017";
+        };
+
+        $scope.sendMsg = function () {
+            // hard code data TODO:
+            var time = new Date();
+            time = time.toLocaleString();
+            $scope.var_messages.push({
+                "userId": 1,
+                "profilePic": "img/profilePicDefault.jpg",
+                "name": "aa",
+                "message": $scope.var_chat_message,
+                "time": time
+            });
+
+            $scope.var_chat_message = "";
+        };
+
+        $scope.isCurrentUser = function (userId) {
+            // hard code, assume current user is id 1 TODO
+            if (userId == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        $scope.onChatMessageKeyPress = function ($event) {
+            if ($event.which === 13) {
+                $scope.sendMsg();
+            }
         };
 
         $scope.init = function () {
@@ -45,6 +77,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);
             $scope.var_room_name = $scope.getRoomName();
             $scope.var_user_list = ChatService.getAllClassMates();
+
+            $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
         };
 
         $scope.init();

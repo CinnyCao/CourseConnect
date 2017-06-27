@@ -36,6 +36,8 @@
     margin-left: auto;
     margin-right: auto;
     border: 1px solid #ACD8F0;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .chat_message_input {
@@ -67,4 +69,29 @@
     display: inline-block;
     font-size: 18px;
     vertical-align: bottom;
+}
+
+.left_avatar img, .right_avatar img {
+    width: 35px;
+    height: 35px;
+}
+
+.left_message_box {
+    text-align: left;
+}
+
+.right_message_box {
+    text-align: right;
+}
+
+.message_time {
+    font-size: xx-small;
+    font-weight: bold;
+}
+
+.message_left, .message_right {
+    padding: 5px;
+    background-color: #ACD8F0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+    display: inline-block;
 }

@@ -1,0 +1,20 @@
+Marking Rubric for the Sprint 1 class demo
+==========================================
+Team name: May the Forks Be With You
+
+Attendance: 2 marks full team is attending, 1 mark if at least one member not present, 0 marks the whole team not present
+Your mark: _2_
+
+
+Pivotal Tracker: 2 marks if the feature(s) the team is demonstrating are marked as "Finished" on pivotal tracker, 
+1 mark if they marked partially finished, 0 marks if pivotal tracker is not updated.
+
+Your mark: _2_
+
+Working software: 6 marks if features work flawlessly, take away 1 mark for each problem you spot until the mark hits zero.
+Your mark: _4_
+
+
+Total demo mark: __8__/10
+
+

@@ -5,6 +5,7 @@
 var tdPortal = angular.module('courseConnect', [
     'ngAnimate',
     'ui.bootstrap',
+    'ngScrollGlue',
     'ngRoute',
     'Directives',
     'Filters',

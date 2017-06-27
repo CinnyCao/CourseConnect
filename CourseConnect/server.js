@@ -49,18 +49,7 @@ app.use(session({
 /*
  * App routes (API) - route-handlers implemented in routes/*
  */
-app.get('/api', portal.api);
-app.get('/name', portal.chatServices.getName);
-app.post('/name', portal.chatServices.setName);
-app.get('/logout', portal.chatServices.logout);
-app.post('/addmsg', portal.chatServices.addMessage);
-app.get('/messages', portal.chatServices.getMessages);
-
-// User login authentication - authentication implemented in routes
-app.post('/authenticate', portal.authenticate);
-
-// User sign up and authenticate account info, signUp implemented in routes
-app.post('/signupCheck', portal.signupCheck);
+app.use('/api', portal);
 
 app.get('/userinfo', portal.getUserInfo);
 
