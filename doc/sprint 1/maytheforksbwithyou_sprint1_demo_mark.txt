@@ -12,9 +12,9 @@ Pivotal Tracker: 2 marks if the feature(s) the team is demonstrating are marked 
 Your mark: _2_
 
 Working software: 6 marks if features work flawlessly, take away 1 mark for each problem you spot until the mark hits zero.
-Your mark: _4_
+Your mark: _6_
 
 
-Total demo mark: __8__/10
+Total demo mark: __10__/10
 
 
