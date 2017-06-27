@@ -12,7 +12,7 @@ userSignupCtrls.controller('SignUpCtrl', ['$scope', '$http', function ($scope, $
         });
     });
     $scope.signup = function () {
-        $http.post('/signupCheck', {
+        $http.post('/api/signupCheck', {
             username: $scope.username,
             fn: $scope.firstName,
             ln: $scope.lastName,
