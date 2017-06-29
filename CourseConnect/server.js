@@ -51,8 +51,6 @@ app.use(session({
  */
 app.use('/api', portal);
 
-app.get('/userinfo', portal.getUserInfo);
-
 // location of app's static content
 app.use(express.static(__dirname + "/app"));
 

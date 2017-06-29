@@ -7,8 +7,8 @@
   	</ul><br/>
     <h2>Hello, {{name}}</h2>
 	<div class="col-md-2">
-			<img src="img/defaultAvatar.png" class="img-thumbnail" width="325" height="257"><br/>
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#uploadModal">Change profile picture</button>
+		<img class="img-thumbnail" width="325" height="257" ngf-thumbnail="picFile"><br/>
+		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#uploadModal">Change profile picture</button>
 			<div id="uploadModal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -17,9 +17,9 @@
           					<h4 class="modal-title">Upload Your Profile Picture</h4>
 						</div>
 						<div class="modal-body">
-							<form>
-								<input id="image-file" type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required ngf-model-invalid="errorFile" ng-model="profilepic"/>
-								<button class="btn btn-success" type="submit" ng-click="uploadPic(file)">Upload</buton>
+							<form id="uploadForm">
+								<input type="file" ngf-select ng-model="profpicfile" name="ProfPicFile"/>
+								<input type="submit" ng-click="uploadPic(profpicfile)"/>
 							</form>
 						</div>
 					</div>

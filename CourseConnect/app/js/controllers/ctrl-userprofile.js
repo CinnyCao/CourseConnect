@@ -1,9 +1,10 @@
 'use strict';
 
-var userProfileCtrls = angular.module('CtrlUserProfile', []);
+var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
 
 userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http', function ($scope, $http) {
-	$http.get('/userinfo').then(function (result) {
+	$scope.profilePic = "img/defaultAvatar.png";
+	$http.get('/api/userinfo').then(function (result) {
 		$scope.name = result.data[0].FirstName + " " + result.data[0].LastName;
 		$scope.email = result.data[0].Email;
 		if (result.data[0].UTorId != null) $scope.utorid = result.data[0].UTorId;
@@ -11,5 +12,8 @@ userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http', function ($sc
 	})
 	$scope.uploadPic = function(file) {
 		console.log(file);
+		$http.post('/api/profpic-upload', {picture: file).then(function (res) {
+
+		})
 	}
 }]);

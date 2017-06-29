@@ -24,7 +24,8 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/HomePage.html'
     })
     .when('/userprofile', {
-        templateUrl: '/templates/userprofile.html'
+        templateUrl: '/templates/userprofile.html',
+        controller: 'UserProfileCtrl'
     })
     .when('/courseenroll', {
         templateUrl: '/templates/courseenrol.html'
