@@ -14,7 +14,9 @@ var http = require('http'),                 // Http interface
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
     portal = require('./routes/routes.js'), // Routes handlers
-    session = require('express-session'); // Session
+    session = require('express-session'),   // Session
+    uuid = require("uuid/v4");              // Generate random uuid
+   
 
 /*
  * ==== Create Express app server ========
@@ -42,8 +44,11 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'super_secret',
     resave: false,
-    saveUninitialized: false,
-    cookie: {secure: false}
+    saveUninitialized: true,
+    cookie: {secure: false},
+    genid: function (req){
+        return uuid();
+    }
 }));
 
 /*
