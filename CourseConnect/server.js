@@ -14,8 +14,8 @@ var http = require('http'),                 // Http interface
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
     portal = require('./routes/routes.js'), // Routes handlers
-    session = require('express-session'); // Session
-
+    session = require('express-session'),   // Session
+    expressUpload = require('express-fileupload');//upload files
 /*
  * ==== Create Express app server ========
  */
@@ -45,6 +45,9 @@ app.use(session({
     saveUninitialized: false,
     cookie: {secure: false}
 }));
+
+// Set up upload
+app.use(expressUpload());
 
 /*
  * App routes (API) - route-handlers implemented in routes/*
