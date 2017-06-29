@@ -41,3 +41,7 @@ exports.signupCheck = function (req, res) {
         }
     });
 };
+
+exports.storeFile = function(req, res){
+
+};
