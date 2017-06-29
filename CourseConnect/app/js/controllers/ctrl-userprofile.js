@@ -2,7 +2,7 @@
 
 var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
 
-userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http', 'fileUpload',
+userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload',
 	function ($scope, $http, fileUpload) {
 		$scope.profilePic = "img/defaultAvatar.png";
 
@@ -12,10 +12,24 @@ userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http', 'fileUpload',
 			if (result.data[0].UTorId != null) $scope.utorid = result.data[0].UTorId;
 			if (result.data[0].Description != null) $scope.description = result.data[0].Description;
 		})
-		
-		$scope.uploadFile = function () {
-			$http.post('/api/profpic-upload').then(function(res){
-				console.log(123);
-			})
+
+		$scope.uploadFile = function (file) {
+			var file = $scope.myFile;
+
+			console.log('file is ');
+			console.dir(file);
+
+			var uploadUrl = "/api/profpic-upload";
+			// fs.writeFile("/tmp/test", file, function(err) {
+			// 	if(err) {
+			// 		return console.log(err);
+			// 	}
+
+			// 	console.log("The file was saved!");
+			// }); 
+			fileUpload.uploadFileToUrl(file, uploadUrl);
+			// $http.post('/api/profpic-upload', {file}).then(function(res){
+			// 	console.log(123);
+			// })
 		};
 	}]);
