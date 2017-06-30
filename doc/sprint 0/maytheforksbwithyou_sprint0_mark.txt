@@ -5,7 +5,7 @@ summary.md (Max 8 marks)
   - Project objectives have been specified clearly (max 2 marks) [0 marks: not at all, 1 mark = somewhat clearly, 2 marks = clearly]
     Objectives vague
 
-    Your mark:_1_
+    Your mark:_2_
   - Key users have been identified clearly (max 2 marks) [0 marks: not at all, 1 mark = somewhat clearly, 2 marks = clearly]
     Personas are supposed to be made up people, not real (Don't use Paco).
     
@@ -42,7 +42,7 @@ Product Backlog PB.md (Max 8 marks)
    Your mark: _2_
   
 
-   Not a MD file. This would be a html page renamed to md. -1
+   Not a MD file. This would be a html page renamed to md. -1 (remarked)
 
    PB.md mark: __4__ 
    
@@ -98,7 +98,7 @@ User experience: (max 4 marks)
    User experience mark: _4_
    
    
-Total mark for phase 1 : __33__/42   
+Total mark for phase 1 : __35__/42   
 	
 
 

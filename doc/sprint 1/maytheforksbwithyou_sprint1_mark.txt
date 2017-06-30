@@ -1,6 +1,6 @@
 Team Name: May The Forks Be With You
 
-30/35
+32/35
 
 Planning Meetings (RPM.md, sprint1.md) (Max 5 marks) 5/5
 -RPM.md (Release Planning Meeting)
@@ -73,7 +73,7 @@ System Design - (PDF or MD file or other suitable format) (Max 10 marks) 5/10
   [1 mark: at least one is present]
   [0 marks: None present]
   
-- CRC Cards 2
+- CRC Cards 4
   [4 marks: Class names and Collaborators have matching names and responsibilities are stated clearly]
   [3 marks: At least one of the class names does not match the collaborator names or the responsibilities for at least one class are unclear]
   [2 marks: Two class names do not match the collaborator names or the responsibilities of two or more classes are not stated or are unclear]

@@ -42,6 +42,30 @@ exports.signupCheck = function (req, res) {
     });
 };
 
+
 exports.storeFile = function(req, res){
 
-};
+}
+
+exports.getUserInfo = function (req, res) {
+    var query = "SELECT * FROM Users WHERE `Email`='guanyukevin.chen@gmail.com'";
+    db.executeQuery(query, function (err, result) {
+        if (err) {
+            console.log("ERROR: Failed to execute query. Query: " + query);
+            res.status(404).send("Auth query failed");
+        }
+        console.log("SUCCESS: Query executed and result sent. Result: " + result);
+        res.status(200).send(result);
+    });
+}
+
+exports.uploadProfPic = function (req, res) {
+    var fs = require('fs');
+    fs.writeFile(__dirname + "/app/img/" + req.files.file.name, req.files.file.data, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("The file was saved!");
+    }); 
+}
+
