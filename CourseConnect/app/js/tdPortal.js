@@ -16,6 +16,7 @@ var tdPortal = angular.module('courseConnect', [
     'CtrlUserSignup',
     'CtrlUserProfile',
     'CtrlSettings'
+    'ngCookies'
 ]);
 
 /* App route */
