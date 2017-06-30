@@ -56,10 +56,18 @@ exports.getUserInfo = function (req, res) {
 
 exports.uploadProfPic = function (req, res) {
     var fs = require('fs');
-    fs.writeFile(__dirname + "/../app/img/" + req.files.file.name, req.files.file.data, function(err) {
+    var path = __dirname + "/../app/img/" + req.files.file.name
+    fs.writeFile(path, req.files.file.data, function(err) {
         if(err) {
             return console.log(err);
         }
-        console.log("The file was saved!");
+        console.log("SUCCESS: The file was saved!");
+        var query = "INSERT INTO Resources (fileLocation, Title, isProfile) VALUES ('" + path + "', '" + req.files.file.name + "', 1)";
+        db.executeQuery(query, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to inject file location. " + err);
+                res.status(404).send("Failed to inject file location");
+            }
+        })
     }); 
 }

@@ -28,8 +28,6 @@ userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload',
 			// 	console.log("The file was saved!");
 			// }); 
 			fileUpload.uploadFileToUrl(file, uploadUrl);
-			// $http.post('/api/profpic-upload', {file}).then(function(res){
-			// 	console.log(123);
-			// })
+			
 		};
 	}]);
