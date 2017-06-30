@@ -30,7 +30,7 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all resources
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService', '$http', 'AddonsList', 'getToken'
+chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService', '$http', 'fileUpload',
     function ($scope, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
@@ -56,40 +56,25 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             });
 
             $scope.var_chat_message = "";
-            var file = document.getElementById("studentFile").file[0];
-            var fr = new FileReader();
-            var fileContent;
-            var data;
-            //fr.onloadend = function(e){
-              //  $scope.data = e.target.result;
-
-            //}
-            //fr.readAsBinaryString(f);
-            $http({
-                method: 'POST',
-                url: 'http://localhost:8080/writefile', // Assuming your running your node server in local
-                data: { "fileContent": {"test": 1} } // Content which needs to be written to the file 'message.txt'
-            }).then(function(){
-                    // Success
-                },
-                function(error) {
-                    //error handler
-                    console.error("Error occured::",error);
-                });
+            //var file = document.getElementById("studentFile").file[0];
+            //var fr = new FileReader();
+            //var fileContent;
+            //var data;
+            
 
         };
 
 
 
 
-                $scope.uploadFile = function() {
-                    $http.post('/api/storeFile', {}).then(function (res){
+        $scope.uploadFile = function() {
+            $http.post('/api/file-upload', {}).then(function (res){
 
-                    });
+            });
 
 
 
-                };
+        };
 
 
 

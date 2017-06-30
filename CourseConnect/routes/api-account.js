@@ -44,7 +44,8 @@ exports.signupCheck = function (req, res) {
 
 
 exports.storeFile = function(req, res){
-
+    var fs = require('fs');
+    fs.writeFile(__dirname + "/app/");//Concatenate the path app/chatroom/file
 }
 
 exports.getUserInfo = function (req, res) {

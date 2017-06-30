@@ -57,18 +57,6 @@ app.use('/api', portal);
 // location of app's static content
 app.use(express.static(__dirname + "/app"));
 
-//Define the function that can read
-app.post('/readfile', function(req, res) {
-    var file2Read = req.body.fileContent;
-
-    fs.readFile(file2Read , function(err, data) {
-        if (err) {
-            res.status(500).jsonp({ error: 'Failed to write file' });
-        }
-        res.send(data.toString());
-    });
-});
-
 // ==== Start HTTP server ========
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port %d in %s mode",
