@@ -4,15 +4,19 @@
 var db = require('./db_connection');  // db manager
 
 exports.authenticate = function (req, res) {
-    validateToken(req.body.token, function (isValid) {
-        if (isValid) {
-            console.log("SUCCESS: User logged in with token.");
-            res.status(200).send({ isvalid: true, token: req.body.token });
-            
-        }else {
-            checkUserInDB(req,res);
-        }
-    })
+    if (!req.body.token) {
+        checkUserInDB(req, res);
+    } else {
+        validateToken(req.body.token, function (isValid) {
+            if (isValid) {
+                console.log("SUCCESS: User logged in with token.");
+                res.status(200).send({ isvalid: true, token: req.body.token });
+
+            } else {
+                checkUserInDB(req, res);
+            }
+        })
+    }
 };
 
 checkUserInDB = function (req, res) {
@@ -32,7 +36,7 @@ checkUserInDB = function (req, res) {
         } else {
             console.log("SUCCESS: User logged in.");
             var session = req.session.id;
-            saveLoginTokenToDatabase(req.body.u_id, session);
+            saveLoginTokenToDatabase(result[0].u_id, session);
             res.cookie("loginToken", session);
             res.status(200).send({ isvalid: true, token: session });
         }
@@ -67,7 +71,7 @@ saveLoginTokenToDatabase = function (u_id, token) {
             console.log("ERROR: Failed to inject login token." + err);
             return false;
         }
-        console.log("SUCCESS: Inserted login token for user id=" + searchRes[0].u_id);
+        console.log("SUCCESS: Inserted login token for user id=" + u_id);
         return true;
     })
 }
@@ -84,7 +88,7 @@ validateToken = function (token, callback) {
         if (result.length >= 1) {
             console.log("SUCCESS: Token " + token + "is valid");
             callback(true);
-        }else{
+        } else {
             console.log("SUCCESS: Token " + token + " is unvalid.")
             callback(false);
         }
