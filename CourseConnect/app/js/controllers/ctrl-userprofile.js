@@ -1,6 +1,6 @@
 'use strict';
 
-var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
+var userProfileCtrls = angular.module('CtrlUserProfile', []);
 
 userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload',
 	function ($scope, $http, fileUpload) {
