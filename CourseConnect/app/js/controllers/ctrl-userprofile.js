@@ -5,7 +5,7 @@ var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
 userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', '$cookies', function ($scope, $http, fileUpload, $cookies) {
 	$scope.profilePic = "img/defaultAvatar.png";
 
-	$http.get('/api/userinfo').then(function (result) {
+	$http.post('/api/userinfo', {token: $cookies.get('loginToken')}).then(function (result) {
 		$scope.name = result.data[0].FirstName + " " + result.data[0].LastName;
 		$scope.email = result.data[0].Email;
 		if (result.data[0].UTorId != null) $scope.utorid = result.data[0].UTorId;
@@ -15,10 +15,6 @@ userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', 
 
 	$scope.uploadFile = function (file) {
 		var file = $scope.myFile;
-
-		console.log('file is ');
-		console.dir(file);
-
 		var uploadUrl = "/api/profpic-upload";
 		fileUpload.uploadFileToUrl(file, uploadUrl);
 		$http.post('/api/refreshProfile', {file: file.name, token: $cookies.get('loginToken')}).then(function (res) {

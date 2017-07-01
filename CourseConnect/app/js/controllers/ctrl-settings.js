@@ -2,12 +2,20 @@
 
 var userChangeDispName = angular.module('CtrlSettings', []);
 
-userChangeDispName.controller('SettingsCtrl', ['$scope', '$http', function ($scope, $html) {
+userChangeDispName.controller('SettingsCtrl', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+	$http.post('/api/userinfo', {token: $cookies.get('loginToken')}).then(function (res) {
+		$scope.dispname = res.data[0].DisplayName;
+		$scope.desc = res.data[0].Description;
+	})
 	$scope.changeDispName = function () {
-		console.log($scope.newDisplayName);
+		$http.post('/api/updatedispname', {dispName: $scope.newDisplayName, token: $cookies.get('loginToken')}).then(function (res) {
+			$scope.dispname = res.data[0].DisplayName;
+		})
 	};
 
 	$scope.changeDesc = function () {
-		console.log($scope.newDesc);
+		$http.post('/api/updateddesc', {desc: $scope.newDesc, token: $cookies.get('loginToken')}).then(function (res) {
+			$scope.desc = res.data[0].Description;
+		})
 	}
 }]);

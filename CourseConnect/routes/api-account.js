@@ -44,7 +44,8 @@ checkUserInDB = function (req, res) {
 }
 
 exports.signupCheck = function (req, res) {
-    var query = "INSERT INTO Users (Email, LastName, FirstName, Password) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "');";
+    var query = "INSERT INTO Users (Email, LastName, FirstName, Password, UTorID) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "', '" + 
+        req.body.utorid + "');";
     db.executeQuery(query, function (err, result) {
         if (err) {
             if (err.code != "ER_DUP_ENTRY") {
@@ -62,15 +63,21 @@ exports.signupCheck = function (req, res) {
 };
 
 exports.getUserInfo = function (req, res) {
-    var query = "SELECT * FROM Users WHERE `Email`='guanyukevin.chen@gmail.com'";
+    var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
     db.executeQuery(query, function (err, result) {
         if (err) {
-            console.log("ERROR: Failed to execute query. Query: " + query);
-            res.status(404).send("Auth query failed");
+            console.log("ERROR: Failed to retrieve user ID. Error: " + err);
+            res.status(404).send("failed to retrieve user ID");
         }
-        console.log("SUCCESS: Query executed and result sent. Result: " + result);
-        res.status(200).send(result);
-    });
+        var query2 = "SELECT * FROM Users WHERE u_id=" + result[0].user_id + ";";
+        db.executeQuery(query2, function (err, result) {
+            if (err) {
+                console.log("ERROR: Failed to retrieve user data. Error: " + err);
+                res.status(404).send("failed to retrieve user data");
+            }
+            res.status(200).send(result);
+        })
+    })
 }
 
 exports.uploadProfPic = function (req, res) {
@@ -88,7 +95,7 @@ exports.refreshProfPic = function (req, res) {
     var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
     db.executeQuery(query, function(err, result) {
         if (err) {
-            console.log("ERROR: Failed to retreive user ID.");
+            console.log("ERROR: Failed to retreive user ID. Error: " + err);
             res.status(404).send("Failed to retrieve user ID");
         }
         var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
@@ -102,6 +109,56 @@ exports.refreshProfPic = function (req, res) {
                 if (err) {
                     console.log("ERROR: Failed to retrieve file location. Error: " + err);
                     res.status(404).send("cannot refresh profile pic");
+                }
+                res.status(200).send(result);
+            })
+        })
+    })
+}
+
+exports.updateDispName = function (req, res) {
+    var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retrieve user ID. Error: " + err);
+            res.status(404).send("Failed to retrieve user ID");
+        }
+        var query2 = "UPDATE Users SET DisplayName='" + req.body.dispName + "' WHERE u_id=" + result[0].user_id + ";";
+        var query3 = "SELECT DisplayName FROM Users WHERE u_id=" + result[0].user_id + ";";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to update DisplayName in db. Error: " + err);
+                res.status(404).send("failed to update dispName");
+            }
+            db.executeQuery(query3, function(err, result) {
+                if (err) {
+                    console.log("ERROR: Failed to retrieve display name. Error: " + err);
+                    res.status(404).send("cannot retreive display name");
+                }
+                res.status(200).send(result);
+            })
+        })
+    })
+}
+
+exports.updateDescription = function (req, res) {
+    var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retrieve user ID. Error: " + err);
+            res.status(404).send("failed to retrieve user ID");
+        }
+        var query2 = "UPDATE Users SET Description='" + req.body.desc + "' WHERE u_id=" + result[0].user_id + ";";
+        var query3 = "SELECT Description FROM Users WHERE u_id=" + result[0].user_id + ";";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to update description. Error: " + err);
+                res.status(404).send("failed to update description");
+            }
+            db.executeQuery(query3, function(err, result) {
+                if (err) {
+                    console.log("ERROR: Failed to retrieve description for user. Error: " + err);
+                    res.status(404).send("failed to retrieve description for user");
                 }
                 res.status(200).send(result);
             })
