@@ -81,19 +81,37 @@ exports.uploadProfPic = function (req, res) {
             return console.log(err);
         }
         console.log("SUCCESS: The file was saved!");
-        var query = "INSERT INTO Resources (fileLocation, Title, isProfile) VALUES ('" + path + "', '" + req.files.file.name + "', 1)";
-        db.executeQuery(query, function(err, result) {
-            if (err) {
-                console.log("ERROR: Failed to inject file location. " + err);
-                res.status(404).send("Failed to inject file location");
-            }
-        })
     }); 
+}
+
+exports.refreshProfPic = function (req, res) {
+    var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retreive user ID.");
+            res.status(404).send("Failed to retrieve user ID");
+        }
+        var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
+        var query3 = "SELECT fileLocation FROM Users WHERE u_id=" + result[0].user_id + ";";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to set file location. Error: " + err);
+                res.status(404).send("cannot set file location");
+            }
+            db.executeQuery(query3, function(err, result) {
+                if (err) {
+                    console.log("ERROR: Failed to retrieve file location. Error: " + err);
+                    res.status(404).send("cannot refresh profile pic");
+                }
+                res.status(200).send(result);
+            })
+        })
+    })
 }
 
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
-    var injectTokenQuery = "INSERT INTO cscc01.Session (user_id, session)" +
+    var injectTokenQuery = "INSERT INTO cscc01.session (user_id, session)" +
         "Value (" + u_id + ", '" + token + "')";
 
     db.executeQuery(injectTokenQuery, function (err, insertRes) {
@@ -108,7 +126,7 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.Session WHERE session= '" + token + "'";
+    var tokenQuery = "SELECT * FROM cscc01.session WHERE session= '" + token + "'";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);

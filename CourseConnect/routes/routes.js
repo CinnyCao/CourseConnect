@@ -24,4 +24,6 @@ router.get('/userinfo', accountService.getUserInfo);
 
 router.post('/profpic-upload', accountService.uploadProfPic);
 
+router.post('/refreshProfile', accountService.refreshProfPic);
+
 module.exports = router; // exports router as a module
