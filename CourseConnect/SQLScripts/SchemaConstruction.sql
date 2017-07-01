@@ -52,7 +52,8 @@ Create Table IF NOT EXISTS Users(
 	SecurityQ2  varchar(20), /*Not NULL,*/
 	A2          varchar(15), /*NOT NULL,*/
 	SecurityQ3  varchar(20), /*NOT NULL,*/
-	A3          varchar(15)/*NOT NULL,*/
+	A3          varchar(15), /*NOT NULL,*/
+    fileLocation varchar(255)
 	/* CONSTRAINT PK_Users PRIMARY KEY (Email) */
 ) ENGINE = INNODB;
 

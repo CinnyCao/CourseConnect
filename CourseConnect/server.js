@@ -15,7 +15,9 @@ var http = require('http'),                 // Http interface
     config = require('./config.js'),        // App's local config - port#, etc
     portal = require('./routes/routes.js'), // Routes handlers
     session = require('express-session'),   // Session
-    expressUpload = require('express-fileupload');//upload files
+    expressUpload = require('express-fileupload'),//upload files
+    uuid = require("uuid/v4");              // Generate random uuid
+   
 /*
  * ==== Create Express app server ========
  */
@@ -42,8 +44,11 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'super_secret',
     resave: false,
-    saveUninitialized: false,
-    cookie: {secure: false}
+    saveUninitialized: true,
+    cookie: {secure: false},
+    genid: function (req){
+        return uuid();
+    }
 }));
 
 // Set up upload
