@@ -45,7 +45,21 @@ exports.signupCheck = function (req, res) {
 
 exports.storeFile = function(req, res){
     var fs = require('fs');
-    fs.writeFile(__dirname + "/app/");//Concatenate the path app/chatroom/file
+    var fileLocation = __dirname + "/app/file/" + req.body.roomName + "/" + req.files.file.name;
+    fs.writeFile(fileLocation, req.files.file.data, function(err){
+        if (err){
+            return console.log(err);
+        }
+        var query; //= "CREATE VIEW cscc01.uploadFile As SELECT"; //Query here to handle the join of tables and stored the info
+        db.executeQuery(query, function (err, result){
+            if (err){
+                console.log("file cannot be saved");
+            }else{
+                console.log("The file is saved");
+            }
+        });
+        //console.log("The file is saved!")
+    });//Concatenate the path app/chatroom/file
 }
 
 exports.getUserInfo = function (req, res) {

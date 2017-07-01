@@ -1,5 +1,7 @@
 
-Use cscc01;
+CREATE DATABASE cscc01; 
+
+USE cscc01;
 
 Drop Table IF EXISTS `Message`;
 
@@ -105,8 +107,8 @@ Create Table IF NOT EXISTS Resources(
 	r_id int Primary Key AUTO_INCREMENT,
 	resourceTime DATETIME,
     fileLocation varchar(255),
-    Title varchar(40),
+    /*Title varchar(40),*/
     ParticipantID int,
-    isProfile bool,
+    /*isProfile bool,*/
     foreign key(ParticipantID) references Participant(p_id)
 ) ENGINE = INNODB;

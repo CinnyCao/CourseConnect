@@ -21,7 +21,7 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 
     // TODO: service to get list of history messages with limit of N
 
-    // TODO: service to send a message
+    // TODO: service to send a messageu
 
     // TODO: service to pull messages with limit of N
 
@@ -30,7 +30,7 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all resources
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService', '$http', 'fileUpload',
+chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService', '$http',
     function ($scope, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
@@ -60,7 +60,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             //var fr = new FileReader();
             //var fileContent;
             //var data;
-            
+
+
 
         };
 
@@ -68,8 +69,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
 
 
         $scope.uploadFile = function() {
-            $http.post('/api/file-upload', {}).then(function (res){
-
+            $http.post('/api/file-upload', {roomName : $scope.getRoomName()}).then(function (res){
+                    console.log(123);
             });
 
 
@@ -78,7 +79,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
 
 
 
-                $scope.isCurrentUser = function (userId) {
+        $scope.isCurrentUser = function (userId) {
                     // hard code, assume current user is id 1 TODO
                     if (userId == 1) {
                         return true;
@@ -252,4 +253,4 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
                 // }
                 //
             }
-        }]);
+        ]);
