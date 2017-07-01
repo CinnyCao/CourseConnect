@@ -8,6 +8,7 @@ var tdPortal = angular.module('courseConnect', [
     'ngScrollGlue',
     'ngRoute',
     'Directives',
+    'Services',
     'Filters',
     'CtrlIndex',
     'CtrlChat',
