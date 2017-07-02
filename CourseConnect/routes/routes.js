@@ -25,7 +25,9 @@ router.get('/userinfo', accountService.getUserInfo);
 router.post('/profpic-upload', accountService.uploadProfPic);
 
 
-router.post('/file-upload', accountService.storeFile);
+router.post('/file-upload', accountService.uploadFile);
+
+router.post('/file-store', accountService.storeFile);
 
 router.post('/refreshProfile', accountService.refreshProfPic);
 

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row">
+<div class="row" ng-app="CtrlChat" ng-controller="ChatCtrl">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -73,11 +73,23 @@
                         </div>
                     </div>
                     <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
-                    <input type="file" class="chat_message_input" ng-model="var_chat_file" id="studentFile" name="Upload File" size="70"/>
+                    <!--<input type="file" class="chat_message_input" ng-model="var_chat_file" id="studentFile" name="Upload File" size="70"/>-->
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
                 <!--// TODO: Posts Content-->
+                <div class="chat_forum_content" ng-show="var_forum == 'posts'">
+                    <input type="file" class="chat_message_input" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
+                    <input type="submit" value="Add" ng-click="uploadFile()" size=70/>
+                </div>
                 <!--// TODO: Resources Content-->
+                <div class="chat_forum_content" ng-show="var_forum == 'resources'">
+                    <div class="resourcebox" scroll-glue>
+                        <div class="col-lg-10">
+                            <a href={{r.items}}>
+                            <p class="display_left">{{r.items}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--Right Section-->
             <div class="col-lg-2">

@@ -2,7 +2,7 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-chatCtrls.service('ChatService', ['$http', function ($http) {
+/*chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to get room data
 
     // TODO: service to get current user info
@@ -28,10 +28,10 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
-}]);
+}]);*/
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService', '$http',
-    function ($scope, $location, $routeParams, ChatService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', '$cookies', 'fileUpload', '$location', '$routeParams', 'ChatService',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
@@ -39,7 +39,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
         // get name of classroom
         $scope.getRoomName = function () {
             // TODO: construct room name from ChatService's room data
-            return "CSCC01 Summer 2017";
+            return $scope.var_room_name;
         };
 
         $scope.sendMsg = function () {
@@ -51,15 +51,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
                 "profilePic": "img/profilePicDefault.jpg",
                 "name": "aa",
                 "message": $scope.var_chat_message,
-                "file": document.getElementById("studentFile").value,
+                //"file": document.getElementById("studentFile").value,
                 "time": time
             });
 
             $scope.var_chat_message = "";
-            //var file = document.getElementById("studentFile").file[0];
-            //var fr = new FileReader();
-            //var fileContent;
-            //var data;
+
 
 
 
@@ -68,8 +65,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
 
 
 
-        $scope.uploadFile = function() {
-            $http.post('/api/file-upload', {roomName : $scope.getRoomName()}).then(function (res){
+        $scope.uploadFile = function(file) {
+            var file = $scope.userFile;
+            console.log('file uploaded is ');
+            console.dir(file);
+            var uploadUrl = "/api/file-upload";
+            console.log(file.name);
+            console.log(uploadUrl);
+            fileUpload.uploadFileToUrl(file, uploadUrl);
+            $http.post('/api/file-store', {roomName : $scope.getRoomName(), file : file.name,
+                token: $cookies.get('loginToken')}).then(function (res){
                     console.log(123);
             });
 
