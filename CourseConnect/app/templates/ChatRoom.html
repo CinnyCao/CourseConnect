@@ -36,8 +36,23 @@
                     </div>
                 </div>
                 <div class="row">
-                    space for filters etc
-                    <!--TODO: Fill in this section-->
+                    <!--Posts-->
+                    <div id="question_and_answer" class="scrollable" ng-show="var_forum == 'posts'">
+                        <div class="question_group">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                            <hr>
+                            <ul class="list-group">
+                                <li id="question_tiem" class="list-group-item">
+                                    <div class="content">
+                                        <div class="title">Creating a post</div>
+                                        <div class="timestamp">4/18/17</div>
+                                        <div class="snipet">This is an example for creating a post</div>
+                                        <div ng-hide="true" ng-bind="message">This is the full message</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--Middle Section-->
@@ -72,12 +87,27 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
+                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"
+                    />
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
                 <!--// TODO: Posts Content-->
-                <!--// TODO: Resources Content-->
+                <div id="post_forum_content" ng-show="var_forum == 'posts'">
+                    <h3 id="post_forum_title">Post Content</h3>
+                    <div class="media">
+                        <div class="media-left">
+                            <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Anonymous</h4>
+                            <p>This is a test</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+            <!--// TODO: Resources Content-->
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--Contact Prof-->
@@ -107,3 +137,32 @@
     <div class="col-lg-1"></div>
 </div>
 
+<!--Posting question form-->
+<div class="modal fade" id="post_question_modal" role="dialog">
+    <div class="modal-dialog">
+        <!--Header-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Post Question</h4>
+            </div>
+            <div class="modal-body">
+                <!--summary input-->
+                <div class="form-group">
+                    <label for="usr">Summary:</label>
+                    <input type="text" class="form-control" id="post_ques_summary">
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Detail:</label>
+                    <textarea class="form-control" rows="5" id="post_ques_detail"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                 <button type="button" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
