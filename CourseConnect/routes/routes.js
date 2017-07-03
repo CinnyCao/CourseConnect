@@ -20,7 +20,7 @@ router.post('/authenticate', accountService.authenticate);
 // User sign up and authenticate account info, signUp implemented in routes
 router.post('/signupCheck', accountService.signupCheck);
 
-router.get('/userinfo', accountService.getUserInfo);
+router.post('/userinfo', accountService.getUserInfo);
 
 router.post('/profpic-upload', accountService.uploadProfPic);
 
@@ -30,6 +30,11 @@ router.post('/file-upload', accountService.uploadFile);
 router.post('/file-store', accountService.storeFile);
 
 router.post('/refreshProfile', accountService.refreshProfPic);
+
+
+router.post('/updatedispname', accountService.updateDispName);
+
+router.post('/updateddesc', accountService.updateDescription);
 
 
 module.exports = router; // exports router as a module
