@@ -120,6 +120,23 @@
     text-align: left;
 }
 
-#post_forum_content {
+#post_forum_question {
     background:white;  
+    border: lightgray solid 1px;
+    border-radius: 10px;
+}
+
+#post_forum_answers{
+    background:white;  
+    border: lightgray solid 1px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.txt-left {
+    text-align: left;
+}
+
+.float-left{
+    float: left;
 }

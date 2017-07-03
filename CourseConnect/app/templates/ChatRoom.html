@@ -93,14 +93,42 @@
                 </div>
                 <!--// TODO: Posts Content-->
                 <div id="post_forum_content" ng-show="var_forum == 'posts'">
-                    <h3 id="post_forum_title">Post Content</h3>
-                    <div class="media">
-                        <div class="media-left">
-                            <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                    <div id="post_forum_question">
+                        <h3 id="post_forum_title">Post Content</h3>
+                        <hr>
+                        <!--Question posted-->
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Anonymous</h4>
+                                <p>This is a test</p>
+                            </div>
                         </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Anonymous</h4>
-                            <p>This is a test</p>
+                    </div>
+
+                    <!--Answer posted-->
+                    <div id="post_forum_answers">
+                        <h4 class="txt-left"> Followup Discussion</h4>
+                        <hr>
+                        <!--Input text-->
+                        <div class="form-group">
+                            <label for="comment">Start a new followup discussion.</label>
+                            <textarea class="form-control" rows="5" ng-model="ques_followup"></textarea>
+                        </div>
+
+                        <!--Submit button-->
+                        <div>
+                            <button type="button" class="btn btn-info btn-s float-left">Post</button>
+                            <div class="dropup float-left">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">As You
+                                <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li>As Anonymous</li>
+                                    <li>As You</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -150,17 +178,17 @@
                 <!--summary input-->
                 <div class="form-group">
                     <label for="usr">Summary:</label>
-                    <input type="text" class="form-control" id="post_ques_summary">
+                    <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
                 </div>
 
                 <div class="form-group">
                     <label for="comment">Detail:</label>
-                    <textarea class="form-control" rows="5" id="post_ques_detail"></textarea>
+                    <textarea class="form-control" rows="5" id="post_ques_detail" ng-model="ques_detail"></textarea>
                 </div>
 
             </div>
             <div class="modal-footer">
-                 <button type="button" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)">Submit</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

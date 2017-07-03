@@ -72,6 +72,15 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             }
         };
 
+        $scope.postQuestion = function(summary, detail){    
+            console.log(summary);
+            console.log(detail);
+        }
+
+        $scope.viewQuestion = function(title, detail){
+            $scope.ques_title;
+            $scope.ques_detail;
+        }
         $scope.init = function () {
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);
