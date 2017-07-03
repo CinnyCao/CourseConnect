@@ -15,7 +15,7 @@ exports.authenticate = function (req, res) {
             } else {
                 checkUserInDB(req, res);
             }
-        })
+        });
     }
 };
 
@@ -63,7 +63,7 @@ exports.signupCheck = function (req, res) {
 
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
-    var injectTokenQuery = "INSERT INTO cscc01.Session (user_id, session)" +
+    var injectTokenQuery = "INSERT INTO session (user_id, session)" +
         "Value (" + u_id + ", '" + token + "')";
 
     db.executeQuery(injectTokenQuery, function (err, insertRes) {
@@ -78,19 +78,19 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.Session, cscc01.users WHERE session= '" + token + "' AND cscc01.Session.user_id = cscc01.users.u_id";
+    var tokenQuery = "SELECT * FROM session, Users WHERE session.session = '" + token + "' AND session.user_id = Users.u_id";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);
             callback(false);
-        }
-
-        if (result.length >= 1) {
-            console.log("SUCCESS: Token " + token + "is valid");
-            callback(true, result);
         } else {
-            console.log("SUCCESS: Token " + token + " is invalid.")
-            callback(false);
+            if (result.length >= 1) {
+                console.log("SUCCESS: Token " + token + "is valid");
+                callback(true, result);
+            } else {
+                console.log("SUCCESS: Token " + token + " is invalid.")
+                callback(false);
+            }
         }
     });
 }

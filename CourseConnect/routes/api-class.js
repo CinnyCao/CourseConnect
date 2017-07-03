@@ -6,10 +6,11 @@ var db = require('./db_connection');  // db manager
 
 exports.getClass = function (req, res) {
     // bypass token check, visitors should be able to search class too
-    var query = "SELECT * FROM class WHERE CourseCode = '" + req.params.coursecode +
+    var query = "SELECT * FROM Class WHERE CourseCode = '" + req.params.coursecode +
         "' AND Semester = '" + req.params.semester + "' AND Year = '" + req.params.year + "'";
     db.executeQuery(query, function (err, data) {
         if (err) {
+            console.error(err);
             res.status(500).json({
                 error: "An unexpected error occurred when querying the database"
             });
@@ -35,10 +36,10 @@ exports.getClass = function (req, res) {
 };
 
 function joinClassRoom(userid, classid, roleid, res) {
-    var query = "INSERT INTO participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
+    var query = "INSERT INTO Participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
     db.executeQuery(query, function (err, data) {
         if (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).json({
                 error: "Failed joining class: An unexpected error occurred when querying the database"
             });
@@ -50,10 +51,11 @@ function joinClassRoom(userid, classid, roleid, res) {
 
 exports.createClass = function (req, res) {
     // check for room existence again to ensure no duplicate rooms are created
-    var query = "SELECT * FROM class WHERE CourseCode = '" + req.body.coursecode +
+    var query = "SELECT * FROM Class WHERE CourseCode = '" + req.body.coursecode +
         "' AND Semester = '" + req.body.semester + "' AND Year = '" + req.body.year + "'";
     db.executeQuery(query, function (err, data) {
         if (err) {
+            console.error(err);
             res.status(500).json({
                 error: "An unexpected error occurred when querying the database"
             });
@@ -64,15 +66,15 @@ exports.createClass = function (req, res) {
                 }
             );
         } else {
-            var query = "INSERT INTO class (CourseCode, Semester, Year) VALUES ('" + req.body.coursecode + "', '" + req.body.semester + "', '" + req.body.year + "')";
+            var query = "INSERT INTO Class (CourseCode, Semester, Year) VALUES ('" + req.body.coursecode + "', '" + req.body.semester + "', '" + req.body.year + "')";
             db.executeQuery(query, function (err, insertRes) {
                 if (err) {
+                    console.error(err);
                     res.status(500).json({
                         error: "Failed creating new class: An unexpected error occurred when querying the database"
                     });
                 } else {
                     // join class room as creator
-                    console.log("dddddddddddddddddddddd "+ req.body.userid);
                     joinClassRoom(req.body.userid, insertRes.insertId, 1, res);
                 }
             });
