@@ -13,7 +13,7 @@ userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', function 
         $http.defaults.withCredentials = true;
         $http.post('/api/authenticate', {email: $scope.email, pwd: $scope.pwd, token: $cookies.get('loginToken')}).then(function (res) {
             if (res.data.isvalid) {
-                window.location.href = '#/userprofile';
+                window.location.replace('#/userprofile');
             } else{
                 $('#loginFailedAlert').show();
             }

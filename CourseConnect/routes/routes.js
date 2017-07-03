@@ -15,6 +15,8 @@ var express = require('express'),
 
 var accountService = require('./api-account');
 
+router.post('/isloggedin', accountService.isLoggedIn);
+
 // User login authentication - authentication implemented in routes
 router.post('/authenticate', accountService.authenticate);
 // User sign up and authenticate account info, signUp implemented in routes
