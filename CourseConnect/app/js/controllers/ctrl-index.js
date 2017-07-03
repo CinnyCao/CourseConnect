@@ -3,14 +3,19 @@
 var indexCtrl = angular.module('CtrlIndex', []);
 
 indexCtrl.service('IndexService', ['$http', function ($http) {
-    // TODO: check if classroom exists
-    this.roomValidation = function (id) {
-        return true;
+    // get class room by courseid, semester and year
+    this.getClassroom = function (courseid, semester, year) {
+        var req = {
+            method: "GET",
+            url: "/api/getclass/" + year + "/" + semester + "/" + courseid
+        };
+
+        return $http(req);
     };
 }]);
 
-indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService',
-    function ($scope, $location, IndexService) {
+indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'IndexService',
+    function ($scope, $location, CommonService, IndexService) {
         console.log('IndexCtrls is running');
 
         $scope.openYearPicker = function($event) {
@@ -24,17 +29,21 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService',
         };
 
         $scope.getCourseId = function () {
-            return $scope.var_course_code.trim() + $scope.var_semester + $scope.var_year;
+            return $scope.var_course_code + $scope.var_semester + $scope.var_year;
         };
 
         $scope.goToChatRoom = function () {
             var roomId = $scope.getCourseId();
-            if (IndexService.roomValidation(roomId)) {
-                $location.path("/chat/" + roomId);
-            } else {
-                // TODO: prompt to create room?
-                alert("Room not existing");
-            }
+            IndexService.getClassroom($scope.var_course_code, $scope.var_semester, $scope.var_year)
+                .then(function (data) {
+                    if (data.found) {
+                        $location.path("/chat/" + data.year + "/" + data.semester + "/" + data.courseCode);
+                    } else {
+                        // check if user is logged in, if yes, ask him to create a class room
+
+                        // if no, tell him that room doesn't not exist
+                    }
+                });
         };
 
         $scope.init = function () {
@@ -56,6 +65,10 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService',
 
         $scope.$watch("var_date", function () {
             $scope.var_year = $scope.var_date.getFullYear();
+        });
+
+        $scope.$watch("var_course_code", function () {
+            $scope.var_course_code = CommonService.standardizeInput($scope.var_course_code);
         });
     }
 ]);

@@ -22,7 +22,7 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         .when('/', {
             templateUrl: '/templates/HomePage.html'
         })
-        .when('/chat/:courseid', {
+        .when('/chat/:year/:semester/:courseid', {
             templateUrl: '/templates/ChatRoom.html',
             controller: 'ChatCtrl'
         })
@@ -42,3 +42,14 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
+/* Global functions and constants */
+tdPortal.service('CommonService', function () {
+    // trim and capitalize input for DB transactions (compare and insert)
+    var standardizeInput = function (input) {
+        return input.trim().toUpperCase();
+    };
+
+    return {
+        standardizeInput: standardizeInput
+    };
+});
