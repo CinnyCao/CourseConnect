@@ -30,7 +30,7 @@ var chatCtrls = angular.module('CtrlChat', []);
     // TODO: service to pull all resources
 }]);*/
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', '$cookies', 'fileUpload', '$location', '$routeParams', 'ChatService',
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'ChatService',
     function ($scope, $http, fileUpload, $cookies, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
@@ -39,7 +39,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', '$cookies', 'fileUpload', '
         // get name of classroom
         $scope.getRoomName = function () {
             // TODO: construct room name from ChatService's room data
-            return $scope.var_room_name;
+
+            return "cscc01h3 summer 2017";
         };
 
         $scope.sendMsg = function () {
@@ -73,7 +74,9 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', '$cookies', 'fileUpload', '
             console.log(file.name);
             console.log(uploadUrl);
             fileUpload.uploadFileToUrl(file, uploadUrl);
-            $http.post('/api/file-store', {roomName : $scope.getRoomName(), file : file.name,
+
+            console.log($scope.var_room_name);
+            $http.post('/api/file-store', {var_room_name : $scope.var_room_name, file : file.name,
                 token: $cookies.get('loginToken')}).then(function (res){
                     console.log(123);
             });
@@ -113,6 +116,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', '$cookies', 'fileUpload', '
                     $scope.var_user_list = ChatService.getAllClassMates();
 
                     $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
+
                 };
 
                 $scope.init();

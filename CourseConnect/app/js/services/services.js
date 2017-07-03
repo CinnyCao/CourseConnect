@@ -18,6 +18,8 @@ serviceModule.service('fileUpload', ['$http', function ($http) {
             }
          }]);
 
+
+
 serviceModule.service('ChatService', ['$http', function ($http) {
     // TODO: service to get room data
 

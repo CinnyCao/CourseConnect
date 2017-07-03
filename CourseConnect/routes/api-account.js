@@ -64,8 +64,8 @@ exports.signupCheck = function (req, res) {
 
 exports.uploadFile = function(req, res){
     var fs = require('fs');
-    console.log("Room name is " + req.body.roomName);
-    var fileLocation = __dirname + "/../app/file/" + req.body.roomName + "/" + req.files.file.name;
+    //console.log("Room name is " + req.body.var_room_name);
+    var fileLocation = __dirname + "/../app/file/"  + req.files.file.name;
     fs.writeFile(fileLocation, req.files.file.data, function(err){
         if (err){
             return console.log(err);
@@ -76,6 +76,7 @@ exports.uploadFile = function(req, res){
 }
 
 exports.storeFile = function(req, res){
+    var query = "Select p_id from Participants Where session='" + req.body.token + "';";
 
 };
 
