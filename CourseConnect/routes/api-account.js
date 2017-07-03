@@ -78,7 +78,7 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.Session WHERE session= '" + token + "'";
+    var tokenQuery = "SELECT * FROM cscc01.Session, cscc01.users WHERE session= '" + token + "' AND cscc01.Session.user_id = cscc01.users.u_id";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);
@@ -87,10 +87,31 @@ validateToken = function (token, callback) {
 
         if (result.length >= 1) {
             console.log("SUCCESS: Token " + token + "is valid");
-            callback(true);
+            callback(true, result);
         } else {
-            console.log("SUCCESS: Token " + token + " is unvalid.")
+            console.log("SUCCESS: Token " + token + " is invalid.")
             callback(false);
         }
-    })
+    });
 }
+
+exports.getUserByToken = function (req, res) {
+    validateToken(req.body.token, function (isValid, result) {
+        if (isValid) {
+            res.status(200).json({
+                userId: result[0].u_id,
+                lastName: result[0].LastName,
+                firstName: result[0].FirstName,
+                email: result[0].email,
+                displayName: result[0].DisplayName,
+                description: result[0].Description,
+                utorId: result[0].UTorId,
+                profilePic: result[0].fileLocation
+            });
+        } else {
+            res.status(401).json({
+                message: "Token is invalid"
+            });
+        }
+    });
+};
