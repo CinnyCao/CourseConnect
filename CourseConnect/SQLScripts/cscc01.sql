@@ -176,12 +176,32 @@ CREATE TABLE IF NOT EXISTS `Resources` (
 --
 
 DROP TABLE IF EXISTS `Roles`;
-CREATE TABLE IF NOT EXISTS `Roles` (
+CREATE TABLE `Roles` (
   `r_id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(60) NOT NULL,
   `Description` varchar(120) DEFAULT NULL,
+  `sendMessage` tinyint(1) NOT NULL DEFAULT '1',
+  `post` tinyint(1) NOT NULL DEFAULT '1',
+  `uploadFile` tinyint(1) NOT NULL DEFAULT '1',
+  `DeleteOwnMessage` tinyint(1) NOT NULL DEFAULT '1',
+  `DeleteOwnPost` tinyint(1) NOT NULL DEFAULT '1',
+  `DeleteOwnFile` tinyint(1) NOT NULL DEFAULT '1',
+  `DeleteOtherMessage` tinyint(1) NOT NULL DEFAULT '0',
+  `DeleteOtherPost` tinyint(1) NOT NULL DEFAULT '0',
+  `DeleteOtherFile` tinyint(1) NOT NULL DEFAULT '0',
+  `DeleteRoom` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Roles`
+--
+
+INSERT INTO `Roles` (`r_id`, `Name`, `Description`, `sendMessage`, `post`, `uploadFile`, `DeleteOwnMessage`, `DeleteOwnPost`, `DeleteOwnFile`, `DeleteOtherMessage`, `DeleteOtherPost`, `DeleteOtherFile`, `DeleteRoom`) VALUES
+(1, 'Creator', 'Creator of the classroom', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(2, 'Manager', NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+(3, 'Teacher', NULL, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0),
+(4, 'Student', NULL, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
