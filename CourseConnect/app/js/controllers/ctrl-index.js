@@ -14,7 +14,6 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService', '$http
         console.log('IndexCtrls is running');
 
         $http.post('/api/isloggedin', {token: $cookies.get('loginToken')}).then(function (res) {
-            console.log(res.data[0]);
             if (res.data[0] == null) {
                 var logoutbtn = document.getElementById("logoutbtn");
                 $scope.navbar_bool_reg = !(res.data[0] == null);
@@ -31,6 +30,12 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService', '$http
                 window.location.href = '#/userprofile';
             }
         })
+
+        $scope.logout = function () {
+            $http.post('/api/logout', {token: $cookies.get('loginToken')}).then(function (res) {
+                window.location.href = '#/';
+            })
+        }
 
         $scope.openYearPicker = function($event) {
             $scope.var_year_picker_opened = true;

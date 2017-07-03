@@ -32,4 +32,6 @@ router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
 
+router.post('/logout', accountService.logout);
+
 module.exports = router; // exports router as a module

@@ -8,11 +8,22 @@ exports.isLoggedIn = function (req, res) {
     var query = "SELECT * FROM session WHERE session='" + req.body.token + "';";
     db.executeQuery(query, function(err, result) {
         if (err) {
-            console.log("Failed to execute retrieve user info query. Error: " + err);
+            console.log("ERROR: Failed to execute retrieve user info query. Error: " + err);
             res.status(404).send("failed to execute db query to retrieve user info.");
         }
         console.log(result);
         res.status(200).send(result);
+    })
+}
+
+exports.logout = function (req, res) {
+    var query = "DELETE FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to execute delete user login token. Error: " + err);
+            res.status(404).send("failed to execute delete user login");
+        }
+        res.status(200).send(true);
     })
 }
 

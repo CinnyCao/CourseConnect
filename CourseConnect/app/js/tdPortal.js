@@ -48,6 +48,10 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/login.html',
         controller: 'LoginCtrl'
     })
+    .when('/logout', {
+        templateUrl: '/templates/HomePage.html',
+        controller: 'LogOutCtrl'
+    })
     .when('/loggedin', {
         templateUrl: '/templates/loggedin.html'
     })

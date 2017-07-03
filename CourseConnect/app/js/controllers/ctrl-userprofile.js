@@ -2,7 +2,7 @@
 
 var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
 
-userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', '$cookies', function ($scope, $http, fileUpload, $cookies) {	
+userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', '$cookies', function ($scope, $http, fileUpload, $cookies) {
 	$scope.profilePic = "img/defaultAvatar.png";
 
 	$http.post('/api/userinfo', {token: $cookies.get('loginToken')}).then(function (result) {
@@ -14,7 +14,7 @@ userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', 
 		if (result.data[0].fileLocation != null) $scope.profilePic = result.data[0].fileLocation;
 	})
 
-	$scope.uploadFile = function (file) {
+	$scope.uploadFile = function () {
 		var file = $scope.myFile;
 		var uploadUrl = "/api/profpic-upload";
 		fileUpload.uploadFileToUrl(file, uploadUrl);
