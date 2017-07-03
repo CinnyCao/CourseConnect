@@ -4,10 +4,26 @@ var indexCtrl = angular.module('CtrlIndex', []);
 
 indexCtrl.service('IndexService', ['$http', function ($http) {
     // get class room by courseid, semester and year
-    this.getClassroom = function (courseid, semester, year) {
+    this.getClassroom = function (coursecode, semester, year) {
         var req = {
             method: "GET",
-            url: "/api/getclass/" + year + "/" + semester + "/" + courseid
+            url: "/api/getclass/" + year + "/" + semester + "/" + coursecode
+        };
+
+        return $http(req);
+    };
+
+    // create a class room
+    this.createClassroom = function (userid, coursecode, semester, year) {
+        var req = {
+            method: "POST",
+            url: "/api/createclass",
+            data: {
+                userid: userid,
+                coursecode: coursecode,
+                semester: semester,
+                year: year
+            }
         };
 
         return $http(req);
@@ -35,13 +51,25 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
         $scope.goToChatRoom = function () {
             var roomId = $scope.getCourseId();
             IndexService.getClassroom($scope.var_course_code, $scope.var_semester, $scope.var_year)
-                .then(function (data) {
-                    if (data.found) {
-                        $location.path("/chat/" + data.year + "/" + data.semester + "/" + data.courseCode);
+                .then(function (result) {
+                    if (result.data.found) {
+                        $location.path("/chat/" + $scope.var_year + "/" + $scope.var_semester + "/" + $scope.var_course_code);
                     } else {
-                        // check if user is logged in, if yes, ask him to create a class room
-
-                        // if no, tell him that room doesn't not exist
+                        // check if user is logged in
+                        if (CommonService.isLoggedIn()) { // if yes, ask him to create a class room
+                            var createRoom = confirm("Sorry, room for this course does not exist.\nDo you want to create a room for it?");
+                            if (createRoom) {
+                                IndexService.createClassroom(CommonService.getUserId(), $scope.var_course_code, $scope.var_semester, $scope.var_year)
+                                    .then(function () {
+                                        $location.path("/chat/" + $scope.var_year + "/" + $scope.var_semester + "/" + $scope.var_course_code);
+                                    });
+                            } else {
+                                document.getElementById("courseCodeInput").select();
+                            }
+                        } else { // if no, tell him that room doesn't not exist
+                            alert("Sorry, room for this course does not exist");
+                            document.getElementById("courseCodeInput").select();
+                        }
                     }
                 });
         };
@@ -68,7 +96,9 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
         });
 
         $scope.$watch("var_course_code", function () {
-            $scope.var_course_code = CommonService.standardizeInput($scope.var_course_code);
+            if ($scope.var_course_code) {
+                $scope.var_course_code = CommonService.standardizeInput($scope.var_course_code);
+            }
         });
     }
 ]);

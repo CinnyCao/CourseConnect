@@ -6,7 +6,7 @@ var db = require('./db_connection');  // db manager
 
 exports.getClass = function (req, res) {
     // bypass token check, visitors should be able to search class too
-    var query = "SELECT * FROM class WHERE CourseCode = '" + req.params.courseid +
+    var query = "SELECT * FROM class WHERE CourseCode = '" + req.params.coursecode +
         "' AND Semester = '" + req.params.semester + "' AND Year = '" + req.params.year + "'";
     db.executeQuery(query, function (err, data) {
         if (err) {
@@ -30,6 +30,52 @@ exports.getClass = function (req, res) {
                     found: 0
                 }
             );
+        }
+    });
+};
+
+function joinClassRoom(userid, classid, roleid, res) {
+    var query = "INSERT INTO participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
+    db.executeQuery(query, function (err, data) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: "Failed joining class: An unexpected error occurred when querying the database"
+            });
+        } else {
+            res.sendStatus(200);
+        }
+    });
+}
+
+exports.createClass = function (req, res) {
+    // check for room existence again to ensure no duplicate rooms are created
+    var query = "SELECT * FROM class WHERE CourseCode = '" + req.body.coursecode +
+        "' AND Semester = '" + req.body.semester + "' AND Year = '" + req.body.year + "'";
+    db.executeQuery(query, function (err, data) {
+        if (err) {
+            res.status(500).json({
+                error: "An unexpected error occurred when querying the database"
+            });
+        } else if (data.length) {
+            res.status(403).json(
+                {
+                    message: "Room for this class already exists"
+                }
+            );
+        } else {
+            var query = "INSERT INTO class (CourseCode, Semester, Year) VALUES ('" + req.body.coursecode + "', '" + req.body.semester + "', '" + req.body.year + "')";
+            db.executeQuery(query, function (err, insertRes) {
+                if (err) {
+                    res.status(500).json({
+                        error: "Failed creating new class: An unexpected error occurred when querying the database"
+                    });
+                } else {
+                    // join class room as creator
+                    console.log("dddddddddddddddddddddd "+ req.body.userid);
+                    joinClassRoom(req.body.userid, insertRes.insertId, 1, res);
+                }
+            });
         }
     });
 };

@@ -24,6 +24,8 @@ router.post('/signupCheck', accountService.signupCheck);
 router.post('/getUser', accountService.getUserByToken);
 
 // Get class room by courseid, semester and year
-router.get('/getclass/:year/:semester/:courseid', classService.getClass);
+router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
+// Create a class room
+router.post('/createclass', classService.createClass);
 
 module.exports = router; // exports router as a module

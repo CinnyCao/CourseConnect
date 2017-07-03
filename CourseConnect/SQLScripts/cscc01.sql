@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: cscc01.cslvmb8azdb7.us-west-2.rds.amazonaws.com
--- Generation Time: Jul 02, 2017 at 11:57 PM
+-- Generation Time: Jul 03, 2017 at 10:52 PM
 -- Server version: 5.6.27-log
 -- PHP Version: 5.6.30
 
@@ -22,30 +22,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `cscc01` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `cscc01`;
-
-DELIMITER $$
---
--- Procedures
---
-DROP PROCEDURE IF EXISTS `getUserByEmail`$$
-CREATE DEFINER=`Forks`@`%` PROCEDURE `getUserByEmail` (IN `em` INT)  Begin
-	Select *
-		
-    From V_Users Users
-    Where em = Users.Email
-;
-End$$
-
-DROP PROCEDURE IF EXISTS `getUserProfileByID`$$
-CREATE DEFINER=`Forks`@`%` PROCEDURE `getUserProfileByID` (IN `id` INT)  Begin
-	Select *
-		
-    From V_Users Users
-    Where id = Users.ID
-;
-End$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -176,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `Resources` (
 --
 
 DROP TABLE IF EXISTS `Roles`;
-CREATE TABLE `Roles` (
+CREATE TABLE IF NOT EXISTS `Roles` (
   `r_id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(60) NOT NULL,
   `Description` varchar(120) DEFAULT NULL,
@@ -191,7 +167,7 @@ CREATE TABLE `Roles` (
   `DeleteOtherFile` tinyint(1) NOT NULL DEFAULT '0',
   `DeleteRoom` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `Roles`
@@ -267,8 +243,6 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `fileLocation` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`u_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
 
 --
 -- Constraints for dumped tables

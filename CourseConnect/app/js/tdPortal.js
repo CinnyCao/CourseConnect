@@ -22,7 +22,7 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         .when('/', {
             templateUrl: '/templates/HomePage.html'
         })
-        .when('/chat/:year/:semester/:courseid', {
+        .when('/chat/:year/:semester/:coursecode', {
             templateUrl: '/templates/ChatRoom.html',
             controller: 'ChatCtrl'
         })
@@ -62,16 +62,16 @@ function CommonService($http) {
             }
         };
 
-        $http(req).then(function (data) {
+        $http(req).then(function (result) {
             curr_user.loggedIn = 1;
-            curr_user.userId = data.userId;
-            curr_user.lastName = data.lastName;
-            curr_user.firstName = data.firstName;
-            curr_user.email = data.email;
-            curr_user.displayName = data.displayName;
-            curr_user.description = data.description;
-            curr_user.utorId = data.utorId;
-            curr_user.profilePic = data.profilePic;
+            curr_user.userId = result.data.userId;
+            curr_user.lastName = result.data.lastName;
+            curr_user.firstName = result.data.firstName;
+            curr_user.email = result.data.email;
+            curr_user.displayName = result.data.displayName;
+            curr_user.description = result.data.description;
+            curr_user.utorId = result.data.utorId;
+            curr_user.profilePic = result.data.profilePic;
         });
     };
 
@@ -89,15 +89,32 @@ function CommonService($http) {
         return false;
     };
 
+    var getUserId = function () {
+        return curr_user.userId;
+    }
+
     // trim and capitalize input for DB transactions (compare and insert)
     var standardizeInput = function (input) {
         return input.trim().toUpperCase();
+    };
+
+    // convert semester code to semester
+    var getSemesterName = function (semester) {
+        if (semester == "F") {
+            return "Fall";
+        } else if (semester == "W") {
+            return "Winter";
+        } else {
+            return "Summer";
+        }
     };
 
     return {
         setUser: setUser,
         logout: logout,
         isLoggedIn: isLoggedIn,
-        standardizeInput: standardizeInput
+        getUserId: getUserId,
+        standardizeInput: standardizeInput,
+        getSemesterName: getSemesterName
     };
 }
