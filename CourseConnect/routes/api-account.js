@@ -3,6 +3,19 @@
 
 var db = require('./db_connection');  // db manager
 
+exports.isLoggedIn = function (req, res) {
+    console.log(req.body.token);
+    var query = "SELECT * FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("Failed to execute retrieve user info query. Error: " + err);
+            res.status(404).send("failed to execute db query to retrieve user info.");
+        }
+        console.log(result);
+        res.status(200).send(result);
+    })
+}
+
 exports.authenticate = function (req, res) {
     if (!req.body.token) {
         checkUserInDB(req, res);

@@ -9,9 +9,28 @@ indexCtrl.service('IndexService', ['$http', function ($http) {
     };
 }]);
 
-indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService',
-    function ($scope, $location, IndexService) {
+indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'IndexService', '$http', '$cookies',
+    function ($scope, $location, IndexService, $http, $cookies) {
         console.log('IndexCtrls is running');
+
+        $http.post('/api/isloggedin', {token: $cookies.get('loginToken')}).then(function (res) {
+            console.log(res.data[0]);
+            if (res.data[0] == null) {
+                var logoutbtn = document.getElementById("logoutbtn");
+                $scope.navbar_bool_reg = !(res.data[0] == null);
+                $scope.navbar_bool_si = res.data[0] == null;
+                logoutbtn.className += " ng-hide";
+
+            } else {
+                var loginbtn = document.getElementById("loginbtn");
+                var signupbtn = document.getElementById("signupbtn");
+                $scope.navbar_bool_reg = !(res.data[0] == null);
+                loginbtn.className += " ng-hide";
+                signupbtn.className += " ng-hide";
+                $scope.navbar_bool_si = res.data[0] == null;
+                window.location.href = '#/userprofile';
+            }
+        })
 
         $scope.openYearPicker = function($event) {
             $scope.var_year_picker_opened = true;

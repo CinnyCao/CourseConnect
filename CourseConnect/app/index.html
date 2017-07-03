@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="courseConnect">
+<html ng-app="courseConnect" ng-controller="IndexCtrl"  >
 <head lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,15 +54,18 @@
 <!--Search Bar-->
 <!--<nav class="navbar navbar-inverse">-->
 
-<div id="registration">
+<div id="registration" ng-model="mainNavbar">
     <a href="#/login">
-        <button type="button" class="btn btn-primary">Login</button>
+        <button id="loginbtn" class="btn btn-primary" ng-hide={{navbar_bool_reg}}>Login</button>
     </a>
     <a href="#/signup">
-        <button class="btn btn-primary">SignUp</button>
+        <button id="signupbtn" class="btn btn-primary" ng-hide={{navbar_bool_reg}}>SignUp</button>
+    </a>
+    <a href="#">
+        <button id="logoutbtn" class="btn btn-danger" ng-hide={{navbar_bool_si}}>Log Out</button>
     </a>
 </div>
-<form class="form-inline" ng-controller="IndexCtrl">
+<form class="form-inline">
     <!--Logo-->
     <a class="form-group" id="logo" href="#/">
         <img src="img/logo.png" alt="">
