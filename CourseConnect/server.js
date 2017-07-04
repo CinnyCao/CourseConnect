@@ -13,13 +13,15 @@ var http = require('http'),                 // Http interface
     bodyParser = require('body-parser'),    // Parse data body in post request
     fs = require('fs'),                     // File system
     config = require('./config.js'),        // App's local config - port#, etc
-    portal = require('./routes/routes.js'); // Routes handlers
-
+    portal = require('./routes/routes.js'), // Routes handlers
+    session = require('express-session'),   // Session
+    uuid = require("uuid/v4");              // Generate random uuid
+   
 
 /*
  * ==== Create Express app server ========
  */
- var app = express();
+var app = express();
 
 // Configurations
 
@@ -33,29 +35,33 @@ app.use(morgan('dev'));   // 'default', 'short', 'tiny', 'dev'
 app.use(compression());
 
 // return error details to client - use only during development
-app.use(errorhandler({ dumpExceptions:true, showStack:true })); 
+app.use(errorhandler({dumpExceptions: true, showStack: true}));
 
 // parse application/json 
 app.use(bodyParser.json());
 
+// Set up to use a session
+app.use(session({
+    secret: 'super_secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {secure: false},
+    genid: function (req){
+        return uuid();
+    }
+}));
 
 /*
  * App routes (API) - route-handlers implemented in routes/*
  */
-app.get('/api', portal.api);
-
-// User login authentication - authentication implemented in routes
-app.post('/authenticate', portal.authenticate);
-
-// User sign up and authenticate account info, signUp implemented in routes
-app.post('/signupCheck', portal.signupCheck);
+app.use('/api', portal);
 
 // location of app's static content
 app.use(express.static(__dirname + "/app"));
 
 // ==== Start HTTP server ========
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port %d in %s mode", 
-      app.get('port'), config.env 
+    console.log("Express server listening on port %d in %s mode",
+        app.get('port'), config.env
     );
 });

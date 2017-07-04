@@ -1,0 +1,97 @@
+.chat_room {
+    background-color: #ACD8F0;
+    text-align: center;
+    border: 1px solid #ACD8F0;
+    padding-top: 10px;
+}
+
+.forum_tab {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.forum_tab p {
+    font-size: 12px;
+}
+
+.forum_tab:hover, .forum_tab .forum_name_selected {
+    color: white;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+.forum_tab input {
+    display: none;
+}
+
+.forum_tab img {
+    height: 50px;
+    width: 50px;
+}
+
+.chatbox {
+    width: 95%;
+    height: 65vh;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ACD8F0;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.chat_message_input {
+    border: 1px solid #ACD8F0;
+    padding: 4px;
+    margin: 20px 0px;
+}
+
+.contact_prof_btn {
+    margin: 5px 0;
+}
+
+.user_list {
+    text-align: left;
+}
+
+.user_card_li, .user_card_li:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.user_card_li img {
+    display: inline-block;
+    width: 45px;
+    margin-bottom: 5px;
+}
+
+.user_card_li p {
+    display: inline-block;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.left_avatar img, .right_avatar img {
+    width: 35px;
+    height: 35px;
+}
+
+.left_message_box {
+    text-align: left;
+}
+
+.right_message_box {
+    text-align: right;
+}
+
+.message_time {
+    font-size: xx-small;
+    font-weight: bold;
+}
+
+.message_left, .message_right {
+    padding: 5px;
+    background-color: #ACD8F0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+    display: inline-block;
+}

@@ -1,79 +1,99 @@
 <!DOCTYPE html>
 <html ng-app="courseConnect">
 <head lang="en">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="CourseConnect">
-  <link rel="icon" href="/img/favicon.ico">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="CourseConnect">
+    <link rel="icon" href="/img/favicon.ico">
 
-  <title>Course Connect</title>
+    <title>Course Connect</title>
 
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/bower_components/angular-chart.js/dist/angular-chart.css">
-  <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.min.css" media="all">
-  <link rel="stylesheet" href="/bower_components/Hover/css/hover-min.css" media="all">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/angular-chart.js/dist/angular-chart.css">
+    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="/bower_components/Hover/css/hover-min.css" media="all">
 
-  <!-- Custom styles for this template -->
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/style-timeline.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style-timeline.css">
+
+    <!-- Libraries -->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/Chart.js/Chart.min.js"></script>
+    <script src="/bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/bower_components/ng-scroll-glue/dist/ng-scroll-glue.min.js"></script>
+     
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.js"></script>
+
+    <!--Controller-->
+    <script src="/js/controllers/ctrl-index.js"></script>
+    <script src="/js/controllers/ctrl-chat.js"></script>
+    <script src="/js/controllers/ctrl-userlogin.js"></script>
+    <script src="/js/controllers/ctrl-usersignup.js"></script>
+
+    <script src="/js/directives/directives.js"></script>
+    <script src="/js/filters/filters.js"></script>
+    <script src="/js/tdPortal.js"></script>
+
 </head>
 
 <body>
-  <!--Search Bar-->
-  <!--<nav class="navbar navbar-inverse">-->
-  
-  <div id="registration">
-  <a href="#/login"><button type="button" class="btn btn-primary">Login</button></a>
-  <a href="#/signup"><button class="btn btn-primary">SignUp</button></a>
-  </div>
-  <form class="form-inline">
+<!--Search Bar-->
+<!--<nav class="navbar navbar-inverse">-->
+
+<div id="registration">
+    <a href="#/login">
+        <button type="button" class="btn btn-primary">Login</button>
+    </a>
+    <a href="#/signup">
+        <button class="btn btn-primary">SignUp</button>
+    </a>
+</div>
+<form class="form-inline" ng-controller="IndexCtrl">
     <!--Logo-->
-    <div class="form-group" id="logo">
-      <img src="img/logo.png" alt="">
-    </div>
+    <a class="form-group" id="logo" href="#/">
+        <img src="img/logo.png" alt="">
+    </a>
 
     <div class="form-group">
-      <label class="sr-only" for="courseCode">Course Code</label>
-      <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code">
+        <label class="sr-only" for="courseCodeInput">Course Code</label>
+        <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code" ng-model="var_course_code" required>
     </div>
     <div class="form-group">
-      <label class="sr-only" for="exampleInputPassword3">Semester</label>
-      <input type="semester" class="form-control" id="semesterInput" placeholder="Semester">
+        <label class="sr-only" for="semesterInput">Semester</label>
+        <select ng-model="var_semester" id="semesterInput" class="form-control">
+            <option value="F">Fall</option>
+            <option value="W">Winter</option>
+            <option value="S">Summer</option>
+            <option value="Y">Y Course</option>
+        </select>
     </div>
     <div class="form-group">
-      <label class="sr-only" for="exampleInputPassword3">Year</label>
-      <input type="Year" class="form-control" id="yearInput" placeholder="Year">
+        <label class="sr-only" for="yearInput">Year</label>
+        <input type="text" class="form-control" id="yearInput" ng-model="var_date"
+               is-open="var_year_picker_opened" ng-focus="openYearPicker($event)"
+               uib-datepicker-popup="yyyy" datepicker-options="dateOptions" ng-required="true"
+               close-text="Close" current-text="Current" />
     </div>
-    <button type="submit" class="btn btn-default">Search</button>
-  </form>
-  <!--</nav>-->
+    <button type="submit" class="btn btn-default" ng-click="goToChatRoom()">Search</button>
+</form>
+<!--</nav>-->
 
 
-  <!-- Multiview container -->
-  <div class="view-container">
+<!-- Multiview container -->
+<div class="view-container">
     <div ng-view class="view-frame"></div>
-  </div>
-
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="/bower_components/angular/angular.js"></script>
-  <script src="/bower_components/angular-route/angular-route.min.js"></script>
-  <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
-  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="/bower_components/Chart.js/Chart.min.js"></script>
-  <script src="/bower_components/angular-chart.js/dist/angular-chart.js"></script>
-
-  <!--Controller-->
-   <script src="/js/controllers/ctrl-navbar.js"></script>
-   <script src="/js/controllers/ctrl-userlogin.js"></script>
-   <script src="/js/controllers/ctrl-usersignup.js"></script>
-
-  <script src="/js/directives/directives.js"></script>
-  <script src="/js/filters/filters.js"></script>
-  <script src="/js/tdPortal.js"></script>
+</div>
 
 </body>
 </html>
