@@ -8,7 +8,7 @@ serviceModule.service('fileUpload', ['$http', function ($http) {
         var fd = new FormData();
         fd.append('file', file);
         //fd.append('loc', chatRoom);
-        console.log("file name is " + fd.get('file').name);
+        //console.log("file name is " + fd.get('file').name);
 
 
         $http.post(uploadUrl, fd, {
