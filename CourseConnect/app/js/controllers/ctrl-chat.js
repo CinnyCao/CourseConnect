@@ -3,9 +3,15 @@
 var chatCtrls = angular.module('CtrlChat', []);
 
 chatCtrls.service('ChatService', ['$http', function ($http) {
-    // TODO: service to get room data
+    // get classroom info with current user and its permissions
+    this.getClassWithUserPermission = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/getClass/" + classid,
+        };
 
-    // TODO: service to get current user info
+        return $http(req);
+    };
 
     // TODO: service to get all users in this chatroom
     this.getAllClassMates = function () {
@@ -38,7 +44,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
 
         // get name of classroom
         $scope.getRoomName = function () {
-            return $routeParams.coursecode + " " + CommonService.getSemesterName($routeParams.semester) + " " + $routeParams.year;
+            return $scope.room_data.courseCode + " " + CommonService.getSemesterName($scope.room_data.semester) + " " + $scope.room_data.year;
         };
 
         $scope.sendMsg = function () {
@@ -72,9 +78,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
         };
 
         $scope.init = function () {
-            $scope.var_forum = "chatroom"; // set Chat Room as default forum
-            // $scope.var_room = $scope.getRoomData($routeParams.courseid);
-            $scope.var_room_name = $scope.getRoomName();
+            // get room data with current user's permission on it
+            ChatService.getClassWithUserPermission($routeParams.classid)
+                .then(function (result) {
+                    $scope.room_data = result.data;
+                    // set room name
+                    $scope.var_room_name = $scope.getRoomName();
+                });
+            // set Chat Room as default forum
+            $scope.var_forum = "chatroom";
+
             $scope.var_user_list = ChatService.getAllClassMates();
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});

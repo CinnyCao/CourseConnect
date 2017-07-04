@@ -36,7 +36,7 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/settings.html',
         controller: 'SettingsCtrl'
     })
-    .when('/chat/:courseid', {
+    .when('/class/:classid', {
         templateUrl: '/templates/ChatRoom.html',
         controller: 'ChatCtrl'
     })
@@ -54,10 +54,6 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
     })
     .when('/loggedin', {
         templateUrl: '/templates/loggedin.html'
-    })
-    .when('/chat/:year/:semester/:coursecode', {
-        templateUrl: '/templates/ChatRoom.html',
-        controller: 'ChatCtrl'
     })
     .otherwise({
         templateUrl: '/templates/PageNotFound.html'
