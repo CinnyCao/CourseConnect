@@ -72,14 +72,30 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
         };
 
         $scope.postQuestion = function(summary, detail){    
-            console.log(summary);
-            console.log(detail);
+            var post = {
+                title:summary,
+                description:detail,
+                timestamp: + new Date(),
+                userID: CommonService.getUserId(),
+                parentPostID:null    
+            }
+            
+            console.log(post);
+            // $http.post('/api/postQuestion'. post).then(function(res){
+            //     // TODO: Update list of question posts to display
+            // })
         }
 
         $scope.viewQuestion = function(title, detail){
             $scope.ques_title;
             $scope.ques_detail;
+            //TODO: update question view on click
         }
+
+        $scope.postFollowup = function(){
+            //TODO: Allow user to post followup
+        }
+
         $scope.init = function () {
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);

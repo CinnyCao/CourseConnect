@@ -15,6 +15,7 @@ var express = require('express'),
 
 var accountService = require('./api-account');
 var classService = require('./api-class');
+var postService = require('./api-post');
 
 router.post('/isloggedin', accountService.isLoggedIn);
 
@@ -41,6 +42,9 @@ router.post('/logout', accountService.logout);
 router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
 // Create a class room
 router.post('/createclass', classService.createClass);
+
+// --------------- Post API----------------------------
+// router.post('/postQuestion'.postService.postQuestion);
 
 
 module.exports = router; // exports router as a module
