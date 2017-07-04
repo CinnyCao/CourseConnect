@@ -73,6 +73,7 @@ function CommonService($http, $cookies) {
         loggedIn: 0
     };
 
+
     // setUser when logged in and when update profile
     // TODO: call setUser when profile is updated
     var setUser = function (userToken) {
@@ -84,19 +85,28 @@ function CommonService($http, $cookies) {
             }
         };
 
-        $http(req).then(function (result) {
-            curr_user.loggedIn = 1;
-            curr_user.userId = result.data.userId;
-            curr_user.lastName = result.data.lastName;
-            curr_user.firstName = result.data.firstName;
-            curr_user.email = result.data.email;
-            curr_user.displayName = result.data.displayName;
-            curr_user.description = result.data.description;
-            curr_user.utorId = result.data.utorId;
-            curr_user.profilePic = result.data.profilePic;
-            notifyUserLoginLogout();
-        });
+        $http(req)
+            .then(function (result) {
+                curr_user.loggedIn = 1;
+                curr_user.userId = result.data.userId;
+                curr_user.lastName = result.data.lastName;
+                curr_user.firstName = result.data.firstName;
+                curr_user.email = result.data.email;
+                curr_user.displayName = result.data.displayName;
+                curr_user.description = result.data.description;
+                curr_user.utorId = result.data.utorId;
+                curr_user.profilePic = result.data.profilePic;
+                notifyUserLoginLogout();
+            })
+            .catch(function (err) {
+                // invalid token, ignore
+            });
     };
+
+    // handle refresh; retrieve curr_user info again from cookie after refresh
+    if ($cookies.get('loginToken')) {
+        setUser($cookies.get('loginToken'));
+    }
 
     var logout = function () {
         $http.post('/api/logout', {token: $cookies.get('loginToken')}).then(function (res) {
