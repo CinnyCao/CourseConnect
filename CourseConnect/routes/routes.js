@@ -38,5 +38,9 @@ router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
 
+router.post('/setChatRoom', accountService.setRoom);
+
+router.post('/findFile', accountService.findFile);
+
 
 module.exports = router; // exports router as a module

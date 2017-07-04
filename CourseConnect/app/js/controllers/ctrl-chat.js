@@ -68,24 +68,42 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.uploadFile = function(file) {
             var file = $scope.userFile;
+            var storedFileloc;
             console.log('file uploaded is ');
             console.dir(file);
             var uploadUrl = "/api/file-upload";
             console.log(file.name);
             console.log(uploadUrl);
-            fileUpload.uploadFileToUrl(file, uploadUrl);
-
+            fileUpload.uploadFileToUrl(file, uploadUrl, $scope.var_room_name);
             console.log($scope.var_room_name);
             $http.post('/api/file-store', {var_room_name : $scope.var_room_name, file : file.name,
                 token: $cookies.get('loginToken')}).then(function (res){
                     console.log(123);
+                    storedFileloc = res.data;
             });
-
-
-
         };
 
+        /*$scope.search = function(){
+            $http.post('/api/findFile', {fileName : $scope.var_search_info, chatRoom : $scope.getRoomName()})
+                .then(function(res){
+                console.log(123);
 
+            });
+
+        };*/
+
+        $scope.displayResource = function(){
+            $http.post('/api/findFile', {chatRoom : $scope.getRoomName()}).then(function(res){
+                console.log(123);
+            }).then(function (res){
+                for (var i in res.data){
+                    if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
+                        //display the info in html and set up the link for downloading
+                    }
+                }
+            });
+            //TODO : implement it when the users need to see all the files
+        };
 
         $scope.isCurrentUser = function (userId) {
                     // hard code, assume current user is id 1 TODO

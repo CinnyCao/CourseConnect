@@ -2,7 +2,7 @@
 "use strict;"
 
 var db = require('./db_connection');  // db manager
-
+var chatRoom;
 exports.isLoggedIn = function (req, res) {
     console.log(req.body.token);
     var query = "SELECT * FROM session WHERE session='" + req.body.token + "';";
@@ -14,7 +14,13 @@ exports.isLoggedIn = function (req, res) {
         console.log(result);
         res.status(200).send(result);
     })
-}
+};
+
+exports.setRoom = function(req, res) {
+    if (req.body.chatroom != 'default') {
+        chatRoom = req.body.chatroom;
+    }
+};
 
 exports.authenticate = function (req, res) {
     if (!req.body.token) {
@@ -75,22 +81,100 @@ exports.signupCheck = function (req, res) {
     });
 };
 
+exports.findFile = function(req, res){
+    var query;
+      query = "Select fileLocation from Resources AS r INNER JOIN Participant AS p ON r.ParticipantID=p.p_id INNER " +
+          "JOIN Class AS c ON c.c_id=p.ClassID WHERE c.CourseCode='" + req.body.chatRoom.split(" ")[0] + "';";
+    db.executeQuery(query, function (err, result){
+        if(err){
+            console.log("ERROR: Failed to retrieve fileLocation. Error: " + err);
+            res.status(404);
+        }
+        res.status(200).send(result);
+    });
+}
 
 exports.uploadFile = function(req, res){
     var fs = require('fs');
-    //console.log("Room name is " + req.body.var_room_name);
-    var fileLocation = __dirname + "/../app/file/"  + req.files.file.name;
-    fs.writeFile(fileLocation, req.files.file.data, function(err){
-        if (err){
-            return console.log(err);
-        }
+    var mkdirp = require('mkdirp');
+    //var chatroom = req.get('loc');
+    console.log(req.files.file.name);
+    console.log("The chatRoom is " + chatRoom);
 
-        console.log("The file is saved!")
-    });//Concatenate the path app/chatroom/file
+
+    var fileLocation = __dirname + "/../app/file/" + chatRoom + "/" + req.files.file.name;
+    mkdirp(__dirname + "/../app/file/" + chatRoom, function(err){
+       if (err){
+           console.log(err);
+       }
+        fs.writeFile(fileLocation, req.files.file.data, function(err){
+            if (err){
+                console.log(err);
+            }
+
+            console.log("The file is saved!")
+        });
+    });
+
 }
 
 exports.storeFile = function(req, res){
-    var query = "Select p_id from Participants Where session='" + req.body.token + "';";
+    var query = "Select user_id from session Where session='" + req.body.token + "';";
+    var courseCode = chatRoom.split(" ")[0];
+    var userId;
+    var c_id;
+    var p_id;
+    console.log(query);
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retreive user ID. Error: " + err);
+            res.status(404).send("Failed to retrieve user ID");
+        }
+        userId = result[0].user_id;
+        //var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
+        var query2 = "Select c_id from Class Where CourseCode='" + courseCode + "'; ";
+        db.executeQuery(query2, function(err, result){
+           if(err){
+               console.log("ERROR: Failed to retreive c_id. Error: " + err);
+               res.status(404);
+           }
+           c_id = reult[0].c_id;
+           var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + c_id +
+                   "';";
+           db.excuteQuery(query3, function(err, result){
+              if(err){
+                  console.log("ERROR: Failed to retrive p_id. Error:" + err);
+                  res.status(404);
+              }
+              var resourceTime = new Date();
+              p_id = result[0].p_id;
+              var query4 = "Insert INTO Resources(resourceTime, fileLocation, ParticipantID) Values ('" + resourceTime +
+              "', 'file/" + chatRoom + "/" + req.body.file + "', '" + p_id + "');";
+              db.executeQuery(query4, function(err, result){
+                 if(err){
+                     console.log("ERROR: Failed to insert filelocation to Resources. Error:" + err);
+                     res.status(404);
+                 }
+                 res.status(200).send("file/" + chatRoom + "/" + req.body.file);
+
+              });
+           });
+        });
+        /*var query3 = "SELECT fileLocation FROM Users WHERE u_id=" + result[0].user_id + ";";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to set file location. Error: " + err);
+                res.status(404).send("cannot set file location");
+            }
+            db.executeQuery(query3, function(err, result) {
+                if (err) {
+                    console.log("ERROR: Failed to retrieve file location. Error: " + err);
+                    res.status(404).send("cannot refresh profile pic");
+                }
+                res.status(200).send(result);
+            })
+        })*/
+    });
 
 };
 
@@ -121,7 +205,7 @@ exports.uploadProfPic = function (req, res) {
         }
         console.log("SUCCESS: The file was saved!");
     }); 
-}
+};
 
 
 exports.refreshProfPic = function (req, res) {
@@ -147,7 +231,7 @@ exports.refreshProfPic = function (req, res) {
             })
         })
     })
-}
+};
 
 exports.updateDispName = function (req, res) {
     var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";

@@ -73,7 +73,6 @@
                         </div>
                     </div>
                     <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
-                    <!--<input type="file" class="chat_message_input" ng-model="var_chat_file" id="studentFile" name="Upload File" size="70"/>-->
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
                 <!--// TODO: Posts Content-->
@@ -87,6 +86,9 @@
                         <div class="col-lg-10">
                             <a href={{r.items}}>
                             <p class="display_left">{{r.items}}</p>
+                            <input type="text" class="chat_message_input" ng-model="var_search_info" size="70"/>
+                            <button type="button" class="btn btn-default" ng-click="displayResource()">Search</button>
+                            <button type="button" class="btn btn-default" ng-click="displayResource()">Display All</button>
                         </div>
                     </div>
                 </div>
