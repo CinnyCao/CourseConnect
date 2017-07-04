@@ -77,7 +77,7 @@ exports.getUserInfo = function (req, res) {
 
 exports.uploadProfPic = function (req, res) {
     var fs = require('fs');
-    var path = __dirname + "/../app/img/" + req.files.file.name
+    var path = __dirname + "/../app/img/" + req.files.file.name;
     fs.writeFile(path, req.files.file.data, function(err) {
         if(err) {
             return console.log(err);
@@ -85,6 +85,7 @@ exports.uploadProfPic = function (req, res) {
         console.log("SUCCESS: The file was saved!");
     }); 
 };
+
 
 exports.refreshProfPic = function (req, res) {
     if (req.session.userid) {
@@ -203,5 +204,7 @@ exports.getUser = function (req, res) {
             message: "User not login"
         });
     }
+
 };
+
 
