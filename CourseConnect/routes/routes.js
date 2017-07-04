@@ -23,7 +23,7 @@ router.post('/signupCheck', accountService.signupCheck);
 // Get current user info
 router.get('/getUser', accountService.getUser);
 
-router.post('/userinfo', accountService.getUserInfo);
+router.get('/userinfo', accountService.getUserInfo);
 
 router.post('/profpic-upload', accountService.uploadProfPic);
 
