@@ -58,6 +58,15 @@
     margin: 20px 0px;
 }
 
+.chat_file_input {
+    display: inline-block !important;
+    padding: 4px;
+    margin: 20px 0px;
+    width: 550px;
+    vertical-align: middle;
+    background-color: white;
+}
+
 .contact_prof_btn {
     margin: 5px 0;
 }
