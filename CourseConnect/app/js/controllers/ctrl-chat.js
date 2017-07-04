@@ -8,7 +8,7 @@ var chatCtrls = angular.module('CtrlChat', []);
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
-    this.getAllClassMates = function () {
+    $scope.getAllClassMates = function () {
         // hard code data
         return [
             {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},

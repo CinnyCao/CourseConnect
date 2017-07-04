@@ -26,7 +26,7 @@ serviceModule.service('ChatService', ['$http', function ($http) {
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
-    /* NOTE: Ignore this commented-out code. Just experimenting! */
+
    /*this.getAllClassMates = function() {
         var query = "SELECT * FROM enrolledUsers;";
         db.executeQuery(query, function(err, result) {
