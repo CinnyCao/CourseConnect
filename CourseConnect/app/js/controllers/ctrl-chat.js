@@ -37,6 +37,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
+        $scope.var_resources = [];//To store the file for display
 
         // get name of classroom
         $scope.getRoomName = function () {
@@ -76,9 +77,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             var uploadUrl = "/api/file-upload";
             console.log(file.name);
             console.log(uploadUrl);
-            fileUpload.uploadFileToUrl(file, uploadUrl, $scope.var_room_name);
+            fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
             console.log($scope.var_room_name);
-            $http.post('/api/file-store', {var_room_name : $scope.var_room_name, file : file.name,
+            $http.post('/api/file-store', {coursecode: $routeParams.coursecode,
+                file : file.name,
                 token: $cookies.get('loginToken')}).then(function (res){
                     console.log(123);
                     storedFileloc = res.data;
@@ -101,6 +103,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 for (var i in res.data){
                     if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
                         //display the info in html and set up the link for downloading
+                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[3], "address":
+                        res.data[i].fileLocation});
+
+
                     }
                 }
             });

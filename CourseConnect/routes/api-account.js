@@ -131,7 +131,7 @@ exports.uploadFile = function(req, res){
 
 exports.storeFile = function(req, res){
     var query = "Select user_id from session Where session='" + req.body.token + "';";
-    var courseCode = chatRoom.split(" ")[0];
+    var courseCode = req.body.coursecode;
     var userId;
     var c_id;
     var p_id;
