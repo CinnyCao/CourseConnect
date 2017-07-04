@@ -114,12 +114,13 @@
                         <!--Input text-->
                         <div class="form-group">
                             <label for="comment">Start a new followup discussion.</label>
-                            <textarea class="form-control" rows="5" ng-model="ques_followup"></textarea>
+                            <textarea id="followupTextInput" class="form-control" rows="5" ng-model="ques_followup"></textarea>
                         </div>
 
                         <!--Submit button-->
                         <div>
-                            <button type="button" class="btn btn-info btn-s float-left">Post</button>
+                            <button type="button" class="btn btn-info btn-s float-left" 
+                                    ng-click="postFollowup(ques_followup)">Post</button>
                             <div class="dropup float-left">
                                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">As You
                                 <span class="caret"></span></button>

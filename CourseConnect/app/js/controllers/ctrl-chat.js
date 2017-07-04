@@ -47,6 +47,16 @@ chatCtrls.service('PostService', ['$http', function ($http) {
             alert('Error: An unexpected error occured. Try refreshing the page.');
         })
     }
+
+    this.displayFollowupList = function(postID, callback){
+        $http.post('/api/getFollowups', {postID})
+        .success(function(res){
+            callback(res.followupList);
+        })
+        .error(function(res){
+           alert('Error: An unexpected error occured. Try refreshing the page.')
+         }) 
+    }
 }]);
 
 chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'CommonService', 'ChatService', 'PostService',
@@ -119,14 +129,25 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             $scope.selectedPost = post;
         }
 
-        $scope.viewQuestion = function(title, detail){
-            $scope.ques_title;
-            $scope.ques_detail;
-            //TODO: update question view on click
+
+        $scope.postFollowup = function(detail){
+            //TODO: Allow user to post followup
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" +  new Date().getDate();
+            var followupPost = {
+                title:null,
+                description:detail,
+                timestamp: time,
+                userID: 8, //TODO: Update userID
+                parentPostID:$scope.selectedPost.po_id,
+                roomID:2,
+                snipet: null
+            };
+
+            PostService.sendPost(followupPost);
         }
 
-        $scope.postFollowup = function(){
-            //TODO: Allow user to post followup
+        $scope.displayFollowupList = function(){
+            PostService.displayFollowupList($scope.selectedPost.po_id);
         }
 
         $scope.init = function () {
@@ -137,7 +158,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
             $scope.postList = [];
-            $scope.selectedPost = "";
+            $scope.followupList = [];
+            $scope.selectedPost = {};
         };
 
         $scope.init();
