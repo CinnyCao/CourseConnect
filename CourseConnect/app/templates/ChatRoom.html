@@ -21,7 +21,7 @@
                     <div class="forum_tab">
                         <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
                         <label class="forum_tab" for="forumPosts">
-                            <img src="img/postIcon.png" alt="Posts">
+                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPosts()">
                             <p ng-hide="var_forum == 'posts'">Posts</p>
                             <p ng-show="var_forum == 'posts'" class="forum_name_selected">Posts</p>
                         </label>
@@ -42,12 +42,11 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
                             <hr>
                             <ul class="list-group">
-                                <li id="question_tiem" class="list-group-item">
+                                <li id="question_tiem" class="list-group-item" ng-repeat="post in postList" ng-click="displaySelectedPost(post)">
                                     <div class="content">
-                                        <div class="title">Creating a post</div>
-                                        <div class="timestamp">4/18/17</div>
-                                        <div class="snipet">This is an example for creating a post</div>
-                                        <div ng-hide="true" ng-bind="message">This is the full message</div>
+                                        <div class="title">{{post.Title}}</div>
+                                        <div class="timestamp">{{post.postTime}}</div>
+                                        <div class="snipet">{{post.snipet}}</div>
                                     </div>
                                 </li>
                             </ul>
@@ -94,7 +93,7 @@
                 <!--// TODO: Posts Content-->
                 <div id="post_forum_content" ng-show="var_forum == 'posts'">
                     <div id="post_forum_question">
-                        <h3 id="post_forum_title">Post Content</h3>
+                        <h3 id="post_forum_title">{{selectedPost.Title}}</h3>
                         <hr>
                         <!--Question posted-->
                         <div class="media">
@@ -103,7 +102,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">Anonymous</h4>
-                                <p>This is a test</p>
+                                <p>{{selectedPost.description}}</p>
                             </div>
                         </div>
                     </div>
@@ -188,7 +187,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)" data-dismiss="modal">Submit</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

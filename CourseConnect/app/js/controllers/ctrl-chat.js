@@ -34,9 +34,18 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 chatCtrls.service('PostService', ['$http', function ($http) {
     
     this.sendPost = function(postMsg){
-        $http.post('/api/sendPost', postMsg).then(function(res){
-            return res.success;
+        $http.post('/api/sendPost', postMsg).error(function(res){
+            alert('Error: An unexpected error occured.');
         });
+    }
+
+    this.getPosts = function(roomID, callback){
+        $http.post('/api/getPosts', {roomID}).success(function(res){
+            callback(res.postList);
+        })
+        .error(function(res){
+            alert('Error: An unexpected error occured. Try refreshing the page.');
+        })
     }
 }]);
 
@@ -81,31 +90,34 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             }
         };
 
-        // $scope.displayPosts = function(){
-        //     $scope.postList = [];
-        //     $http.get('/api/getPosts')
-        //     .success(function(res){
-
-        //     })
-        // }
+        $scope.loadPosts = function(){
+            // TODO: Get roomID
+            PostService.getPosts(2, function(postList){
+                $scope.postList = postList;
+                console.log($scope.postList);
+            });
+        }
 
         $scope.postQuestion = function(summary, detail){    
+            console.log(CommonService.getUserId);
+            // TODO: Get userID and RoomID
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" +  new Date().getDate();
             var post = {
                 title:summary,
                 description:detail,
-                timestamp: + new Date(),
-                userID: CommonService.getUserId(),
-                parentPostID:null    
+                timestamp: time,
+                userID: 8,
+                parentPostID:-1,
+                roomID:2,
+                snipet: detail
             };
             
-
-            if(PostService.sendPost(post)){
-                // TODO: call loadPosts
-                return true;
-            }else{
-                alert('Error: An unexpected error occured.');
-            }   
+            PostService.sendPost(post);
         }   
+
+        $scope.displaySelectedPost = function(post){
+            $scope.selectedPost = post;
+        }
 
         $scope.viewQuestion = function(title, detail){
             $scope.ques_title;
@@ -125,6 +137,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
             $scope.postList = [];
+            $scope.selectedPost = "";
         };
 
         $scope.init();
