@@ -28,10 +28,20 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
+
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'CommonService', 'ChatService',
-    function ($scope, $location, $routeParams, CommonService, ChatService) {
+chatCtrls.service('PostService', ['$http', function ($http) {
+    
+    this.sendPost = function(postMsg){
+        $http.post('/api/sendPost', postMsg).then(function(res){
+            return res.success;
+        });
+    }
+}]);
+
+chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'CommonService', 'ChatService', 'PostService',
+    function ($scope, $location, $routeParams, CommonService, ChatService, PostService) {
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
@@ -71,6 +81,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             }
         };
 
+        // $scope.displayPosts = function(){
+        //     $scope.postList = [];
+        //     $http.get('/api/getPosts')
+        //     .success(function(res){
+
+        //     })
+        // }
+
         $scope.postQuestion = function(summary, detail){    
             var post = {
                 title:summary,
@@ -78,13 +96,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
                 timestamp: + new Date(),
                 userID: CommonService.getUserId(),
                 parentPostID:null    
-            }
+            };
             
-            console.log(post);
-            // $http.post('/api/postQuestion'. post).then(function(res){
-            //     // TODO: Update list of question posts to display
-            // })
-        }
+
+            if(PostService.sendPost(post)){
+                // TODO: call loadPosts
+                return true;
+            }else{
+                alert('Error: An unexpected error occured.');
+            }   
+        }   
 
         $scope.viewQuestion = function(title, detail){
             $scope.ques_title;
@@ -103,6 +124,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             $scope.var_user_list = ChatService.getAllClassMates();
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
+            $scope.postList = [];
         };
 
         $scope.init();

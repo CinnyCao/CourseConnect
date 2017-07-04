@@ -43,8 +43,8 @@ router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
 // Create a class room
 router.post('/createclass', classService.createClass);
 
-// --------------- Post API----------------------------
-// router.post('/postQuestion'.postService.postQuestion);
+// --------------- Post Foum API----------------------------
+router.post('/sendPost', postService.sendPost);
 
 
 module.exports = router; // exports router as a module
