@@ -91,5 +91,10 @@ __NOTE__: Pivotal Tracker does not have our scale for story size and priority, s
       <td>2</td>
       <td>2</td>
     </tr>
+    <tr>
+      <td>As a user, I want to create a class room if it doesn't exist, so that I can enter the chat room for that class.</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
   </tbody>
 </table>

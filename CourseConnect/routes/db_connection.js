@@ -30,10 +30,10 @@ db.requestDbConnection = function (callback) {
     // Connect to DB
     pool.getConnection(function (connErr, connection) {
         if (connErr) {
-            connection.release();
+            // connection.release();
             console.log("ERROR: Failed to connect to database. " + connErr);
-            resBody["error"] = "Failed to connect to database."
-            res.status(502).send(resBody);
+            // resBody["error"] = "Failed to connect to database."
+            // res.status(502).send(resBody);
         } else {
             console.log("SUCCESS: Connected to database.");
             callback(connection);
