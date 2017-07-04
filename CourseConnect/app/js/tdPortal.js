@@ -76,40 +76,36 @@ function CommonService($http, $cookies) {
 
     // setUser when logged in and when update profile
     // TODO: call setUser when profile is updated
-    var setUser = function (userToken) {
+    var setUser = function () {
         var req = {
-            method: "POST",
+            method: "GET",
             url: "/api/getUser",
-            data: {
-                token: userToken
-            }
         };
 
         $http(req)
             .then(function (result) {
-                curr_user.loggedIn = 1;
-                curr_user.userId = result.data.userId;
-                curr_user.lastName = result.data.lastName;
-                curr_user.firstName = result.data.firstName;
-                curr_user.email = result.data.email;
-                curr_user.displayName = result.data.displayName;
-                curr_user.description = result.data.description;
-                curr_user.utorId = result.data.utorId;
-                curr_user.profilePic = result.data.profilePic;
-                notifyUserLoginLogout();
-            })
-            .catch(function (err) {
-                // invalid token, ignore
+                console.log(result);
+                if (result.status == 200) {
+                    console.log("true");
+                    curr_user.loggedIn = 1;
+                    curr_user.userId = result.data.userId;
+                    curr_user.lastName = result.data.lastName;
+                    curr_user.firstName = result.data.firstName;
+                    curr_user.email = result.data.email;
+                    curr_user.displayName = result.data.displayName;
+                    curr_user.description = result.data.description;
+                    curr_user.utorId = result.data.utorId;
+                    curr_user.profilePic = result.data.profilePic;
+                    notifyUserLoginLogout();
+                }
             });
     };
 
-    // handle refresh; retrieve curr_user info again from cookie after refresh
-    if ($cookies.get('loginToken')) {
-        setUser($cookies.get('loginToken'));
-    }
+    // on init and on refresh, check user login status
+    setUser();
 
     var logout = function () {
-        $http.post('/api/logout', {token: $cookies.get('loginToken')}).then(function (res) {
+        $http.get('/api/logout').then(function (res) {
             curr_user = {
                 loggedIn: 0
             };
