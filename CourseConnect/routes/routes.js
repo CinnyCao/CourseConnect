@@ -53,6 +53,8 @@ router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
 // Create a class room
 router.post('/createclass', classService.createClass);
 
+router.post('/deleteFile', accountService.deleteFile);
+
 
 
 module.exports = router; // exports router as a module

@@ -104,7 +104,7 @@ exports.findFile = function(req, res){
         }
         res.status(200).send(result);
     });
-}
+};
 
 exports.uploadFile = function(req, res){
     var fs = require('fs');
@@ -128,7 +128,64 @@ exports.uploadFile = function(req, res){
         });
     });
 
-}
+};
+exports.deleteFile = function(req, res) {
+    //var query = "Delete "
+    var query = "Select user_id from session Where session='" + req.body.token + "';";
+    var courseCode = req.body.coursecode;
+    var userId;
+    var c_id;
+    var p_id;
+    var r_id;
+    console.log(query);
+
+    db.executeQuery(query, function (err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retreive user ID. Error: " + err);
+            res.status(404).send("Failed to retrieve user ID");
+        }
+
+        userId = result[0].user_id;
+
+        //var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
+        var query2 = "Select c_id from Class Where CourseCode='" + courseCode + "'; ";
+        db.executeQuery(query2, function (err, result) {
+            if (err) {
+                console.log("ERROR: Failed to retreive c_id. Error: " + err);
+                res.status(404);
+            }
+            c_id = result[0].c_id;
+            var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + c_id +
+                "';";
+            db.executeQuery(query3, function (err, result) {
+                if (err) {
+                    console.log("ERROR: Failed to retrive p_id. Error: " + err);
+                    res.status(404);
+                }
+                //var resourceTime = new Date();
+                p_id = result[0].p_id;
+                var query4 = "Select r_id from Resources Where fileLocation='" + req.body.fileName + "' and ParticipantID='" + p_id + "';";
+                db.executeQuery(query4, function(err, result){
+                   if(err){
+                       console.log("ERROR: Failed to retrieve r_id. Error:" + err);
+                       res.status(404);
+                   }
+                   r_id = result[0].r_id;
+                   var queryDel = "DELETE FROM Resources Where r_id='" + r_id + "';";
+                   db.executeQuery(queryDel, function(err, result){
+                      if(err){
+                          console.log("ERROR: Failed to delete the file. Error: " + err);
+                          res.status(404);
+                      }
+                      res.status(200).send(true);
+                   });
+                });
+            });
+        });
+    });
+
+};
+
 
 exports.storeFile = function(req, res){
     var query = "Select user_id from session Where session='" + req.body.token + "';";

@@ -86,8 +86,9 @@
                         <div ng-repeat="r in var_resources">
                             <div class="col-lg-10">
                                 <a href={{r.address}} download>
-                                <p>{{r.items}}</p>
+                                <p class="display_left">{{r.items}}</p>
                                 </a>
+                                <button type="button" class="btn btn-default" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
                             </div>
                         </div>
                     </div>

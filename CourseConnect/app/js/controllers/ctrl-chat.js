@@ -98,6 +98,21 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };*/
 
+        $scope.deleteResource = function($event){
+            var fileName = $event.currentTarget.value;
+            console.log(fileName);
+            if(typeof $cookies.get('loginToken') != 'undefined'){
+
+
+            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode,
+                fileName: fileName, token: $cookies.get('loginToken')}).then(function(res){
+                    if(res.data == true){
+                        console.log("Deletion is successful");
+                        $scope.displayResource();
+                    }
+            });}
+        };
+
         $scope.displayResource = function(){
             $http.post('/api/findFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode}).then(function(res){
                 if(typeof $scope.var_search_info == 'undefined'){
@@ -113,9 +128,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
                         //display the info in html and set up the link for downloading
                         console.log("check passed");
-
                         $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[2], "address":
-                        res.data[i].fileLocation});
+                        res.data[i].fileLocation, "display" : true});
 
 
                     }
