@@ -6,6 +6,9 @@ final-project-may-the-forks-b-with-you created by GitHub Classroom
    - doc/sprint 1
      - SR1.md
    - doc/sprint 2
+     - PB.md
+     - RPM.md
+   - doc/phase3
      - sprint2.md
      - System Design.pdf
 
