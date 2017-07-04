@@ -14,11 +14,18 @@ var express = require('express'),
  */
 
 var accountService = require('./api-account');
+var classService = require('./api-class');
 
 // User login authentication - authentication implemented in routes
 router.post('/authenticate', accountService.authenticate);
 // User sign up and authenticate account info, signUp implemented in routes
 router.post('/signupCheck', accountService.signupCheck);
+// Get user info by token
+router.post('/getUser', accountService.getUserByToken);
 
+// Get class room by courseid, semester and year
+router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
+// Create a class room
+router.post('/createclass', classService.createClass);
 
 module.exports = router; // exports router as a module

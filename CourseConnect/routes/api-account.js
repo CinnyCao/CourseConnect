@@ -15,7 +15,7 @@ exports.authenticate = function (req, res) {
             } else {
                 checkUserInDB(req, res);
             }
-        })
+        });
     }
 };
 
@@ -63,7 +63,7 @@ exports.signupCheck = function (req, res) {
 
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
-    var injectTokenQuery = "INSERT INTO cscc01.Session (user_id, session)" +
+    var injectTokenQuery = "INSERT INTO session (user_id, session)" +
         "Value (" + u_id + ", '" + token + "')";
 
     db.executeQuery(injectTokenQuery, function (err, insertRes) {
@@ -78,19 +78,40 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.Session WHERE session= '" + token + "'";
+    var tokenQuery = "SELECT * FROM session, Users WHERE session.session = '" + token + "' AND session.user_id = Users.u_id";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);
             callback(false);
-        }
-
-        if (result.length >= 1) {
-            console.log("SUCCESS: Token " + token + "is valid");
-            callback(true);
         } else {
-            console.log("SUCCESS: Token " + token + " is unvalid.")
-            callback(false);
+            if (result.length >= 1) {
+                console.log("SUCCESS: Token " + token + "is valid");
+                callback(true, result);
+            } else {
+                console.log("SUCCESS: Token " + token + " is invalid.")
+                callback(false);
+            }
         }
-    })
+    });
 }
+
+exports.getUserByToken = function (req, res) {
+    validateToken(req.body.token, function (isValid, result) {
+        if (isValid) {
+            res.status(200).json({
+                userId: result[0].u_id,
+                lastName: result[0].LastName,
+                firstName: result[0].FirstName,
+                email: result[0].email,
+                displayName: result[0].DisplayName,
+                description: result[0].Description,
+                utorId: result[0].UTorId,
+                profilePic: result[0].fileLocation
+            });
+        } else {
+            res.status(401).json({
+                message: "Token is invalid"
+            });
+        }
+    });
+};

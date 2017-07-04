@@ -30,16 +30,15 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all resources
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService',
-    function ($scope, $location, $routeParams, ChatService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'CommonService', 'ChatService',
+    function ($scope, $location, $routeParams, CommonService, ChatService) {
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
 
         // get name of classroom
         $scope.getRoomName = function () {
-            // TODO: construct room name from ChatService's room data
-            return "CSCC01 Summer 2017";
+            return $routeParams.coursecode + " " + CommonService.getSemesterName($routeParams.semester) + " " + $routeParams.year;
         };
 
         $scope.sendMsg = function () {
