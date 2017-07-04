@@ -190,6 +190,24 @@ exports.updateDescription = function (req, res) {
     })
 }
 
+exports.getCoursesEnrolled = function (req, res) {
+    var query = "SELECT user_id FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to retrieve user ID. Error: " + err);
+            res.status(404).send("failed to retrieve user ID");
+        }
+        var query2 = "SELECT CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + result[0].user_id + " AND ClassID=c_id;";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to retrieve courses user has enrolled. Error: " + err);
+                res.status(404).send("failed to retrieve enrolled course");
+            }
+            res.status(200).send(result);
+        })
+    })
+}
+
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
     var injectTokenQuery = "INSERT INTO session (user_id, session)" +

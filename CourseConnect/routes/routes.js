@@ -35,6 +35,8 @@ router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
 
+router.post('/getcrsenrolled', accountService.getCoursesEnrolled);
+
 router.post('/logout', accountService.logout);
 
 // Get class room by courseid, semester and year
