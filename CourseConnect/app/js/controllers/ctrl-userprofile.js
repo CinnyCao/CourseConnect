@@ -1,6 +1,6 @@
 'use strict';
 
-var userProfileCtrls = angular.module('CtrlUserProfile', ['ngFileUpload']);
+var userProfileCtrls = angular.module('CtrlUserProfile', []);
 
 userProfileCtrls.controller('UserProfileCtrl', ['$scope', '$http','fileUpload', '$cookies', function ($scope, $http, fileUpload, $cookies) {
 	$scope.profilePic = "img/defaultAvatar.png";
