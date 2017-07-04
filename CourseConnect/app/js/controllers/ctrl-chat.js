@@ -79,9 +79,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             console.log(uploadUrl);
             fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
             console.log($scope.var_room_name);
-            $http.post('/api/file-store', {coursecode: $routeParams.coursecode,
-                file : file.name,
-                token: $cookies.get('loginToken')}).then(function (res){
+            $http.post('/api/file-store', {coursecode: $routeParams.coursecode, file : file.name})
+                .then(function (res){
                     console.log(123);
                     storedFileloc = res.data;
                     console.log("The file has been stored at " +
@@ -101,16 +100,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.deleteResource = function($event){
             var fileName = $event.currentTarget.value;
             console.log(fileName);
-            if(typeof $cookies.get('loginToken') != 'undefined'){
 
-
-            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode,
-                fileName: fileName, token: $cookies.get('loginToken')}).then(function(res){
+            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode, fileName: fileName})
+                .then(function(res){
                     if(res.data == true){
                         console.log("Deletion is successful");
                         $scope.displayResource();
                     }
-            });}
+            });
         };
 
         $scope.displayResource = function(){
