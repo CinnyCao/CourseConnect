@@ -2,7 +2,7 @@
 
 var userLoginCtrls = angular.module('CtrlUserLogin', []);
 
-userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', 'CommonService', function ($scope, $http, $cookies, CommonService) {
     $('#loginFailedAlert').hide();
     $(function () {
         $("[data-hide]").on("click", function () {
@@ -13,6 +13,7 @@ userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', function 
         $http.defaults.withCredentials = true;
         $http.post('/api/authenticate', {email: $scope.email, pwd: $scope.pwd, token: $cookies.get('loginToken')}).then(function (res) {
             if (res.data.isvalid) {
+                CommonService.setUser(res.data.token);
                 window.location.replace('#/userprofile');
             } else{
                 $('#loginFailedAlert').show();
