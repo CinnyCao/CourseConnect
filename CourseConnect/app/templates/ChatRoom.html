@@ -44,6 +44,10 @@
             <div class="col-lg-8">
                 <!--Chat Room Name-->
                 <h1>{{ var_room_name }}</h1>
+                <!--Chat Room Enrolment Button-->
+                <div class="" ng-show="var_forum == 'chatroom'">
+                    <button type="button" class="enrollbtn btn btn-default" ng-click="sendMsg()">Enroll</button>
+                </div>
                 <!--Chat Room Content-->
                 <div class="chat_forum_content" ng-show="var_forum == 'chatroom'">
                     <div class="chatbox" scroll-glue>

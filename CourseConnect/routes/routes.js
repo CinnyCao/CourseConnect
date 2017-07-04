@@ -38,5 +38,7 @@ router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
 
+router.post('/get-users-class', accountService.getUsersInClass)
+
 
 module.exports = router; // exports router as a module

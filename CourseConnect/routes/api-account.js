@@ -3,6 +3,18 @@
 
 var db = require('./db_connection');  // db manager
 
+exports.getUsersInClass = function(req, res) {
+    var query = "SELECT * FROM enrolledUsers;";
+    db.executeQuery(query, function(err, result) {
+        if(err) {
+            console.log("No data exists for such class.");
+            res.status(404).send("Failed to execute db query to retrieve chatroom data.");
+        }
+        console.log(result);
+        return result;
+    })
+}
+
 exports.isLoggedIn = function (req, res) {
     console.log(req.body.token);
     var query = "SELECT * FROM session WHERE session='" + req.body.token + "';";

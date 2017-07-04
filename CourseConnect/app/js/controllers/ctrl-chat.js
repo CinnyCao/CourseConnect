@@ -63,9 +63,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };
 
-
-
-
         $scope.uploadFile = function(file) {
             var file = $scope.userFile;
             console.log('file uploaded is ');
@@ -84,8 +81,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
 
         };
-
-
 
         $scope.isCurrentUser = function (userId) {
                     // hard code, assume current user is id 1 TODO
@@ -114,7 +109,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     // $scope.var_room = $scope.getRoomData($routeParams.courseid);
                     $scope.var_room_name = $scope.getRoomName();
                     $scope.var_user_list = ChatService.getAllClassMates();
-
                     $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
 
                 };
