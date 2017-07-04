@@ -8,7 +8,7 @@ exports.isLoggedIn = function (req, res) {
     var query = "SELECT * FROM session WHERE session='" + req.body.token + "';";
     db.executeQuery(query, function(err, result) {
         if (err) {
-            console.log("Failed to execute retrieve user info query. Error: " + err);
+            console.log("ERROR: Failed to execute retrieve user info query. Error: " + err);
             res.status(404).send("failed to execute db query to retrieve user info.");
         }
         console.log(result);
@@ -22,6 +22,17 @@ exports.setRoom = function(req, res) {
     }
 };
 
+exports.logout = function (req, res) {
+    var query = "DELETE FROM session WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, result) {
+        if (err) {
+            console.log("ERROR: Failed to execute delete user login token. Error: " + err);
+            res.status(404).send("failed to execute delete user login");
+        }
+        res.status(200).send(true);
+    })
+}
+
 exports.authenticate = function (req, res) {
     if (!req.body.token) {
         checkUserInDB(req, res);
@@ -34,7 +45,7 @@ exports.authenticate = function (req, res) {
             } else {
                 checkUserInDB(req, res);
             }
-        })
+        });
     }
 };
 
@@ -285,7 +296,7 @@ exports.updateDescription = function (req, res) {
 
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
-    var injectTokenQuery = "INSERT INTO cscc01.session (user_id, session)" +
+    var injectTokenQuery = "INSERT INTO session (user_id, session)" +
         "Value (" + u_id + ", '" + token + "')";
 
     db.executeQuery(injectTokenQuery, function (err, insertRes) {
@@ -300,20 +311,43 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.session WHERE session= '" + token + "'";
+    var tokenQuery = "SELECT * FROM session, Users WHERE session.session = '" + token + "' AND session.user_id = Users.u_id";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);
             callback(false);
+        } else {
+            if (result.length >= 1) {
+                console.log("SUCCESS: Token " + token + "is valid");
+                callback(true, result);
+            } else {
+                console.log("SUCCESS: Token " + token + " is invalid.")
+                callback(false);
+            }
+        }
+    });
+}
+
+exports.getUserByToken = function (req, res) {
+    validateToken(req.body.token, function (isValid, result) {
+        if (isValid) {
+            res.status(200).json({
+                userId: result[0].u_id,
+                lastName: result[0].LastName,
+                firstName: result[0].FirstName,
+                email: result[0].email,
+                displayName: result[0].DisplayName,
+                description: result[0].Description,
+                utorId: result[0].UTorId,
+                profilePic: result[0].fileLocation
+            });
+        } else {
+            res.status(401).json({
+                message: "Token is invalid"
+            });
         }
 
-        if (result.length >= 1) {
-            console.log("SUCCESS: Token " + token + "is valid");
-            callback(true);
-        } else {
-            console.log("SUCCESS: Token " + token + " is unvalid.")
-            callback(false);
-        }
-    })
-}
+    });
+};
+
 
