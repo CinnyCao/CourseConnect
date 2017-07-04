@@ -66,8 +66,8 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
 
 /* Global functions and constants */
 tdPortal.service('CommonService', CommonService);
-CommonService.$inject = ['$http'];
-function CommonService($http) {
+CommonService.$inject = ['$http', '$cookies'];
+function CommonService($http, $cookies) {
     // User info
     var curr_user = {
         loggedIn: 0
@@ -94,14 +94,18 @@ function CommonService($http) {
             curr_user.description = result.data.description;
             curr_user.utorId = result.data.utorId;
             curr_user.profilePic = result.data.profilePic;
+            notifyUserLoginLogout();
         });
     };
 
-    // TODO: implement logout
     var logout = function () {
-        curr_user = {
-            loggedIn: 0
-        };
+        $http.post('/api/logout', {token: $cookies.get('loginToken')}).then(function (res) {
+            curr_user = {
+                loggedIn: 0
+            };
+            notifyUserLoginLogout();
+            window.location.href = '#/';
+        });
     };
 
     var isLoggedIn = function () {
@@ -113,7 +117,18 @@ function CommonService($http) {
 
     var getUserId = function () {
         return curr_user.userId;
-    }
+    };
+
+    var onUserLoginLogoutCallbacks = [];
+    var onUserLoginLogout = function (cb) {
+        onUserLoginLogoutCallbacks.push(cb);
+    };
+
+    var notifyUserLoginLogout = function () {
+        for (var cb in onUserLoginLogoutCallbacks) {
+            onUserLoginLogoutCallbacks[cb]();
+        }
+    };
 
     // trim and capitalize input for DB transactions (compare and insert)
     var standardizeInput = function (input) {
@@ -135,6 +150,7 @@ function CommonService($http) {
         setUser: setUser,
         logout: logout,
         isLoggedIn: isLoggedIn,
+        onUserLoginLogout: onUserLoginLogout,
         getUserId: getUserId,
         standardizeInput: standardizeInput,
         getSemesterName: getSemesterName
