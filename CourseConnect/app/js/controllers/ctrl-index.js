@@ -40,6 +40,7 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
                 $scope.navbar_bool_reg = !(res.data[0] == null);
                 $scope.navbar_bool_si = res.data[0] == null;
                 logoutbtn.className += " ng-hide";
+                userprofbtn.className += " ng-hide";
 
             } else {
                 var loginbtn = document.getElementById("loginbtn");
