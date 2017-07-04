@@ -2,7 +2,8 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-chatCtrls.service('ChatService', ['$routeParams','$http', '$cookies', function ($routeParams, $http, $cookies) {
+
+/*chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to get room data
 
     // TODO: service to get current user info
@@ -37,24 +38,29 @@ chatCtrls.service('ChatService', ['$routeParams','$http', '$cookies', function (
 
     // TODO: service to get list of history messages with limit of N
 
-    // TODO: service to send a message
+    // TODO: service to send a messageu
 
     // TODO: service to pull messages with limit of N
 
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
-}]);
+}]);*/
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'CommonService', 'ChatService',
-    function ($scope, $location, $routeParams, CommonService, ChatService) {
+
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, CommonService, ChatService) {
+
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
+        $scope.var_resources = [];//To store the file for display
 
         // get name of classroom
         $scope.getRoomName = function () {
+
             return $routeParams.coursecode + " " + CommonService.getSemesterName($routeParams.semester) + " " + $routeParams.year;
+
         };
 
         $scope.sendMsg = function () {
@@ -66,10 +72,75 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
                 "profilePic": "img/profilePicDefault.jpg",
                 "name": "aa",
                 "message": $scope.var_chat_message,
+                //"file": document.getElementById("studentFile").value,
                 "time": time
             });
 
             $scope.var_chat_message = "";
+
+
+        };
+
+
+        $scope.uploadFile = function(file) {
+            var file = $scope.userFile;
+            var storedFileloc;
+            var uploadUrl = "/api/file-upload";
+            fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
+            $http.post('/api/file-store', {coursecode: $routeParams.coursecode, file : file.name})
+                .then(function (res){
+                    storedFileloc = res.data;
+                    console.log("The file has been stored at " +
+                        storedFileloc[0].fileLocation);
+                    $scope.displayResource();
+            });
+        };
+
+        /*$scope.search = function(){
+            $http.post('/api/findFile', {fileName : $scope.var_search_info, chatRoom : $scope.getRoomName()})
+                .then(function(res){
+                console.log(123);
+
+            });
+
+        };*/
+
+        $scope.deleteResource = function($event){
+            var fileName = $event.currentTarget.value;
+            console.log(fileName);
+
+            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode, fileName: fileName})
+                .then(function(res){
+                    if(res.data == true){
+                        console.log("Deletion is successful");
+                        $scope.displayResource();
+                    }
+            });
+        };
+
+        $scope.displayResource = function(){
+            $http.post('/api/findFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode}).then(function(res){
+                if(typeof $scope.var_search_info == 'undefined'){
+                    $scope.var_search_info = '';
+                }
+                console.log(123);
+                console.log("The info we search is " + $scope.var_search_info);
+                $scope.var_resources = [];
+                //console.log(res.data[1].fileLocation);
+                //console.log(res.data[2].fileLocation);
+                for (var i in res.data){
+                    console.log("The file name is "+ res.data[i].fileLocation.split("/")[2]);
+                    if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
+                        //display the info in html and set up the link for downloading
+                        console.log("check passed");
+                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[2], "address":
+                        res.data[i].fileLocation, "display" : true});
+
+
+                    }
+                }
+            });
+            //TODO : implement it when the users need to see all the files
         };
 
         $scope.isCurrentUser = function (userId) {
@@ -94,9 +165,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             $scope.var_user_list = ChatService.getAllClassMates();
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
+
         };
 
         $scope.init();
+
+        $scope.$watch("var_forum", function () {
+            $scope.displayResource();
+        });
 
         // $scope.onLogoutClicked
         //
@@ -238,4 +314,5 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
         //     });
         // }
         //
-    }]);
+    }
+]);
