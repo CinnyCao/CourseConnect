@@ -93,9 +93,10 @@ exports.signupCheck = function (req, res) {
 };
 
 exports.findFile = function(req, res){
+
     var query;
       query = "Select fileLocation from Resources AS r INNER JOIN Participant AS p ON r.ParticipantID=p.p_id INNER " +
-          "JOIN Class AS c ON c.c_id=p.ClassID WHERE c.CourseCode='" + req.body.chatRoom.split(" ")[0] + "';";
+          "JOIN Class AS c ON c.c_id=p.ClassID WHERE c.CourseCode='" + req.body.coursecode + "';";
     db.executeQuery(query, function (err, result){
         if(err){
             console.log("ERROR: Failed to retrieve fileLocation. Error: " + err);
@@ -149,12 +150,12 @@ exports.storeFile = function(req, res){
                console.log("ERROR: Failed to retreive c_id. Error: " + err);
                res.status(404);
            }
-           c_id = reult[0].c_id;
+           c_id = result[0].c_id;
            var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + c_id +
                    "';";
-           db.excuteQuery(query3, function(err, result){
+           db.executeQuery(query3, function(err, result){
               if(err){
-                  console.log("ERROR: Failed to retrive p_id. Error:" + err);
+                  console.log("ERROR: Failed to retrive p_id. Error: " + err);
                   res.status(404);
               }
               var resourceTime = new Date();
@@ -166,7 +167,15 @@ exports.storeFile = function(req, res){
                      console.log("ERROR: Failed to insert filelocation to Resources. Error:" + err);
                      res.status(404);
                  }
-                 res.status(200).send("file/" + chatRoom + "/" + req.body.file);
+                 var query5 = "Select fileLocation from Resources Where fileLocation='" + "file/" + chatRoom + "/" + req.body.file + "';";
+                 db.executeQuery(query5, function(err, result){
+                     if(err){
+                         console.log("ERROR: Failed to retrieve fileLocation from Reousrces. Error: " + err);
+                         res.status(404);
+                     }
+                     res.status(200).send(result);
+                 })
+
 
               });
            });

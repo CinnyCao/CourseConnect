@@ -86,14 +86,14 @@
                         <div ng-repeat="r in var_resources">
                             <div class="col-lg-10">
                                 <a href={{r.address}} download>
-                                <p class="display_left">{{r.items}}</p>
+                                <p>{{r.items}}</p>
                                 </a>
                             </div>
                         </div>
                     </div>
                     <input type="text" class="chat_message_input" ng-model="var_search_info" size="70"/>
-                    <button type="button" class="btn btn-default" ng-click="displayResource()">Search</button>
-                    <button type="button" class="btn btn-default" ng-click="displayResource()">Display All</button>
+                    <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
+                    
                 </div>
             </div>
             <!--Right Section-->

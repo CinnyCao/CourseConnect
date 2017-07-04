@@ -84,6 +84,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 token: $cookies.get('loginToken')}).then(function (res){
                     console.log(123);
                     storedFileloc = res.data;
+                    console.log("The file has been stored at " +
+                        storedFileloc[0].fileLocation);
             });
         };
 
@@ -97,13 +99,22 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };*/
 
         $scope.displayResource = function(){
-            $http.post('/api/findFile', {chatRoom : $scope.getRoomName()}).then(function(res){
+            $http.post('/api/findFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode}).then(function(res){
+                if(typeof $scope.var_search_info == 'undefined'){
+                    $scope.var_search_info = '';
+                }
                 console.log(123);
-            }).then(function (res){
+                console.log("The info we search is " + $scope.var_search_info);
+                $scope.var_resources = [];
+                //console.log(res.data[1].fileLocation);
+                //console.log(res.data[2].fileLocation);
                 for (var i in res.data){
+                    console.log("The file name is "+ res.data[i].fileLocation.split("/")[2]);
                     if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
                         //display the info in html and set up the link for downloading
-                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[3], "address":
+                        console.log("check passed");
+
+                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[2], "address":
                         res.data[i].fileLocation});
 
 
