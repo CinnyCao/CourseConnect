@@ -1,6 +1,14 @@
 # final-project-may-the-forks-b-with-you
 final-project-may-the-forks-b-with-you created by GitHub Classroom
 
+## Sprint 2
+ - Required files:
+   - doc/sprint 1
+     - SR1.md
+   - doc/sprint 2
+     - sprint2.md
+     - System Design.pdf
+
 ## Sprint 1 / Phase 2
 Please check for `doc/phase2` and `doc/sprint 1` folders for required files.
  - doc/phase2
