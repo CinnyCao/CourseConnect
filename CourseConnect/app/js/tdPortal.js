@@ -113,6 +113,8 @@ function CommonService($http, $cookies) {
             curr_user = {
                 loggedIn: 0
             };
+            // remove cookie when logout
+            $cookies.remove('loginToken')
             notifyUserLoginLogout();
             window.location.href = '#/';
         });

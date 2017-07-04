@@ -23,8 +23,10 @@ exports.logout = function (req, res) {
             console.log("ERROR: Failed to execute delete user login token. Error: " + err);
             res.status(404).send("failed to execute delete user login");
         }
+    // destroy session when logout
+    req.session.destroy(function () {
         res.status(200).send(true);
-    })
+    });
 }
 
 exports.authenticate = function (req, res) {
@@ -59,13 +61,16 @@ checkUserInDB = function (req, res) {
             res.status(200).send({ isvalid: false, token: null });
         } else {
             console.log("SUCCESS: User logged in.");
-            var session = req.session.id;
-            saveLoginTokenToDatabase(result[0].u_id, session);
-            res.cookie("loginToken", session);
-            res.status(200).send({ isvalid: true, token: session });
+            // store session id and user id mapping into db
+            saveLoginTokenToDatabase(result[0].u_id, req.session.id);
+            // record user id in session too
+            req.session.userid = result[0].u_id;
+            // send session id back to user
+            res.cookie("loginToken", req.session.id); // TODO: do not store session in cookie, remove these after all apis are updated
+            res.status(200).send({ isvalid: true, token: req.session.id });
         }
     });
-}
+};
 
 exports.signupCheck = function (req, res) {
     var query = "INSERT INTO Users (Email, LastName, FirstName, Password, UTorID) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "', '" + 
