@@ -63,7 +63,7 @@ exports.signupCheck = function (req, res) {
 
 /**A helper function to insert login token into Session table together with user_id*/
 saveLoginTokenToDatabase = function (u_id, token) {
-    var injectTokenQuery = "INSERT INTO cscc01.Session (user_id, session)" +
+    var injectTokenQuery = "INSERT INTO cscc01.session (user_id, session)" +
         "Value (" + u_id + ", '" + token + "')";
 
     db.executeQuery(injectTokenQuery, function (err, insertRes) {
@@ -78,7 +78,7 @@ saveLoginTokenToDatabase = function (u_id, token) {
 
 /**Helper function to validates token */
 validateToken = function (token, callback) {
-    var tokenQuery = "SELECT * FROM cscc01.Session WHERE session= '" + token + "'";
+    var tokenQuery = "SELECT * FROM cscc01.session WHERE session= '" + token + "'";
     db.executeQuery(tokenQuery, function (err, result) {
         if (err) {
             console.error("ERROR: Failed to execute token query." + err);
@@ -91,6 +91,26 @@ validateToken = function (token, callback) {
         } else {
             console.log("SUCCESS: Token " + token + " is unvalid.")
             callback(false);
+        }
+    })
+}
+
+/**Display Friends */
+exports.getFriends = function (req, res) {
+    var friendQuery = "Call getFriendsByID('" + req.body.id + "')";
+    db.executeQuery(friendQuery, function (err, result) {
+		fs = [];
+        if (err) {
+            console.error("ERROR: Failed to execute token query." + err);
+            res.status(200).send({ isvalid: false, friends: [] });
+        }
+        if (result.length >= 1) {
+			
+            console.log("SUCCESS: " + req.body.id + "ID has friends." + result[0]);
+            res.status(200).send({ isvalid: true, friends: result[0] });
+        } else {
+            console.log("SUCCESS: " + req.body.id + "ID is a lone wolf. DangerZone!");
+            res.status(200).send({ isvalid: true, friends: result[0] });
         }
     })
 }

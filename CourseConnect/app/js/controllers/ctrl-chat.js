@@ -8,7 +8,15 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
+	
+	this.getFriends = function (ID) {
+		
+        return $http.post('/api/getFriends', {
+            id: ID
+        });
+    };
     this.getAllClassMates = function () {
+		
         // hard code data
         return [
             {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
@@ -30,8 +38,8 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     // TODO: service to pull all resources
 }]);
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatService',
-    function ($scope, $location, $routeParams, ChatService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$cookies', '$location', '$routeParams', 'ChatService',
+    function ($scope, $cookies, $location, $routeParams, ChatService) {
         console.log('ChatCtrl is running');
 
         $scope.var_messages = [];
@@ -76,6 +84,20 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'ChatSe
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);
             $scope.var_room_name = $scope.getRoomName();
+			$scope.var_friends = [];
+			console.log($cookies.get('loginToken'));
+			ChatService.getFriends($cookies.get('loginToken'))
+				.then(function(data){
+					//$scope.var_friends = data;
+					console.log(data.data);
+					if (data.data.isvalid){
+					$scope.var_friends = data.data.friends;
+						console.log(data.data.friends);
+					}else {
+						$scope.var_friends = data.friends;
+						console.log(data.friends);
+					}
+			});
             $scope.var_user_list = ChatService.getAllClassMates();
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});

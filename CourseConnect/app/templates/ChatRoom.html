@@ -86,12 +86,13 @@
                 <div class="user_list_wrapper">
                     <p>My Classmates</p>
                     <p>Friends</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1}">
+					<div class="user_list" ng-repeat="users in var_friends">
                         <a class="user_card_li" href="">
-                            <img src="{{ user.profilePic }}" alt="{{ user.name }}" class="img-thumbnail">
-                            <p>{{ user.name }}</p>
+                            <img src="{{ users.ProfileLocation }}" alt="{{ users.First }}" class="img-thumbnail">
+                            <p>{{ users.First }}&nbsp;{{ users.Last }}</p>
                         </a>
                     </div>
+					
                     <p>Others</p>
                     <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
                         <a class="user_card_li" href="">

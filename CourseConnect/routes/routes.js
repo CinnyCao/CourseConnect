@@ -19,6 +19,8 @@ var accountService = require('./api-account');
 router.post('/authenticate', accountService.authenticate);
 // User sign up and authenticate account info, signUp implemented in routes
 router.post('/signupCheck', accountService.signupCheck);
+// Gets Users Friends
+router.post('/getFriends', accountService.getFriends);
 
 
 module.exports = router; // exports router as a module
