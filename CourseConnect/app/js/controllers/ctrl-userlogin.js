@@ -14,7 +14,7 @@ userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', 'CommonSe
         $http.post('/api/authenticate', {email: $scope.email, pwd: $scope.pwd, token: $cookies.get('loginToken')}).then(function (res) {
             if (res.data.isvalid) {
                 CommonService.setUser(res.data.token);
-                window.location.href = '#/loggedin';
+                window.location.replace('#/userprofile');
             } else{
                 $('#loginFailedAlert').show();
             }

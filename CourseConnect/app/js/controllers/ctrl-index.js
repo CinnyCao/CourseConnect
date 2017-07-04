@@ -30,9 +30,33 @@ indexCtrl.service('IndexService', ['$http', function ($http) {
     };
 }]);
 
-indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'IndexService',
-    function ($scope, $location, CommonService, IndexService) {
+indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'IndexService', '$http', '$cookies',
+    function ($scope, $location, CommonService, IndexService, $http, $cookies) {
         console.log('IndexCtrls is running');
+
+        $http.post('/api/isloggedin', {token: $cookies.get('loginToken')}).then(function (res) {
+            if (res.data[0] == null) {
+                var logoutbtn = document.getElementById("logoutbtn");
+                $scope.navbar_bool_reg = !(res.data[0] == null);
+                $scope.navbar_bool_si = res.data[0] == null;
+                logoutbtn.className += " ng-hide";
+
+            } else {
+                var loginbtn = document.getElementById("loginbtn");
+                var signupbtn = document.getElementById("signupbtn");
+                $scope.navbar_bool_reg = !(res.data[0] == null);
+                loginbtn.className += " ng-hide";
+                signupbtn.className += " ng-hide";
+                $scope.navbar_bool_si = res.data[0] == null;
+                window.location.href = '#/userprofile';
+            }
+        })
+
+        $scope.logout = function () {
+            $http.post('/api/logout', {token: $cookies.get('loginToken')}).then(function (res) {
+                window.location.href = '#/';
+            })
+        }
 
         $scope.openYearPicker = function($event) {
             $scope.var_year_picker_opened = true;
