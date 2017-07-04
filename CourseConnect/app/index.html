@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="courseConnect" ng-controller="IndexCtrl"  >
+<html ng-app="courseConnect">
 <head lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,50 +51,50 @@
 </head>
 
 <body>
-<!--Search Bar-->
-<!--<nav class="navbar navbar-inverse">-->
-
-<div id="registration" ng-model="mainNavbar">
-    <a href="#/login">
-        <button id="loginbtn" class="btn btn-primary" ng-hide={{navbar_bool_reg}}>Login</button>
-    </a>
-    <a href="#/signup">
-        <button id="signupbtn" class="btn btn-primary" ng-hide={{navbar_bool_reg}}>SignUp</button>
-    </a>
-    <a ng-click="logout()">
-        <button id="logoutbtn" class="btn btn-danger" ng-hide={{navbar_bool_si}}>Log Out</button>
-    </a>
+<div ng-controller="IndexCtrl" >
+    <div id="registration" ng-model="mainNavbar">
+        <a href="#/login" ng-hide="var_logged_in">
+            <button id="loginbtn" class="btn btn-primary">Login</button>
+        </a>
+        <a href="#/signup" ng-hide="var_logged_in">
+            <button id="signupbtn" class="btn btn-primary">SignUp</button>
+        </a>
+        <a href="#/userprofile" ng-show="var_logged_in">
+            <button class="btn btn-primary">Profile</button>
+        </a>
+        <a ng-click="logout()" ng-show="var_logged_in">
+            <button id="logoutbtn" class="btn btn-danger">Log Out</button>
+        </a>
+    </div>
+    <form class="form-inline">
+        <!--Logo-->
+        <a class="form-group" id="logo" href="#/">
+            <img src="img/logo.png" alt="">
+        </a>
+        <!--Search Bar-->
+        <div class="form-group">
+            <label class="sr-only" for="courseCodeInput">Course Code</label>
+            <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code" ng-model="var_course_code" required>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="semesterInput">Semester</label>
+            <select ng-model="var_semester" id="semesterInput" class="form-control">
+                <option value="F">Fall</option>
+                <option value="W">Winter</option>
+                <option value="S">Summer</option>
+                <option value="Y">Y Course</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="yearInput">Year</label>
+            <input type="text" class="form-control" id="yearInput" ng-model="var_date"
+                   is-open="var_year_picker_opened" ng-focus="openYearPicker($event)"
+                   uib-datepicker-popup="yyyy" datepicker-options="dateOptions" ng-required="true"
+                   close-text="Close" current-text="Current" />
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="goToChatRoom()">Search</button>
+    </form>
 </div>
-<form class="form-inline">
-    <!--Logo-->
-    <a class="form-group" id="logo" href="#/">
-        <img src="img/logo.png" alt="">
-    </a>
-
-    <div class="form-group">
-        <label class="sr-only" for="courseCodeInput">Course Code</label>
-        <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code" ng-model="var_course_code" required>
-    </div>
-    <div class="form-group">
-        <label class="sr-only" for="semesterInput">Semester</label>
-        <select ng-model="var_semester" id="semesterInput" class="form-control">
-            <option value="F">Fall</option>
-            <option value="W">Winter</option>
-            <option value="S">Summer</option>
-            <option value="Y">Y Course</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label class="sr-only" for="yearInput">Year</label>
-        <input type="text" class="form-control" id="yearInput" ng-model="var_date"
-               is-open="var_year_picker_opened" ng-focus="openYearPicker($event)"
-               uib-datepicker-popup="yyyy" datepicker-options="dateOptions" ng-required="true"
-               close-text="Close" current-text="Current" />
-    </div>
-    <button type="submit" class="btn btn-default" ng-click="goToChatRoom()">Search</button>
-</form>
-<!--</nav>-->
-
 
 <!-- Multiview container -->
 <div class="view-container">
