@@ -160,8 +160,9 @@ exports.storeFile = function(req, res){
               }
               var resourceTime = new Date();
               p_id = result[0].p_id;
-              var query4 = "Insert INTO Resources(resourceTime, fileLocation, ParticipantID) Values ('" + resourceTime +
-              "', 'file/" + chatRoom + "/" + req.body.file + "', '" + p_id + "');";
+              var query4 = "Insert INTO Resources(resourceTime, fileLocation, ParticipantID) Select * FROM (Select '" + resourceTime +
+              "', 'file/" + chatRoom + "/" + req.body.file + "', '" + p_id + "') AS tmp WHERE NOT EXISTS (SELECT fileLocation, ParticipantID" +
+                  " FROM Resources WHERE fileLocation='file/" + chatRoom + "/" + req.body.file + "' and ParticipantID='" + p_id + "') LIMIT 1;";
               db.executeQuery(query4, function(err, result){
                  if(err){
                      console.log("ERROR: Failed to insert filelocation to Resources. Error:" + err);
