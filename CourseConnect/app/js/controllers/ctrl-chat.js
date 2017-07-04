@@ -2,14 +2,19 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-chatCtrls.service('ChatService', ['$http', function ($http) {
+chatCtrls.service('ChatService', ['$routeParams','$http', '$cookies', function ($routeParams, $http, $cookies) {
     // TODO: service to get room data
 
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
-    this.getAllClassMates = function () {
-        // hard code data
+    this.getAllClassMates = function() {
+        $http.post('/api/allClassmatesInClass', {coursecode : $routeParams.coursecode, token : $cookies.get('loginToken')}).then(function(res) {
+            console.log(res);
+            console.log(res.data);
+            console.log($routeParams.coursecode);
+
+        });
         return [
             {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
             {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
@@ -18,6 +23,17 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
             {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
         ];
     };
+
+    /*this.getAllClassMates = function () {
+        // hard code data
+        return [
+            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
+            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
+            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
+            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
+            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
+        ];
+    };*/
 
     // TODO: service to get list of history messages with limit of N
 

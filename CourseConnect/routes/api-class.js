@@ -35,6 +35,42 @@ exports.getClass = function (req, res) {
     });
 };
 
+exports.getStudents = function(req, res) {
+    var query = "SELECT user_id FROM session CROSS JOIN Users WHERE session='" + req.body.token + "';";
+    db.executeQuery(query, function(err, data) {
+        if(err) {
+            console.log("ERROR: Failed to retrieve user ID. Error: " + err);
+            res.status(404).send("failed to retrieve user ID");
+        }
+        var mainQuery = "SELECT u_id,fileLocation,FirstName,LastName FROM Participant CROSS JOIN Class CROSS JOIN Users WHERE ClassID=c_id and CourseCode='" + req.body.coursecode + "' and UserID=u_id";
+        console.log(req.body.coursecode);
+        db.executeQuery(mainQuery, function(err, data) {
+            if(err) {
+                console.error(err);
+                res.status(404).json({
+                    error: "Class/Students are non-existant here: An expected error occurred when querying the database."
+                });
+            }
+            res.status(200).send(data);
+        });
+    });
+}
+
+/*exports.getStudents = function(req, res) {
+    var query = "SELECT FirstName,LastName FROM Participant CROSS JOIN Class CROSS JOIN Users WHERE ClassID=c_id and CourseCode=" + $routeParams.coursecode + " and UserID=u_id";
+    db.executeQuery(query, function(err, data) {
+        if(err) {
+            console.error(err);
+            res.status.json({
+                error: "Class/Students are non-existant here: An expected error occurred when querying the database.";
+            });
+        } else {
+            console.log(data);
+            res.status(200).send(data);
+        }
+    });
+}*/
+
 function joinClassRoom(userid, classid, roleid, res) {
     var query = "INSERT INTO Participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
     db.executeQuery(query, function (err, data) {
