@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row">
+<div class="row" ng-app="CtrlChat" ng-controller="ChatCtrl">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -38,6 +38,11 @@
                 <div class="row">
                     space for filters etc
                     <!--TODO: Fill in this section-->
+                    <!--Resources Filter-->
+                    <div ng-show="var_forum == 'resources'">
+                        <input type="text" class="chat_message_input" ng-model="var_search_info"/>
+                        <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
+                    </div>
                 </div>
             </div>
             <!--Middle Section-->
@@ -76,7 +81,22 @@
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
                 <!--// TODO: Posts Content-->
-                <!--// TODO: Resources Content-->
+
+                <!--Resources Content-->
+                <div class="chat_forum_content" ng-show="var_forum == 'resources'">
+                    <div class="resourcebox" scroll-glue>
+                        <div ng-repeat="r in var_resources">
+                            <div class="col-lg-10">
+                                <a href={{r.address}} download>
+                                <p class="display_left">{{r.items}}</p>
+                                </a>
+                                <button type="button" class="btn btn-default" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" class="chat_file_input" file-model="userFile" id="studentFile" name="Upload File"/>
+                    <button type="button" class="btn btn-default" ng-click="uploadFile()">Upload</button>
+                </div>
             </div>
             <!--Right Section-->
             <div class="col-lg-2">

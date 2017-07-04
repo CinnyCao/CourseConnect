@@ -5,18 +5,18 @@
 		<li class="active"><a href="#/settings">Settings</a></li>
 	</ul><br/>
 	<h3>Personal Information</h3><hr/>
-	<p><b>Display Name</b>: <a style="float:right;" data-toggle="collapse" data-target="#changedispname">Change your display name</a></p>
+	<p><b>Display Name</b>: {{dispname}}<a id="dispname_toggle" style="float:right;" data-toggle="collapse" data-target="#changedispname">Change your display name</a></p>
 	<div id="changedispname" class="collapse">
 		<hr/>
 		<form>
 			<div class="form-group">
-				<label for="email">Enter your new display name:</label>
+				<label for="dispname">Enter your new display name:</label>
     			<input type="text" class="form-control" id="dispname" ng-model="newDisplayName" placeholder={{dispname}}>
 			</div>
 			<button type="submit" class="btn btn-success" ng-click="changeDispName()">Submit</button>
 		</form>
 	</div>
-	<p><b>Description</b>: <a style="float:right;" data-toggle="collapse" data-target="#editdescrip">Add/Edit Description</a></p>
+	<p><b>Description</b>: {{desc}}<a id="desc_toggle" style="float:right;" data-toggle="collapse" data-target="#editdescrip">Add/Edit Description</a></p>
 	<div id="editdescrip" class="collapse">
 		<hr/>
 		<form>

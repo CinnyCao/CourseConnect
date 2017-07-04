@@ -31,7 +31,6 @@
     <script src="/bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <script src="/bower_components/angular-animate/angular-animate.js"></script>
     <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
     <script src="/bower_components/ng-scroll-glue/dist/ng-scroll-glue.min.js"></script>
      
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.js"></script>
@@ -39,6 +38,7 @@
     <!--Controller-->
     <script src="/js/controllers/ctrl-settings.js"></script>
     <script src="/js/controllers/ctrl-userprofile.js"></script>
+    <script src="/js/controllers/ctrl-courseenrol.js"></script>
     <script src="/js/controllers/ctrl-index.js"></script>
     <script src="/js/controllers/ctrl-chat.js"></script>
     <script src="/js/controllers/ctrl-userlogin.js"></script>
@@ -52,6 +52,9 @@
 </head>
 
 <body>
+<!--Search Bar-->
+<!--<nav class="navbar navbar-inverse">-->
+
 <div ng-controller="IndexCtrl" >
     <div id="registration" ng-model="mainNavbar">
         <a href="#/login" ng-hide="var_logged_in">

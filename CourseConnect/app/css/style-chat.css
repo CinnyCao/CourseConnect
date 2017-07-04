@@ -40,10 +40,31 @@
     overflow-y: auto;
 }
 
+.resourcebox{
+    width: 95%;
+    height: 65vh;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ACD8F0;
+    padding: 20px;
+    overflow-y: auto;
+
+}
+
 .chat_message_input {
     border: 1px solid #ACD8F0;
     padding: 4px;
     margin: 20px 0px;
+}
+
+.chat_file_input {
+    display: inline-block !important;
+    padding: 4px;
+    margin: 20px 0px;
+    width: 550px;
+    vertical-align: middle;
+    background-color: white;
 }
 
 .contact_prof_btn {
@@ -93,5 +114,11 @@
     padding: 5px;
     background-color: #ACD8F0;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+    display: inline-block;
+}
+
+.display_left{
+    padding: 5px;
+    background-clor: #ACD8F0;
     display: inline-block;
 }

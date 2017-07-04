@@ -16,6 +16,7 @@ var tdPortal = angular.module('courseConnect', [
     'CtrlUserSignup',
     'CtrlUserProfile',
     'CtrlSettings',
+    'CtrlCourseEnroll',
     'ngCookies'
 ]);
 
@@ -30,7 +31,8 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserProfileCtrl'
     })
     .when('/courseenroll', {
-        templateUrl: '/templates/courseenrol.html'
+        templateUrl: '/templates/courseenrol.html',
+        controller: 'CourseEnrollCtrl'
     })
     .when('/settings', {
         templateUrl: '/templates/settings.html',

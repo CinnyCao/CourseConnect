@@ -73,18 +73,19 @@ exports.getUserInfo = function (req, res) {
             error: "User not logged in"
         });
     }
-}
+};
 
 exports.uploadProfPic = function (req, res) {
     var fs = require('fs');
-    var path = __dirname + "/../app/img/" + req.files.file.name
+    var path = __dirname + "/../app/img/" + req.files.file.name;
     fs.writeFile(path, req.files.file.data, function(err) {
         if(err) {
             return console.log(err);
         }
         console.log("SUCCESS: The file was saved!");
     }); 
-}
+};
+
 
 exports.refreshProfPic = function (req, res) {
     if (req.session.userid) {
@@ -108,7 +109,7 @@ exports.refreshProfPic = function (req, res) {
             error: "User not logged in"
         });
     }
-}
+};
 
 exports.updateDispName = function (req, res) {
     if (req.session.userid) {
@@ -132,7 +133,7 @@ exports.updateDispName = function (req, res) {
             error: "User not logged in"
         });
     }
-}
+};
 
 exports.updateDescription = function (req, res) {
     if (req.session.userid) {
@@ -150,6 +151,23 @@ exports.updateDescription = function (req, res) {
                 }
                 res.status(200).send(result);
             });
+        });
+    } else {
+        res.status(403).json({
+            error: "User not logged in"
+        });
+    }
+};
+
+exports.getCoursesEnrolled = function (req, res) {
+    if (req.session.userid) {
+        var query2 = "SELECT CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
+        db.executeQuery(query2, function(err, result) {
+            if (err) {
+                console.log("ERROR: Failed to retrieve courses user has enrolled. Error: " + err);
+                res.status(404).send("failed to retrieve enrolled course");
+            }
+            res.status(200).send(result);
         });
     } else {
         res.status(403).json({
@@ -186,5 +204,7 @@ exports.getUser = function (req, res) {
             message: "User not login"
         });
     }
+
 };
+
 
