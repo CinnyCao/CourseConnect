@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row" ng-app="CtrlChat" ng-controller="ChatCtrl">
+<div class="row" ng-app="CtrlChat" ng-show="var_userValid">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -21,7 +21,7 @@
                     <div class="forum_tab">
                         <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
                         <label class="forum_tab" for="forumPosts">
-                            <img src="img/postIcon.png" alt="Posts">
+                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPosts()">
                             <p ng-hide="var_forum == 'posts'">Posts</p>
                             <p ng-show="var_forum == 'posts'" class="forum_name_selected">Posts</p>
                         </label>
@@ -36,12 +36,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    space for filters etc
-                    <!--TODO: Fill in this section-->
-                    <!--Resources Filter-->
-                    <div ng-show="var_forum == 'resources'">
-                        <input type="text" class="chat_message_input" ng-model="var_search_info"/>
-                        <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
+                    <!--Posts-->
+                    <div ng-show="var_forum == 'posts'">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                        <hr>
+                        <ul class="list-group pre-scrollable">
+                            <li id="question_tiem" class="list-group-item" ng-repeat="post in postList" ng-click="displaySelectedPost(post)">
+                                <div class="content">
+                                    <div class="title">{{post.Title}}</div>
+                                    <div class="timestamp">{{post.postTime}}</div>
+                                    <div class="snipet">{{post.snipet}}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -49,6 +56,7 @@
             <div class="col-lg-8">
                 <!--Chat Room Name-->
                 <h1>{{ var_room_name }}</h1>
+
                 <!--Chat Room Content-->
                 <div class="chat_forum_content" ng-show="var_forum == 'chatroom'">
                     <div class="chatbox" scroll-glue>
@@ -80,24 +88,111 @@
                     <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
-                <!--// TODO: Posts Content-->
 
-                <!--Resources Content-->
-                <div class="chat_forum_content" ng-show="var_forum == 'resources'">
-                    <div class="resourcebox" scroll-glue>
-                        <div ng-repeat="r in var_resources">
-                            <div class="col-lg-10">
-                                <a href={{r.address}} download>
-                                <p class="display_left">{{r.items}}</p>
-                                </a>
-                                <button type="button" class="btn btn-default" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
+                <!--Posts Content-->
+                <div class="chatbox" ng-show="var_forum == 'posts' && !selectedPost.po_id">
+                    <p>Select a Post in the left bar to view</p>
+                </div>
+                <div id="post_forum_content" ng-show="var_forum == 'posts' && selectedPost.po_id">
+                    <div id="post_forum_question">
+                        <h3 id="post_forum_title">{{selectedPost.Title}}</h3>
+                        <hr>
+                        <!--Question posted-->
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
+                                <p>{{selectedPost.description}}</p>
                             </div>
                         </div>
                     </div>
-                    <input type="file" class="chat_file_input" file-model="userFile" id="studentFile" name="Upload File"/>
-                    <button type="button" class="btn btn-default" ng-click="uploadFile()">Upload</button>
+
+                    <!--Followup Section-->
+                    <div id="post_forum_answers">
+                        <div id="followupSection" class="pre-scrollable">
+                            <h4 class="txt-left"> Followup Discussion</h4>
+                            <hr>
+                            <!--Followups-->
+                            <div class="media" ng-repeat="followup in followupList">
+                                <div class="media-left">
+                                    <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
+                                        <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
+                                    </h4>
+                                    <p>{{followup.description}}</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+
+                        <!--Input text-->
+                        <div class="form-group">
+                            <label for="followupTextInput">Start a new followup discussion.</label>
+                            <textarea id="followupTextInput" class="form-control" rows="5" ng-model="ques_followup"></textarea>
+                        </div>
+
+                        <!--Submit button-->
+                        <div>
+                            <button type="button" class="btn btn-info btn-s float-left" ng-click="postFollowup(ques_followup)">Post</button>
+                            <div class="dropup float-left">
+                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">As You
+                                <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li>As Anonymous</li>
+                                    <li>As You</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Resource Sharing-->
+                <div class="chat_forum_content" ng-show="var_forum == 'resources'">
+                    <div class="resourcebox" scroll-glue>
+                        <table class="table">
+                            <tr ng-repeat="r in var_resources">
+                                <td>{{r.items}}</td>
+                                <td>
+                                    <a href={{r.address}} download>
+                                    <button type="button" class="btn btn-success">Download</button>
+                                    </a>
+                                    <button type="button" class="btn btn-info" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input type="text" class="form-control" ng-model="var_search_info" size="60" />
+                                <button type="button" class="btn btn-primary" ng-click="displayResource()">Search</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">Upload File</button>
+                                <div id="uploadModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Upload The Selected File</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="uploadForm">
+                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
+                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--Contact Prof-->
@@ -127,3 +222,32 @@
     <div class="col-lg-1"></div>
 </div>
 
+<!--Posting question form-->
+<div class="modal fade" id="post_question_modal" role="dialog">
+    <div class="modal-dialog">
+        <!--Header-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Post Question</h4>
+            </div>
+            <div class="modal-body">
+                <!--summary input-->
+                <div class="form-group">
+                    <label for="post_ques_summary">Summary:</label>
+                    <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
+                </div>
+
+                <div class="form-group">
+                    <label for="post_ques_detail">Detail:</label>
+                    <textarea class="form-control" rows="5" id="post_ques_detail" ng-model="ques_detail"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)" data-dismiss="modal">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
