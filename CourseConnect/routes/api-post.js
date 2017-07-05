@@ -11,7 +11,7 @@ exports.sendPost = function(req, res){
             '"' + req.body.title + '",' +
             '"' + req.body.timestamp + '",' +
             '"' + req.body.description + '",' +
-            '"' + req.body.userID + '",' +
+            '"' + req.session.userid + '",' +
             '"' + req.body.parentPostID + '",' +
             '"' + req.body.roomID + '",' +
             '"' + req.body.snipet + '"' +
@@ -42,6 +42,7 @@ exports.getPosts = function(req, res){
         "DATE_FORMAT(postTime,'%d/%m/%Y') as postTime " + 
         "FROM " +
         "cscc01.Posts " +
+        "INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
         "WHERE room_id=" + req.body.roomID + " " +
         "AND parent_po_id=-1 " + 
         "ORDER BY po_id DESC";
@@ -71,6 +72,7 @@ exports.getFollowups = function(req, res){
         "DATE_FORMAT(postTime,'%d/%m/%Y') as postTime " + 
         "FROM " +
         "cscc01.Posts " +
+        "INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
         "WHERE parent_po_id=" + req.body.postID;
     
     db.executeQuery(getFollowupsQuery, function(err, result){

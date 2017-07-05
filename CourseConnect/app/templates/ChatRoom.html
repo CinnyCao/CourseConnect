@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row" ng-app="CtrlChat" ng-controller="ChatCtrl">
+<div class="row" ng-app="CtrlChat">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -109,7 +109,7 @@
                                 <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">Anonymous</h4>
+                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
                                 <p>{{selectedPost.description}}</p>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                     <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
                                 </div>
                                 <div class="media-body">
-                                    <h4 class="media-heading">Anonymous
+                                    <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
                                     </h4>
                                     <p>{{followup.description}}</p>

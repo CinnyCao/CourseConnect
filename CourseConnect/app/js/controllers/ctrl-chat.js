@@ -2,7 +2,7 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-/*chatCtrls.service('ChatService', ['$http', function ($http) {
+chatCtrls.service('ChatService', ['$http', function ($http) {
     // get classroom info with current user and its permissions
     this.getClassWithUserPermission = function (classid) {
         var req = {
@@ -35,7 +35,7 @@ var chatCtrls = angular.module('CtrlChat', []);
 
     // TODO: service to pull all resources
 
-}]);*/
+}]);
 
 chatCtrls.service('PostService', ['$http', function ($http) {
     
@@ -178,9 +178,9 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             }
         };
 
+        // ---------------POST FOURM FUNCTION--------------------------
         $scope.loadPosts = function(){
-            // TODO: Get roomID
-            PostService.getPosts(2, function(postList){
+            PostService.getPosts($scope.room_data.courseId, function(postList){
                 $scope.postList = postList;
             });
         }
@@ -193,15 +193,18 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 title:summary,
                 description:detail,
                 timestamp: time,
-                userID: 8,
                 parentPostID:-1,
-                roomID:2,
+                roomID:$scope.room_data.courseId,
                 snipet: detail
             };
             
+            var curLen = $scope.postList.length;
             PostService.sendPost(post);
             $(post_ques_summary).val('');
             $(post_ques_detail).val('');
+            while($scope.postList.len == curLen ){
+                $scope.loadPosts();
+            }
         }   
 
         $scope.displaySelectedPost = function(post){
@@ -223,9 +226,13 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 snipet: null
             };
 
+            // var curLen = $scope.followupList.length;
             PostService.sendPost(followupPost);
             $(followupTextInput).val('');
-            $scope.displayFollowupList($scope.selectedPost);
+            
+            // while($scope.followupList.length == curLen ){
+            //     $scope.displayFollowupList($scope.selectedPost);
+            // }
         }
 
         $scope.displayFollowupList = function(post){
@@ -233,6 +240,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 $scope.followupList = followupList;
             });
         }
+
+        // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         $scope.init = function () {
             // get room data with current user's permission on it
