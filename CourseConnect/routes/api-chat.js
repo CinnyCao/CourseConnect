@@ -37,7 +37,6 @@ exports.getMessages = function (req, res) {
                     error: "An unexpected error occurred when querying the database"
                 });
             } else if (result.length) {
-                console.log(result);
                 res.status(200).json(result);
             } else {
                 res.sendStatus(204);

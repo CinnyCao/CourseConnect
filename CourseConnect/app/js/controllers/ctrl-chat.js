@@ -210,7 +210,9 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             ChatService.getMessages($routeParams.classid, $scope.lastMessageId, 100)
                 .then(function (result) {
                     if (result.status == 200) {
-                        $scope.var_messages = result.data;
+                        if (result.data.length > $scope.var_messages.length) {
+                            $scope.var_messages = result.data;
+                        }
                     }
                 });
         };
