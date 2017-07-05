@@ -36,12 +36,14 @@ exports.getClass = function (req, res) {
 };
 
 exports.getStudents = function(req, res) {
-    var query = "SELECT user_id FROM session CROSS JOIN Users WHERE session='" + req.body.token + "';";
+    /*var query = "SELECT user_id FROM session CROSS JOIN Users WHERE session='" + req.body.token + "';";
     db.executeQuery(query, function(err, data) {
         if(err) {
             console.log("ERROR: Failed to retrieve user ID. Error: " + err);
             res.status(404).send("failed to retrieve user ID");
         }
+    });*/
+    if(req.session.userid) {
         var mainQuery = "SELECT u_id,fileLocation,FirstName,LastName FROM Participant CROSS JOIN Class CROSS JOIN Users WHERE ClassID=c_id and CourseCode='" + req.body.coursecode + "' and UserID=u_id";
         console.log(req.body.coursecode);
         db.executeQuery(mainQuery, function(err, data) {
@@ -53,7 +55,7 @@ exports.getStudents = function(req, res) {
             }
             res.status(200).send(data);
         });
-    });
+    }
 }
 
 /*exports.getStudents = function(req, res) {

@@ -45,7 +45,7 @@ var chatCtrls = angular.module('CtrlChat', []);
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
-}]);*/
+/*}]);*/
 
 
 chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService',

@@ -26,14 +26,19 @@ serviceModule.service('fileUpload', ['$http', function ($http) {
 
 
 
-serviceModule.service('ChatService', ['$http', function ($http) {
+serviceModule.service('ChatService', ['$http', '$routeParams', function ($http, $routeParams) {
     // TODO: service to get room data
 
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
     this.getAllClassMates = function () {
-        // hard code data
+        $http.post('/api/allClassmatesInClass', {coursecode : $routeParams.coursecode}).then(function(res) {
+            console.log(res);
+            console.log(res.data);
+            console.log($routeParams.coursecode);
+
+        });
         return [
             {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
             {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
