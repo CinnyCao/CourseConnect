@@ -30,6 +30,7 @@ router.post('/profpic-upload', accountService.uploadProfPic);
 router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
 router.post('/updateddesc', accountService.updateDescription);
+router.post('/getFriends', accountService.getFriends);
 
 router.post('/allClassmatesInClass', classService.getStudents);
 
@@ -53,6 +54,7 @@ router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
 
+
 // --------------- Post Foum API----------------------------
 router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
@@ -61,5 +63,6 @@ router.post('/getFollowups', postService.getFollowups);
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
+
 
 module.exports = router; // exports router as a module
