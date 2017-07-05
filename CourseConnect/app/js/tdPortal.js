@@ -134,9 +134,45 @@ function CommonService($http, $cookies) {
         }
     };
 
+    // check if a user is enrolled in a classroom
+    var checkIfInClass = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/inclass/" + classid
+        };
+
+        return $http(req);
+    };
+
     // trim and capitalize input for DB transactions (compare and insert)
     var standardizeInput = function (input) {
         return input.trim().toUpperCase();
+    };
+
+    // escape string
+    var sqlEscapeString = function (str) {
+        return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+            switch (char) {
+                case "\0":
+                    return "\\0";
+                case "\x08":
+                    return "\\b";
+                case "\x09":
+                    return "\\t";
+                case "\x1a":
+                    return "\\z";
+                case "\n":
+                    return "\\n";
+                case "\r":
+                    return "\\r";
+                case "\"":
+                case "'":
+                case "\\":
+                case "%":
+                    return "\\"+char; // prepends a backslash to backslash, percent,
+                                      // and double/single quotes
+            }
+        });
     };
 
     // convert semester code to semester
@@ -156,7 +192,9 @@ function CommonService($http, $cookies) {
         isLoggedIn: isLoggedIn,
         onUserLoginLogout: onUserLoginLogout,
         getUserId: getUserId,
+        checkIfInClass: checkIfInClass,
         standardizeInput: standardizeInput,
+        sqlEscapeString: sqlEscapeString,
         getSemesterName: getSemesterName
     };
 }

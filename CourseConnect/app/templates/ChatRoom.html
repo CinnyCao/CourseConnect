@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row" ng-app="CtrlChat">
+<div class="row" ng-app="CtrlChat" ng-show="var_userValid">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -49,14 +49,6 @@
                                 </div>
                             </li>
                         </ul>
-
-                    </div>
-                    <!--TODO: Fill in this section-->
-                    <!--Resources Filter-->
-                    <div ng-show="var_forum == 'resources'">
-                        <input type="text" class="chat_message_input" ng-model="var_search_info" />
-                        <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
-
                     </div>
                 </div>
             </div>
@@ -93,12 +85,11 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"
-                    />
+                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
 
-                <!--// TODO: Posts Content-->
+                <!--Posts Content-->
                 <div id="post_forum_content" ng-show="var_forum == 'posts'">
                     <div id="post_forum_question">
                         <h3 id="post_forum_title">{{selectedPost.Title}}</h3>
@@ -186,6 +177,12 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form id="uploadForm">
+                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
+                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="uploadForm">
                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70" />
                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
                                                 </form>
@@ -199,7 +196,6 @@
                 </div>
             </div>
 
-            <!--// TODO: Resources Content-->
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--Contact Prof-->

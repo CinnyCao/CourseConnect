@@ -39,9 +39,13 @@ router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
 router.get('/getclass/:classid', classService.getClassWithUserPermission);
 // Create a class room
 router.post('/createclass', classService.createClass);
+// Check if current user is in a class or not
+router.get('/inclass/:classid', classService.checkIsInClass);
+// join a class as student
+router.get('/joinclass/:classid', classService.joinClass);
 
 router.post('/setChatRoom', fileService.setRoom);
-router.post('/findFile', fileService.findFile);
+router.get('/files/:classid', fileService.findFile);
 router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
@@ -52,5 +56,7 @@ router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
 
 
+router.get('/messages/:classid', chatService.getMessages);
+router.post('/sendMsg', chatService.sendMessage);
 
 module.exports = router; // exports router as a module
