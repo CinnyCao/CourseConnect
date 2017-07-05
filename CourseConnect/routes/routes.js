@@ -40,10 +40,12 @@ router.get('/getclass/:classid', classService.getClassWithUserPermission);
 router.post('/createclass', classService.createClass);
 
 router.post('/setChatRoom', fileService.setRoom);
-router.post('/findFile', fileService.findFile);
+router.get('/files/:classid', fileService.findFile);
 router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
 
+router.get('/messages/:classid', chatService.getMessages);
+router.post('/sendMsg', chatService.sendMessage);
 
 module.exports = router; // exports router as a module

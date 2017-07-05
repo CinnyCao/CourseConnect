@@ -58,6 +58,7 @@ exports.getClassWithUserPermission = function (req, res) {
                         year: data[0].Year,
                         title: data[0].title,
                         classDescription: data[0].description,
+                        participantId: data[0].p_id,
                         roleName: data[0].Name,
                         roleDescription: data[0].Description,
                         canSendMessage: data[0].sendMessage,
