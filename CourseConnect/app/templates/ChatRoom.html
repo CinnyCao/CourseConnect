@@ -90,7 +90,10 @@
                 </div>
 
                 <!--Posts Content-->
-                <div id="post_forum_content" ng-show="var_forum == 'posts'">
+                <div class="chatbox" ng-show="var_forum == 'posts' && !selectedPost.po_id">
+                    <p>Select a Post in the left bar to view</p>
+                </div>
+                <div id="post_forum_content" ng-show="var_forum == 'posts' && selectedPost.po_id">
                     <div id="post_forum_question">
                         <h3 id="post_forum_title">{{selectedPost.Title}}</h3>
                         <hr>
