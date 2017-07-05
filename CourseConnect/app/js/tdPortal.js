@@ -134,6 +134,16 @@ function CommonService($http, $cookies) {
         }
     };
 
+    // check if a user is enrolled in a classroom
+    var checkIfInClass = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/inclass/" + classid
+        };
+
+        return $http(req);
+    };
+
     // trim and capitalize input for DB transactions (compare and insert)
     var standardizeInput = function (input) {
         return input.trim().toUpperCase();
@@ -156,6 +166,7 @@ function CommonService($http, $cookies) {
         isLoggedIn: isLoggedIn,
         onUserLoginLogout: onUserLoginLogout,
         getUserId: getUserId,
+        checkIfInClass: checkIfInClass,
         standardizeInput: standardizeInput,
         getSemesterName: getSemesterName
     };

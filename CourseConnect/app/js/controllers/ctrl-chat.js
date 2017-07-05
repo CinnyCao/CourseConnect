@@ -50,6 +50,16 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
         return $http(req);
     };
 
+    // join class as Student
+    this.joinClass = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/joinclass/" + classid
+        };
+
+        return $http(req);
+    };
+
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
@@ -59,6 +69,8 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService',
     function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval, CommonService, ChatService) {
         console.log('ChatCtrl is running');
+
+        $scope.var_userValid = false;
 
         // only show chat room when user is logged in
         if (!CommonService.isLoggedIn()) {
@@ -178,6 +190,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         $scope.init = function () {
+            $scope.var_userValid = true;
+            
             // get room data with current user's permission on it
             ChatService.getClassWithUserPermission($routeParams.classid)
                 .then(function (result) {
@@ -201,7 +215,26 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.var_user_list = ChatService.getAllClassMates();
         };
 
-        $scope.init();
+        // only show chat room when user is enrolled in it
+        CommonService.checkIfInClass($routeParams.classid)
+            .then(function (result) {
+                if (result.data.inClass) {
+                    $scope.init();
+                } else {
+                    var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
+                    if (joinClass) {
+                        ChatService.joinClass($routeParams.classid)
+                            .then(function (result) {
+                                $scope.init();
+                            })
+                            .catch(function (e) {
+                                $location.path("/");
+                            });
+                    } else {
+                        $location.path("/"); // back to home page
+                    }
+                }
+            });
 
         $scope.$watch("var_forum", function () {
             if ($scope.var_forum == "resources") {

@@ -38,6 +38,10 @@ router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
 router.get('/getclass/:classid', classService.getClassWithUserPermission);
 // Create a class room
 router.post('/createclass', classService.createClass);
+// Check if current user is in a class or not
+router.get('/inclass/:classid', classService.checkIsInClass);
+// join a class as student
+router.get('/joinclass/:classid', classService.joinClass);
 
 router.post('/setChatRoom', fileService.setRoom);
 router.get('/files/:classid', fileService.findFile);

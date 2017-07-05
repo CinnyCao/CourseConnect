@@ -104,6 +104,11 @@ function joinClassRoom(userid, classid, roleid, res) {
     });
 }
 
+exports.joinClass = function (req, res) {
+    // default join as student
+    joinClassRoom(req.session.userid, req.params.classid, 4, res);
+};
+
 exports.createClass = function (req, res) {
     // check for room existence again to ensure no duplicate rooms are created
     var query = "SELECT * FROM Class WHERE CourseCode = '" + req.body.coursecode +
@@ -135,4 +140,30 @@ exports.createClass = function (req, res) {
             });
         }
     });
+};
+
+exports.checkIsInClass = function (req, res) {
+    if (req.session.userid) {
+        var query = "SELECT * FROM Participant WHERE UserID = " + req.session.userid + " AND ClassID = " + req.params.classid;
+        db.executeQuery(query, function (err, data) {
+            if (err) {
+                console.error(err);
+                res.status(500).json({
+                    error: "An unexpected error occurred when querying the database"
+                });
+            } else if (data.length) {
+                res.status(200).json({
+                    inClass: 1
+                });
+            } else {
+                res.status(200).json({
+                    inClass: 0
+                });
+            }
+        });
+    } else {
+        res.status(401).json({
+            error: "User not logged in"
+        });
+    }
 };
