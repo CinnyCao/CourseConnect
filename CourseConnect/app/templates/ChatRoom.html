@@ -77,24 +77,48 @@
                 </div>
                 <!--// TODO: Posts Content-->
                 <div class="chat_forum_content" ng-show="var_forum == 'posts'">
-                    <input type="file" class="chat_message_input" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
-                    <input type="submit" value="Add" ng-click="uploadFile()" size=70/>
+                   
                 </div>
                 <!--// TODO: Resources Content-->
                 <div class="chat_forum_content" ng-show="var_forum == 'resources'">
                     <div class="resourcebox" scroll-glue>
-                        <div ng-repeat="r in var_resources">
-                            <div class="col-lg-10">
-                                <a href={{r.address}} download>
-                                <p class="display_left">{{r.items}}</p>
-                                </a>
-                                <button type="button" class="btn btn-default" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
-                            </div>
-                        </div>
+                        <table class="table">
+                            <tr ng-repeat="r in var_resources">
+                                <td>{{r.items}}</td>
+                                <td>
+                                    <a href={{r.address}} download>
+                                    <button type="button" class="btn btn-success">Download</button>
+                                    </a>
+                                    <button type="button" class="btn btn-info" ng-show="r.display" ng-click="deleteResource($event)" value="{{r.address}}">Delete</button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <input type="text" class="chat_message_input" ng-model="var_search_info" size="70"/>
-                    <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
-                    
+                    <div class="container">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input type="text" class="form-control" ng-model="var_search_info" size="60"/>
+                                <button type="button" class="btn btn-primary" ng-click="displayResource()">Search</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">Upload File</button>
+                                <div id="uploadModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Upload The Selected File</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="uploadForm">
+                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
+                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <!--Right Section-->
