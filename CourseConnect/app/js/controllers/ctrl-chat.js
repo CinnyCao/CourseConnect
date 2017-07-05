@@ -107,7 +107,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             // TODO: Get roomID
             PostService.getPosts(2, function(postList){
                 $scope.postList = postList;
-                console.log($scope.postList);
             });
         }
 
@@ -126,6 +125,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             };
             
             PostService.sendPost(post);
+            $(post_ques_summary).val('');
+            $(post_ques_detail).val('');
         }   
 
         $scope.displaySelectedPost = function(post){
@@ -148,8 +149,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
             };
 
             PostService.sendPost(followupPost);
-            $scope.displayFollowupList($scope.selectedPost);
             $(followupTextInput).val('');
+            $scope.displayFollowupList($scope.selectedPost);
         }
 
         $scope.displayFollowupList = function(post){

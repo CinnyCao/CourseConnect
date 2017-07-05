@@ -43,7 +43,8 @@ exports.getPosts = function(req, res){
         "FROM " +
         "cscc01.Posts " +
         "WHERE room_id=" + req.body.roomID + " " +
-        "AND parent_po_id=-1";
+        "AND parent_po_id=-1 " + 
+        "ORDER BY po_id DESC";
 
     db.executeQuery(getPostQuery, function(err, result){
         if (err){
