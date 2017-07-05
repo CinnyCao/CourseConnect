@@ -2,7 +2,19 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-chatCtrls.service('ChatService', ['$http', function ($http) {
+chatCtrls.directive('onErrorSrc', function($http) {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('error', function() {
+                if (attrs.src != attrs.onErrorSrc) {
+                    attrs.$set('src', attrs.onErrorSrc);
+                }
+            });
+        }
+    };
+});
+
+chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $routeParams) {
     // get classroom info with current user and its permissions
     this.getClassWithUserPermission = function (classid) {
         var req = {
@@ -13,16 +25,20 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
         return $http(req);
     };
 
-    // TODO: service to get all users in this chatroom
-    this.getAllClassMates = function () {
-        // hard code data
-        return [
-            { "userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0 },
-            { "userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1 },
-            { "userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1 },
-            { "userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0 },
-            { "userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0 },
-        ];
+    this.getAllClassMates = function (callbackFcn) {
+        $http.post('/api/allClassmatesInClass', {classid : $routeParams.classid}).then(function(res) {
+            for(var i = 0; i < res.data.length; i++) {
+                res.data[i]["friendOfCurrentUser"] = 0;
+            }
+            callbackFcn(res.data);
+        });
+        /*return [
+            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
+            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
+            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
+            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
+            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
+        ];*/
     };
 
     // pull messages for this classroom
@@ -301,7 +317,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             }
             $scope.msgInterval = $interval($scope.fetchMessages, 2500);
 
-            $scope.var_user_list = ChatService.getAllClassMates();
+            ChatService.getAllClassMates(function(data) { $scope.var_user_list = data; });
 
             $scope.postList = [];
             $scope.followupList = [];

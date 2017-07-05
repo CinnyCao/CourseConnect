@@ -30,6 +30,9 @@ router.post('/profpic-upload', accountService.uploadProfPic);
 router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
 router.post('/updateddesc', accountService.updateDescription);
+
+router.post('/allClassmatesInClass', classService.getStudents);
+
 router.get('/getcrsenrolled', accountService.getCoursesEnrolled);
 router.get('/logout', accountService.logout);
 
