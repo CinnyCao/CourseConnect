@@ -138,6 +138,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.onChatMessageKeyPress = function ($event) {
             if ($event.which === 13) {
                 $scope.sendMsg();
+
             }
         };
 
@@ -148,7 +149,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.var_user_list = ChatService.getAllClassMates();
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
-
+            $scope.displayResource();
         };
 
         $scope.init();
