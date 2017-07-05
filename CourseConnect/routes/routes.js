@@ -46,6 +46,7 @@ router.post('/createclass', classService.createClass);
 // --------------- Post Foum API----------------------------
 router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
+router.post('/getFollowups', postService.getFollowups);
 
 
 module.exports = router; // exports router as a module

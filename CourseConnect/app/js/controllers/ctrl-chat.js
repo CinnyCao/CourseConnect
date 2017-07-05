@@ -33,12 +33,14 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 
 chatCtrls.service('PostService', ['$http', function ($http) {
     
+    // Service to create post
     this.sendPost = function(postMsg){
         $http.post('/api/sendPost', postMsg).error(function(res){
             alert('Error: An unexpected error occured.');
         });
     }
 
+    // Service to retrieve all posts for given class
     this.getPosts = function(roomID, callback){
         $http.post('/api/getPosts', {roomID}).success(function(res){
             callback(res.postList);
@@ -48,6 +50,7 @@ chatCtrls.service('PostService', ['$http', function ($http) {
         })
     }
 
+    // Service to retrieve all followups for given post
     this.displayFollowupList = function(postID, callback){
         $http.post('/api/getFollowups', {postID})
         .success(function(res){
@@ -127,6 +130,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
 
         $scope.displaySelectedPost = function(post){
             $scope.selectedPost = post;
+            $scope.displayFollowupList(post);
         }
 
 
@@ -139,15 +143,19 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$location', '$routeParams', 'Common
                 timestamp: time,
                 userID: 8, //TODO: Update userID
                 parentPostID:$scope.selectedPost.po_id,
-                roomID:2,
+                roomID:2, //TODO: Update roomID
                 snipet: null
             };
 
             PostService.sendPost(followupPost);
+            $scope.displayFollowupList($scope.selectedPost);
+            $(followupTextInput).val('');
         }
 
-        $scope.displayFollowupList = function(){
-            PostService.displayFollowupList($scope.selectedPost.po_id);
+        $scope.displayFollowupList = function(post){
+            PostService.displayFollowupList(post.po_id, function(followupList){
+                $scope.followupList = followupList;
+            });
         }
 
         $scope.init = function () {

@@ -107,10 +107,24 @@
                         </div>
                     </div>
 
-                    <!--Answer posted-->
+                    <!--Followup Section-->
                     <div id="post_forum_answers">
-                        <h4 class="txt-left"> Followup Discussion</h4>
-                        <hr>
+                        <div id="followupSection" class="pre-scrollable">
+                            <h4 class="txt-left"> Followup Discussion</h4>
+                            <hr>
+                            <!--Followups-->
+                            <div class="media" ng-repeat="followup in followupList">
+                                <div class="media-left">
+                                    <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Anonymous</h4>
+                                    <p>{{followup.description}}</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+
                         <!--Input text-->
                         <div class="form-group">
                             <label for="comment">Start a new followup discussion.</label>
