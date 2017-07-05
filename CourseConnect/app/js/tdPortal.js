@@ -16,6 +16,7 @@ var tdPortal = angular.module('courseConnect', [
     'CtrlUserSignup',
     'CtrlUserProfile',
     'CtrlSettings',
+    'CtrlCourseEnroll',
     'ngCookies'
 ]);
 
@@ -30,7 +31,8 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserProfileCtrl'
     })
     .when('/courseenroll', {
-        templateUrl: '/templates/courseenrol.html'
+        templateUrl: '/templates/courseenrol.html',
+        controller: 'CourseEnrollCtrl'
     })
     .when('/settings', {
         templateUrl: '/templates/settings.html',
@@ -66,42 +68,52 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
 
 /* Global functions and constants */
 tdPortal.service('CommonService', CommonService);
-CommonService.$inject = ['$http'];
-function CommonService($http) {
+CommonService.$inject = ['$http', '$cookies'];
+function CommonService($http, $cookies) {
     // User info
     var curr_user = {
         loggedIn: 0
     };
 
+
     // setUser when logged in and when update profile
     // TODO: call setUser when profile is updated
-    var setUser = function (userToken) {
+    var setUser = function () {
         var req = {
-            method: "POST",
+            method: "GET",
             url: "/api/getUser",
-            data: {
-                token: userToken
-            }
         };
 
-        $http(req).then(function (result) {
-            curr_user.loggedIn = 1;
-            curr_user.userId = result.data.userId;
-            curr_user.lastName = result.data.lastName;
-            curr_user.firstName = result.data.firstName;
-            curr_user.email = result.data.email;
-            curr_user.displayName = result.data.displayName;
-            curr_user.description = result.data.description;
-            curr_user.utorId = result.data.utorId;
-            curr_user.profilePic = result.data.profilePic;
-        });
+        $http(req)
+            .then(function (result) {
+                console.log(result);
+                if (result.status == 200) {
+                    console.log("true");
+                    curr_user.loggedIn = 1;
+                    curr_user.userId = result.data.userId;
+                    curr_user.lastName = result.data.lastName;
+                    curr_user.firstName = result.data.firstName;
+                    curr_user.email = result.data.email;
+                    curr_user.displayName = result.data.displayName;
+                    curr_user.description = result.data.description;
+                    curr_user.utorId = result.data.utorId;
+                    curr_user.profilePic = result.data.profilePic;
+                    notifyUserLoginLogout();
+                }
+            });
     };
 
-    // TODO: implement logout
+    // on init and on refresh, check user login status
+    setUser();
+
     var logout = function () {
-        curr_user = {
-            loggedIn: 0
-        };
+        $http.get('/api/logout').then(function (res) {
+            curr_user = {
+                loggedIn: 0
+            };
+            notifyUserLoginLogout();
+            window.location.href = '#/';
+        });
     };
 
     var isLoggedIn = function () {
@@ -113,7 +125,18 @@ function CommonService($http) {
 
     var getUserId = function () {
         return curr_user.userId;
-    }
+    };
+
+    var onUserLoginLogoutCallbacks = [];
+    var onUserLoginLogout = function (cb) {
+        onUserLoginLogoutCallbacks.push(cb);
+    };
+
+    var notifyUserLoginLogout = function () {
+        for (var cb in onUserLoginLogoutCallbacks) {
+            onUserLoginLogoutCallbacks[cb]();
+        }
+    };
 
     // trim and capitalize input for DB transactions (compare and insert)
     var standardizeInput = function (input) {
@@ -135,6 +158,7 @@ function CommonService($http) {
         setUser: setUser,
         logout: logout,
         isLoggedIn: isLoggedIn,
+        onUserLoginLogout: onUserLoginLogout,
         getUserId: getUserId,
         standardizeInput: standardizeInput,
         getSemesterName: getSemesterName

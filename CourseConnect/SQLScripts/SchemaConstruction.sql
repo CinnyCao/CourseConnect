@@ -1,5 +1,7 @@
 
-Use cscc01;
+CREATE DATABASE cscc01; 
+
+USE cscc01;
 
 Drop Table IF EXISTS `Message`;
 
@@ -51,7 +53,7 @@ Create Table IF NOT EXISTS Users(
 	A2          varchar(15), /*NOT NULL,*/
 	SecurityQ3  varchar(20), /*NOT NULL,*/
 	A3          varchar(15), /*NOT NULL,*/
-    fileLocation varchar(255)
+    fileLocation varchar(255) /*Profile pic*/
 	/* CONSTRAINT PK_Users PRIMARY KEY (Email) */
 ) ENGINE = INNODB;
 
