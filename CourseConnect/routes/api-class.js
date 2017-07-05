@@ -99,7 +99,7 @@ function joinClassRoom(userid, classid, roleid, res) {
                 error: "Failed joining class: An unexpected error occurred when querying the database"
             });
         } else {
-            res.sendStatus(200);
+            res.status(200).send({courseId:classid});
         }
     });
 }

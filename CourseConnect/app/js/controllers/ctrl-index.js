@@ -72,8 +72,8 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
                             var createRoom = confirm("Sorry, room for this course does not exist.\nDo you want to create a room for it?");
                             if (createRoom) {
                                 IndexService.createClassroom(CommonService.getUserId(), $scope.var_course_code, $scope.var_semester, $scope.var_year)
-                                    .then(function () {
-                                        $location.path("/class/" + result.data.courseId);
+                                    .then(function (res) {
+                                        $location.path("/class/" + res.data.courseId);
                                     });
                             } else {
                                 document.getElementById("courseCodeInput").select();
