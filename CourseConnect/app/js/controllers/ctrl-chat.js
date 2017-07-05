@@ -170,7 +170,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         var submitmsgTimer;
         $scope.sendMsg = function () {
-            ChatService.sendMessage($scope.room_data.participantId, $scope.var_chat_message)
+            ChatService.sendMessage($scope.room_data.participantId, CommonService.sqlEscapeString($scope.var_chat_message))
                 .then(function () {
                     $scope.var_chat_message = "";
 
@@ -191,7 +191,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.init = function () {
             $scope.var_userValid = true;
-            
+
             // get room data with current user's permission on it
             ChatService.getClassWithUserPermission($routeParams.classid)
                 .then(function (result) {
