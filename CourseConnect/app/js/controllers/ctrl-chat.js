@@ -17,11 +17,11 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     this.getAllClassMates = function () {
         // hard code data
         return [
-            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
-            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
-            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
-            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
-            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
+            { "userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0 },
+            { "userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1 },
+            { "userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1 },
+            { "userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0 },
+            { "userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0 },
         ];
     };
 
@@ -38,39 +38,39 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 }]);
 
 chatCtrls.service('PostService', ['$http', function ($http) {
-    
+
     // Service to create post
-    this.sendPost = function(postMsg){
-        $http.post('/api/sendPost', postMsg).error(function(res){
+    this.sendPost = function (postMsg) {
+        $http.post('/api/sendPost', postMsg).error(function (res) {
             alert('Error: An unexpected error occured.');
         });
     }
 
     // Service to retrieve all posts for given class
-    this.getPosts = function(roomID, callback){
-        $http.post('/api/getPosts', {roomID}).success(function(res){
+    this.getPosts = function (roomID, callback) {
+        $http.post('/api/getPosts', { roomID }).success(function (res) {
             callback(res.postList);
         })
-        .error(function(res){
-            alert('Error: An unexpected error occured. Try refreshing the page.');
-        })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.');
+            })
     }
 
     // Service to retrieve all followups for given post
-    this.displayFollowupList = function(postID, callback){
-        $http.post('/api/getFollowups', {postID})
-        .success(function(res){
-            callback(res.followupList);
-        })
-        .error(function(res){
-           alert('Error: An unexpected error occured. Try refreshing the page.')
-         }) 
+    this.displayFollowupList = function (postID, callback) {
+        $http.post('/api/getFollowups', { postID })
+            .success(function (res) {
+                callback(res.followupList);
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.')
+            })
     }
 }]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService', 'PostService',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, CommonService, ChatService, PostService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService', 'PostService', '$timeout',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, CommonService, ChatService, PostService, $timeout) {
 
         console.log('ChatCtrl is running');
 
@@ -102,18 +102,18 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
 
-        $scope.uploadFile = function(file) {
+        $scope.uploadFile = function (file) {
             var file = $scope.userFile;
             var storedFileloc;
             var uploadUrl = "/api/file-upload";
             fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
-            $http.post('/api/file-store', {coursecode: $routeParams.coursecode, file : file.name})
-                .then(function (res){
+            $http.post('/api/file-store', { coursecode: $routeParams.coursecode, file: file.name })
+                .then(function (res) {
                     storedFileloc = res.data;
                     console.log("The file has been stored at " +
                         storedFileloc[0].fileLocation);
                     $scope.displayResource();
-            });
+                });
         };
 
         /*$scope.search = function(){
@@ -125,22 +125,22 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };*/
 
-        $scope.deleteResource = function($event){
+        $scope.deleteResource = function ($event) {
             var fileName = $event.currentTarget.value;
             console.log(fileName);
 
-            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode, fileName: fileName})
-                .then(function(res){
-                    if(res.data == true){
+            $http.post('/api/deleteFile', { chatRoom: $scope.getRoomName(), coursecode: $routeParams.coursecode, fileName: fileName })
+                .then(function (res) {
+                    if (res.data == true) {
                         console.log("Deletion is successful");
                         $scope.displayResource();
                     }
-            });
+                });
         };
 
-        $scope.displayResource = function(){
-            $http.post('/api/findFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode}).then(function(res){
-                if(typeof $scope.var_search_info == 'undefined'){
+        $scope.displayResource = function () {
+            $http.post('/api/findFile', { chatRoom: $scope.getRoomName(), coursecode: $routeParams.coursecode }).then(function (res) {
+                if (typeof $scope.var_search_info == 'undefined') {
                     $scope.var_search_info = '';
                 }
                 console.log(123);
@@ -148,13 +148,15 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 $scope.var_resources = [];
                 //console.log(res.data[1].fileLocation);
                 //console.log(res.data[2].fileLocation);
-                for (var i in res.data){
-                    console.log("The file name is "+ res.data[i].fileLocation.split("/")[2]);
-                    if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
+                for (var i in res.data) {
+                    console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
+                    if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
                         //display the info in html and set up the link for downloading
                         console.log("check passed");
-                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[2], "address":
-                        res.data[i].fileLocation, "display" : true});
+                        $scope.var_resources.push({
+                            "items": res.data[i].fileLocation.split("/")[2], "address":
+                                res.data[i].fileLocation, "display": true
+                        });
 
 
                     }
@@ -179,64 +181,61 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         // ---------------POST FOURM FUNCTION--------------------------
-        $scope.loadPosts = function(){
-            PostService.getPosts($scope.room_data.courseId, function(postList){
+        $scope.loadPosts = function () {
+            PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
             });
         }
 
-        $scope.postQuestion = function(summary, detail){    
+        $scope.postQuestion = function (summary, detail) {
             console.log(CommonService.getUserId);
             // TODO: Get userID and RoomID
-            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" +  new Date().getDate();
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var post = {
-                title:summary,
-                description:detail,
+                title: summary,
+                description: detail,
                 timestamp: time,
-                parentPostID:-1,
-                roomID:$scope.room_data.courseId,
+                parentPostID: -1,
+                roomID: $scope.room_data.courseId,
                 snipet: detail
             };
-            
+
             var curLen = $scope.postList.length;
             PostService.sendPost(post);
             $(post_ques_summary).val('');
             $(post_ques_detail).val('');
-            while($scope.postList.len == curLen ){
+            while ($scope.postList.len == curLen) {
                 $scope.loadPosts();
             }
-        }   
+        }
 
-        $scope.displaySelectedPost = function(post){
+        $scope.displaySelectedPost = function (post) {
             $scope.selectedPost = post;
             $scope.displayFollowupList(post);
         }
 
 
-        $scope.postFollowup = function(detail){
+        $scope.postFollowup = function (detail) {
             //TODO: Allow user to post followup
-            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" +  new Date().getDate();
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var followupPost = {
-                title:null,
-                description:detail,
+                title: null,
+                description: detail,
                 timestamp: time,
                 userID: 8, //TODO: Update userID
-                parentPostID:$scope.selectedPost.po_id,
-                roomID:2, //TODO: Update roomID
+                parentPostID: $scope.selectedPost.po_id,
+                roomID: 2, //TODO: Update roomID
                 snipet: null
             };
 
-            // var curLen = $scope.followupList.length;
             PostService.sendPost(followupPost);
             $(followupTextInput).val('');
-            
-            // while($scope.followupList.length == curLen ){
-            //     $scope.displayFollowupList($scope.selectedPost);
-            // }
+            $scope.displayFollowupList($scope.selectedPost);
+
         }
 
-        $scope.displayFollowupList = function(post){
-            PostService.displayFollowupList(post.po_id, function(followupList){
+        $scope.displayFollowupList = function (post) {
+            PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
             });
         }
@@ -256,7 +255,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
             $scope.var_user_list = ChatService.getAllClassMates();
 
-            $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
+            $scope.var_messages.push({ "userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20" });
 
             $scope.postList = [];
             $scope.followupList = [];
