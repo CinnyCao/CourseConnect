@@ -161,7 +161,7 @@ exports.updateDescription = function (req, res) {
 
 exports.getCoursesEnrolled = function (req, res) {
     if (req.session.userid) {
-        var query2 = "SELECT CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
+        var query2 = "SELECT c_id, CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
         db.executeQuery(query2, function(err, result) {
             if (err) {
                 console.log("ERROR: Failed to retrieve courses user has enrolled. Error: " + err);
