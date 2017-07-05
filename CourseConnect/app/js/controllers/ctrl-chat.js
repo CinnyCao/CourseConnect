@@ -143,6 +143,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.onChatMessageKeyPress = function ($event) {
             if ($event.which === 13) {
                 $scope.sendMsg();
+
             }
         };
 
@@ -187,6 +188,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             // set Chat Room as default forum
             $scope.var_forum = "chatroom";
 
+            $scope.displayResource();
+
             // pull messages
             $scope.fetchMessages();
             // poll for new messages every 2.5 seconds
@@ -196,7 +199,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.msgInterval = $interval($scope.fetchMessages, 2500);
 
             $scope.var_user_list = ChatService.getAllClassMates();
-
         };
 
         $scope.init();
