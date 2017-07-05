@@ -184,6 +184,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.loadPosts = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
+                $scope.loadPosts();
             });
         }
 
@@ -200,13 +201,9 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 snipet: detail
             };
 
-            var curLen = $scope.postList.length;
             PostService.sendPost(post);
             $(post_ques_summary).val('');
             $(post_ques_detail).val('');
-            while ($scope.postList.len == curLen) {
-                $scope.loadPosts();
-            }
         }
 
         $scope.displaySelectedPost = function (post) {
@@ -222,9 +219,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 title: null,
                 description: detail,
                 timestamp: time,
-                userID: 8, //TODO: Update userID
                 parentPostID: $scope.selectedPost.po_id,
-                roomID: 2, //TODO: Update roomID
+                roomID: $scope.room_data.courseId,
                 snipet: null
             };
 
@@ -237,6 +233,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.displayFollowupList = function (post) {
             PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
+                $scope.displayFollowupList($scope.selectedPost);
             });
         }
 
