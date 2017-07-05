@@ -16,6 +16,7 @@ var express = require('express'),
 var accountService = require('./api-account');
 var classService = require('./api-class');
 var postService = require('./api-post');
+var chatService = require('./api-chat');
 var fileService = require('./api-fileuploads');
 
 // User login authentication - authentication implemented in routes
@@ -34,6 +35,8 @@ router.get('/logout', accountService.logout);
 
 // Get class room by courseid, semester and year
 router.get('/getclass/:year/:semester/:coursecode', classService.getClass);
+// Get a class room by id
+router.get('/getclass/:classid', classService.getClassWithUserPermission);
 // Create a class room
 router.post('/createclass', classService.createClass);
 

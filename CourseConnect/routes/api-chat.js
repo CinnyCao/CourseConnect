@@ -5,7 +5,6 @@ var db = require('./db_connection');  // db manager
 
 
 exports.getClass = function (req, res) {
-    // visitors should be able to search class too
     var query = "SELECT * FROM Class WHERE CourseCode = '" + req.params.coursecode +
         "' AND Semester = '" + req.params.semester + "' AND Year = '" + req.params.year + "'";
     db.executeQuery(query, function (err, data) {
@@ -18,7 +17,6 @@ exports.getClass = function (req, res) {
             res.status(200).json(
                 {
                     found: 1,
-                    courseId: data[0].c_id,
                     courseCode: data[0].CourseCode,
                     semester: data[0].Semester,
                     year: data[0].Year,
@@ -34,59 +32,6 @@ exports.getClass = function (req, res) {
             );
         }
     });
-};
-
-exports.getClassWithUserPermission = function (req, res) {
-    // check if user logged in
-    if (req.session.userid) {
-        var query = "SELECT * FROM Class, Participant, Roles WHERE Class.c_id = '" + req.params.classid +
-            "' AND Participant.ClassID = '" + req.params.classid + "' AND Participant.UserID = '" + req.session.userid +
-            "' AND Roles.r_id = Participant.RoleID";
-        db.executeQuery(query, function (err, data) {
-            console.log(data);
-            if (err) {
-                console.error(err);
-                res.status(500).json({
-                    error: "An unexpected error occurred when querying the database"
-                });
-            } else if (data.length) {
-                res.status(200).json(
-                    {
-                        courseId: data[0].c_id,
-                        courseCode: data[0].CourseCode,
-                        semester: data[0].Semester,
-                        year: data[0].Year,
-                        title: data[0].title,
-                        classDescription: data[0].description,
-                        roleName: data[0].Name,
-                        roleDescription: data[0].Description,
-                        canSendMessage: data[0].sendMessage,
-                        canPost: data[0].post,
-                        canUploadFile: data[0].uploadFile,
-                        canDeleteOwnMessage: data[0].DeleteOwnMessage,
-                        canDeleteOwnPost: data[0].DeleteOwnPost,
-                        canDeleteOwnFile: data[0].DeleteOwnFile,
-                        canDeleteOtherMessage: data[0].DeleteOtherMessage,
-                        canDeleteOtherPost: data[0].DeleteOtherPost,
-                        canDeleteOtherFile: data[0].DeleteOtherFile,
-                        canDeleteRoom: data[0].DeleteRoom
-                    }
-                );
-            } else {
-                res.status(404).json(
-                    {
-                        error: "class not found or user not enrolled in this class"
-                    }
-                );
-            }
-        });
-
-    } else {
-        res.status(401).json({
-            error: "User not logged in"
-        });
-    }
-
 };
 
 function joinClassRoom(userid, classid, roleid, res) {
