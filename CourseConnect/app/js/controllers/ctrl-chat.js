@@ -64,10 +64,14 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
 
 chatCtrls.service('PostService', ['$http', function ($http) {
     // Service to create post
-    this.sendPost = function (postMsg) {
-        $http.post('/api/sendPost', postMsg).error(function (res) {
-            alert('Error: An unexpected error occured.');
-        });
+    this.sendPost = function (postMsg, callback) {
+        $http.post('/api/sendPost', postMsg)
+            .success(function () {
+                callback();
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured.');
+            });
     };
 
     // Service to retrieve all posts for given class
@@ -93,8 +97,8 @@ chatCtrls.service('PostService', ['$http', function ($http) {
 }]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService', 'PostService', '$timeout',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, CommonService, ChatService, PostService, $timeout) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout) {
         console.log('ChatCtrl is running');
 
         $scope.var_userValid = false;
@@ -236,7 +240,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 snipet: detail
             };
 
-            PostService.sendPost(post);
+            PostService.sendPost(post, $scope.loadPosts);
             $(post_ques_summary).val('');
             $(post_ques_detail).val('');
         }
@@ -259,9 +263,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 snipet: null
             };
 
-            PostService.sendPost(followupPost);
+            PostService.sendPost(followupPost, function () {
+                $scope.displayFollowupList($scope.selectedPost);
+            });
             $(followupTextInput).val('');
-            $scope.displayFollowupList($scope.selectedPost);
 
         }
 
