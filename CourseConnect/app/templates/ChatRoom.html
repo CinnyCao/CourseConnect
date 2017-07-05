@@ -38,6 +38,11 @@
                 <div class="row">
                     space for filters etc
                     <!--TODO: Fill in this section-->
+                    <!--Resources Filter-->
+                    <div ng-show="var_forum == 'resources'">
+                        <input type="text" class="chat_message_input" ng-model="var_search_info"/>
+                        <button type="button" class="btn btn-default" ng-click="displayResource()">Search or Display All</button>
+                    </div>
                 </div>
             </div>
             <!--Middle Section-->
@@ -76,10 +81,13 @@
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
                 <!--// TODO: Posts Content-->
+
                 <div class="chat_forum_content" ng-show="var_forum == 'posts'">
                    
                 </div>
                 <!--// TODO: Resources Content-->
+                <!--Resources Content-->
+
                 <div class="chat_forum_content" ng-show="var_forum == 'resources'">
                     <div class="resourcebox" scroll-glue>
                         <table class="table">
@@ -120,7 +128,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--Contact Prof-->
