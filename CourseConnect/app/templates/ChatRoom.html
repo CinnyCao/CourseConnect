@@ -63,7 +63,7 @@
                         <div class="chat_message row" ng-repeat="m in var_messages">
                             <div class="left_avatar col-lg-1">
                                 <div ng-hide="isCurrentUser(m.userId)">
-                                    <img src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                             </div>
                             <div class="right_avatar col-lg-1">
                                 <div ng-show="isCurrentUser(m.userId)">
-                                    <img src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -203,14 +203,14 @@
                     <p>Friends</p>
                     <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1}">
                         <a class="user_card_li" href="">
-                            <img src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
+                            <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
                             <p>{{ user.FirstName }} {{user.LastName}}</p>
                         </a>
                     </div>
                     <p>Others</p>
                     <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
                         <a class="user_card_li" href="">
-                            <img src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
+                            <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
                             <p>{{ user.FirstName }} {{user.LastName}}</p>
                         </a>
                     </div>

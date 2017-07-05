@@ -2,6 +2,17 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
+chatCtrls.directive('onErrorSrc', function($http) {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('error', function() {
+                if (attrs.src != attrs.onErrorSrc) {
+                    attrs.$set('src', attrs.onErrorSrc);
+                }
+            });
+        }
+    };
+});
 
 chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $routeParams) {
     // get classroom info with current user and its permissions
