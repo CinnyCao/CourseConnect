@@ -220,7 +220,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.loadPosts = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
-                $scope.loadPosts();
             });
         }
 
@@ -269,7 +268,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.displayFollowupList = function (post) {
             PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
-                $scope.displayFollowupList($scope.selectedPost);
             });
         }
 
