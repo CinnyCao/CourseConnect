@@ -3,13 +3,29 @@
 var chatCtrls = angular.module('CtrlChat', []);
 
 
-/*chatCtrls.service('ChatService', ['$http', function ($http) {
+chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $routeParams) {
     // TODO: service to get room data
 
     // TODO: service to get current user info
 
     // TODO: service to get all users in this chatroom
-    this.getAllClassMates = function() {
+    this.getAllClassMates = function (callbackFcn) {
+        $http.post('/api/allClassmatesInClass', {coursecode : $routeParams.coursecode}).then(function(res) {
+            for(var i = 0; i < res.data.length; i++) {
+                res.data[i]["friendOfCurrentUser"] = 0;
+            }
+            callbackFcn(res.data);
+        });
+        /*return [
+            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
+            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
+            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
+            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
+            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
+        ];*/
+    };
+
+    /*this.getAllClassMates = function() {
         $http.post('/api/allClassmatesInClass', {coursecode : $routeParams.coursecode, token : $cookies.get('loginToken')}).then(function(res) {
             console.log(res);
             console.log(res.data);
@@ -23,7 +39,7 @@ var chatCtrls = angular.module('CtrlChat', []);
             {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
             {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
         ];
-    };
+    };*/
 
     /*this.getAllClassMates = function () {
         // hard code data
@@ -45,7 +61,7 @@ var chatCtrls = angular.module('CtrlChat', []);
     // TODO: service to pull all posts
 
     // TODO: service to pull all resources
-/*}]);*/
+}]);
 
 
 chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService',
@@ -162,7 +178,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.var_forum = "chatroom"; // set Chat Room as default forum
             // $scope.var_room = $scope.getRoomData($routeParams.courseid);
             $scope.var_room_name = $scope.getRoomName();
-            $scope.var_user_list = ChatService.getAllClassMates();
+            ChatService.getAllClassMates(function(data) { $scope.var_user_list = data; });
+            //$scope.var_user_list = student_list;
 
             $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
 
