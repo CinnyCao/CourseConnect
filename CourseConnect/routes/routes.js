@@ -15,6 +15,7 @@ var express = require('express'),
 
 var accountService = require('./api-account');
 var classService = require('./api-class');
+var postService = require('./api-post');
 var chatService = require('./api-chat');
 var fileService = require('./api-fileuploads');
 
@@ -48,6 +49,12 @@ router.get('/files/:classid', fileService.findFile);
 router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
+
+// --------------- Post Foum API----------------------------
+router.post('/sendPost', postService.sendPost);
+router.post('/getPosts', postService.getPosts);
+router.post('/getFollowups', postService.getFollowups);
+
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);

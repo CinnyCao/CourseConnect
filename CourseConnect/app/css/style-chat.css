@@ -1,7 +1,7 @@
 .chat_room {
-    background-color: #ACD8F0;
+    /*background-color: #ACD8F0;*/
     text-align: center;
-    border: 1px solid #ACD8F0;
+    /*border: 1px solid #ACD8F0;*/
     padding-top: 10px;
 }
 
@@ -117,8 +117,57 @@
     display: inline-block;
 }
 
+
+#question_tiem:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+}
+
+.title {
+    float: left;
+    font: bold 15px Georgia, serif;
+}
+
+.timestamp {
+    float: right;
+}
+
+.snipet {
+    clear: left;
+    text-align: left;
+}
+
+.media {
+    text-align: left;
+}
+
+#post_forum_question {
+    background:white;  
+    border: lightgray solid 1px;
+    border-radius: 10px;
+}
+
+#post_forum_answers{
+    background:white;  
+    border: lightgray solid 1px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.txt-left {
+    text-align: left;
+}
+
+.float-left{
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
 .display_left{
     padding: 5px;
-    background-clor: #ACD8F0;
+    background-color: #ACD8F0;
     display: inline-block;
 }

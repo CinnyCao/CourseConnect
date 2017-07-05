@@ -17,11 +17,11 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
     this.getAllClassMates = function () {
         // hard code data
         return [
-            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
-            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
-            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
-            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
-            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
+            { "userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0 },
+            { "userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1 },
+            { "userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1 },
+            { "userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0 },
+            { "userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0 },
         ];
     };
 
@@ -60,14 +60,45 @@ chatCtrls.service('ChatService', ['$http', function ($http) {
         return $http(req);
     };
 
-    // TODO: service to pull all posts
+}]);
 
-    // TODO: service to pull all resources
+chatCtrls.service('PostService', ['$http', function ($http) {
+    // Service to create post
+    this.sendPost = function (postMsg, callback) {
+        $http.post('/api/sendPost', postMsg)
+            .success(function () {
+                callback();
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured.');
+            });
+    };
+
+    // Service to retrieve all posts for given class
+    this.getPosts = function (roomID, callback) {
+        $http.post('/api/getPosts', { roomID }).success(function (res) {
+            callback(res.postList);
+        })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.');
+            });
+    };
+
+    // Service to retrieve all followups for given post
+    this.displayFollowupList = function (postID, callback) {
+        $http.post('/api/getFollowups', { postID })
+            .success(function (res) {
+                callback(res.followupList);
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.')
+            });
+    };
 }]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval, CommonService, ChatService) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout) {
         console.log('ChatCtrl is running');
 
         $scope.var_userValid = false;
@@ -85,18 +116,18 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             return $scope.room_data.courseCode + " " + CommonService.getSemesterName($scope.room_data.semester) + " " + $scope.room_data.year;
         };
 
-        $scope.uploadFile = function(file) {
+        $scope.uploadFile = function (file) {
             var file = $scope.userFile;
             var storedFileloc;
             var uploadUrl = "/api/file-upload";
             fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
             $http.post('/api/file-store', {classid: $routeParams.classid, file : file.name})
-                .then(function (res){
+                .then(function (res) {
                     storedFileloc = res.data;
                     console.log("The file has been stored at " +
                         storedFileloc[0].fileLocation);
                     $scope.displayResource();
-            });
+                });
         };
 
         /*$scope.search = function(){
@@ -108,30 +139,30 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };*/
 
-        $scope.deleteResource = function($event){
+        $scope.deleteResource = function ($event) {
             var fileName = $event.currentTarget.value;
 
             $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), classid: $routeParams.classid, fileName: fileName})
-                .then(function(res){
-                    if(res.data == true){
+                .then(function (res) {
+                    if (res.data == true) {
                         console.log("Deletion is successful");
                         $scope.displayResource();
                     }
-            });
+                });
         };
 
-        $scope.displayResource = function(){
+        $scope.displayResource = function () {
             $http.get('/api/files/' + $routeParams.classid).then(function(res){
-                if(typeof $scope.var_search_info == 'undefined'){
+                if (typeof $scope.var_search_info == 'undefined') {
                     $scope.var_search_info = '';
                 }
                 console.log("The info we search is " + $scope.var_search_info);
                 $scope.var_resources = [];
                 //console.log(res.data[1].fileLocation);
                 //console.log(res.data[2].fileLocation);
-                for (var i in res.data){
-                    console.log("The file name is "+ res.data[i].fileLocation.split("/")[2]);
-                    if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
+                for (var i in res.data) {
+                    console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
+                    if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
                         //display the info in html and set up the link for downloading
                         console.log("check passed");
                         $scope.var_resources.push({
@@ -189,6 +220,64 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $interval.cancel($scope.msgInterval);
         };
 
+        // ---------------POST FOURM FUNCTION--------------------------
+        $scope.loadPosts = function () {
+            PostService.getPosts($scope.room_data.courseId, function (postList) {
+                $scope.postList = postList;
+            });
+        }
+
+        $scope.postQuestion = function (summary, detail) {
+            console.log(CommonService.getUserId);
+            // TODO: Get userID and RoomID
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var post = {
+                title: summary,
+                description: detail,
+                timestamp: time,
+                parentPostID: -1,
+                roomID: $scope.room_data.courseId,
+                snipet: detail
+            };
+
+            PostService.sendPost(post, $scope.loadPosts);
+            $(post_ques_summary).val('');
+            $(post_ques_detail).val('');
+        }
+
+        $scope.displaySelectedPost = function (post) {
+            $scope.selectedPost = post;
+            $scope.displayFollowupList(post);
+        }
+
+
+        $scope.postFollowup = function (detail) {
+            //TODO: Allow user to post followup
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var followupPost = {
+                title: null,
+                description: detail,
+                timestamp: time,
+                parentPostID: $scope.selectedPost.po_id,
+                roomID: $scope.room_data.courseId,
+                snipet: null
+            };
+
+            PostService.sendPost(followupPost, function () {
+                $scope.displayFollowupList($scope.selectedPost);
+            });
+            $(followupTextInput).val('');
+
+        }
+
+        $scope.displayFollowupList = function (post) {
+            PostService.displayFollowupList(post.po_id, function (followupList) {
+                $scope.followupList = followupList;
+            });
+        }
+
+        // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
         $scope.init = function () {
             $scope.var_userValid = true;
 
@@ -213,6 +302,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.msgInterval = $interval($scope.fetchMessages, 2500);
 
             $scope.var_user_list = ChatService.getAllClassMates();
+
+            $scope.postList = [];
+            $scope.followupList = [];
+            $scope.selectedPost = {};
         };
 
         // only show chat room when user is enrolled in it
