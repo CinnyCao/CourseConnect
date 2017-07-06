@@ -31,9 +31,13 @@ router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
 router.post('/updateddesc', accountService.updateDescription);
 
+// Check out and get all classmates currently enrolled in a particular chatroom
 router.post('/allClassmatesInClass', classService.getStudents);
 
+// Allow users to look at courses/chatrooms enrolled
 router.get('/getcrsenrolled', accountService.getCoursesEnrolled);
+router.post('/crsunenroll', accountService.courseUnenroll);
+// User logs out
 router.get('/logout', accountService.logout);
 
 // Get class room by courseid, semester and year
