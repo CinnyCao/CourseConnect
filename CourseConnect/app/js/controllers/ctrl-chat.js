@@ -294,6 +294,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             });
         }
 
+        $scope.submitReport = function (firstname, lastname, content) {
+            $http.post('/api/reportComplaint', {fn: firstname, ln: lastname, title: $scope.subject, complaint: $scope.description, quote: content, roomid: $scope.room_data.courseId}).then(
+                function (res) {
+                    if (res.data.reported == true) {
+                        $('reportModal').modal('hide');
+                    }
+                }
+            )
+        }
+
         // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         $scope.init = function () {

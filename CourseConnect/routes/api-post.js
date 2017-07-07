@@ -92,3 +92,41 @@ exports.getFollowups = function(req, res){
         
     })    
 }
+
+exports.submitComplaint = function (req, res) {
+    var getReportedUserIDQuery = "SELECT u_id FROM Users WHERE FirstName='" + req.body.fn + "' AND LastName='" + req.body.ln + "';";
+    db.executeQuery(getReportedUserIDQuery, function(err, result) {
+        if (err) {
+            console.error("ERROR: cannot retrieve post user information. Error: " + err);
+            res.status(500).json({
+                error: "An unexpected error occured when querying the database",
+                reported: false
+            });
+        }
+        var getPostIDQuery = "SELECT po_id FROM Posts WHERE description='" + req.body.quote + "' AND ParticipantID=" + result[0].u_id + " AND room_id=" + req.body.roomid + ";";
+        db.executeQuery(getPostIDQuery, function(err, result) {
+            if (err) {
+                console.error("ERROR: cannot retrieve post id. Error: " + err);
+                res.status(500).json({
+                    error: "An unexpected error occured when querying the database",
+                    reported: false
+                });
+            }
+            var recordComplaintQuery = "INSERT INTO Complaints (User, Summary, PostNum, Description) VALUES (" + req.session.userid + ", '" + req.body.title + "', " + result[0].po_id + ", '" +
+                    req.body.quote + "');";
+            db.executeQuery(recordComplaintQuery, function(err, result) {
+                if (err) {
+                    console.error("ERROR: cannot record complaint. Error: " + err);
+                    res.status(500).json({
+                        error: "An unexpected error occured when querying the database",
+                        reported: false
+                    });
+                }
+                res.status(200).json({
+                    result: result,
+                    reported: true
+                });
+            })
+        })
+    })
+}

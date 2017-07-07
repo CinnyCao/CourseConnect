@@ -121,7 +121,32 @@
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
-                                        <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
+                                        <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#reportModal">Report</button>
+                                        <div id="reportModal" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Report Post As Inappropriate/Spam</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            The content of the post will be automatically submitted with the contents of this form.<br/>
+                                                            <div class="form-group">
+                                                                <label for="subject">Subject</label>
+                                                                <input type="text" class="form-control" id="subject" ng-model="subject"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="description">Description/Nature of Complaint</label>
+                                                                <textarea class="form-control" id="description" ng-model="description"></textarea>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-warning" ng-click="submitReport(followup.FirstName, followup.LastName, followup.description)">Submit</button>
+                                                        </form>
+                                                        <p style="color:red;">{{message}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </h4>
                                     <p>{{followup.description}}</p>
                                 </div>
