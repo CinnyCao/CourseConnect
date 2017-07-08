@@ -2,81 +2,148 @@
 
 var chatCtrls = angular.module('CtrlChat', []);
 
-/*chatCtrls.service('ChatService', ['$http', function ($http) {
-    // TODO: service to get room data
+chatCtrls.directive('onErrorSrc', function($http) {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('error', function() {
+                if (attrs.src != attrs.onErrorSrc) {
+                    attrs.$set('src', attrs.onErrorSrc);
+                }
+            });
+        }
+    };
+});
 
-    // TODO: service to get current user info
+chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $routeParams) {
+    // get classroom info with current user and its permissions
+    this.getClassWithUserPermission = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/getClass/" + classid,
+        };
 
-    // TODO: service to get all users in this chatroom
-    this.getAllClassMates = function () {
-        // hard code data
-        return [
+        return $http(req);
+    };
+
+    this.getAllClassMates = function (callbackFcn) {
+        $http.post('/api/allClassmatesInClass', {classid : $routeParams.classid}).then(function(res) {
+            for(var i = 0; i < res.data.length; i++) {
+                res.data[i]["friendOfCurrentUser"] = 0;
+            }
+            callbackFcn(res.data);
+        });
+        /*return [
             {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
             {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
             {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
             {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
             {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
-        ];
+        ];*/
     };
 
-    // TODO: service to get list of history messages with limit of N
+    // pull messages for this classroom
+    this.getMessages = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/messages/" + classid
+        };
 
-    // TODO: service to send a messageu
+        return $http(req);
+    };
 
-    // TODO: service to pull messages with limit of N
+    // send out a message
+    this.sendMessage = function (pId, message) {
+        console.log("pid: "+pId+" message"+message);
+        var req = {
+            method: "POST",
+            url: "api/sendMsg",
+            data: {
+                pId: pId,
+                message: message
+            }
+        };
 
-    // TODO: service to pull all posts
+        return $http(req);
+    };
 
-    // TODO: service to pull all resources
-}]);*/
+    // join class as Student
+    this.joinClass = function (classid) {
+        var req = {
+            method: "GET",
+            url: "/api/joinclass/" + classid
+        };
+
+        return $http(req);
+    };
+
+}]);
+
+chatCtrls.service('PostService', ['$http', function ($http) {
+    // Service to create post
+    this.sendPost = function (postMsg, callback) {
+        $http.post('/api/sendPost', postMsg)
+            .success(function () {
+                callback();
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured.');
+            });
+    };
+
+    // Service to retrieve all posts for given class
+    this.getPosts = function (roomID, callback) {
+        $http.post('/api/getPosts', { roomID }).success(function (res) {
+            callback(res.postList);
+        })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.');
+            });
+    };
+
+    // Service to retrieve all followups for given post
+    this.displayFollowupList = function (postID, callback) {
+        $http.post('/api/getFollowups', { postID })
+            .success(function (res) {
+                callback(res.followupList);
+            })
+            .error(function (res) {
+                alert('Error: An unexpected error occured. Try refreshing the page.')
+            });
+    };
+}]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', 'CommonService', 'ChatService',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, CommonService, ChatService) {
-
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout) {
         console.log('ChatCtrl is running');
+
+        $scope.var_userValid = false;
+
+        // only show chat room when user is logged in
+        if (!CommonService.isLoggedIn()) {
+            $location.path("/login");
+        }
 
         $scope.var_messages = [];
         $scope.var_resources = [];//To store the file for display
 
         // get name of classroom
         $scope.getRoomName = function () {
-
-            return $routeParams.coursecode + " " + CommonService.getSemesterName($routeParams.semester) + " " + $routeParams.year;
-
+            return $scope.room_data.courseCode + " " + CommonService.getSemesterName($scope.room_data.semester) + " " + $scope.room_data.year;
         };
 
-        $scope.sendMsg = function () {
-            // hard code data TODO:
-            var time = new Date();
-            time = time.toLocaleString();
-            $scope.var_messages.push({
-                "userId": 1,
-                "profilePic": "img/profilePicDefault.jpg",
-                "name": "aa",
-                "message": $scope.var_chat_message,
-                //"file": document.getElementById("studentFile").value,
-                "time": time
-            });
-
-            $scope.var_chat_message = "";
-
-
-        };
-
-
-        $scope.uploadFile = function(file) {
+        $scope.uploadFile = function (file) {
             var file = $scope.userFile;
             var storedFileloc;
             var uploadUrl = "/api/file-upload";
             fileUpload.uploadFileToUrl(file, uploadUrl, $scope.getRoomName());
-            $http.post('/api/file-store', {coursecode: $routeParams.coursecode, file : file.name})
-                .then(function (res){
+            $http.post('/api/file-store', {classid: $routeParams.classid, file : file.name})
+                .then(function (res) {
                     storedFileloc = res.data;
                     console.log("The file has been stored at " +
                         storedFileloc[0].fileLocation);
                     $scope.displayResource();
-            });
+                });
         };
 
         /*$scope.search = function(){
@@ -88,38 +155,36 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };*/
 
-        $scope.deleteResource = function($event){
+        $scope.deleteResource = function ($event) {
             var fileName = $event.currentTarget.value;
-            console.log(fileName);
 
-            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode, fileName: fileName})
-                .then(function(res){
-                    if(res.data == true){
+            $http.post('/api/deleteFile', {chatRoom : $scope.getRoomName(), classid: $routeParams.classid, fileName: fileName})
+                .then(function (res) {
+                    if (res.data == true) {
                         console.log("Deletion is successful");
                         $scope.displayResource();
                     }
-            });
+                });
         };
 
-        $scope.displayResource = function(){
-            $http.post('/api/findFile', {chatRoom : $scope.getRoomName(), coursecode: $routeParams.coursecode}).then(function(res){
-                if(typeof $scope.var_search_info == 'undefined'){
+        $scope.displayResource = function () {
+            $http.get('/api/files/' + $routeParams.classid).then(function(res){
+                if (typeof $scope.var_search_info == 'undefined') {
                     $scope.var_search_info = '';
                 }
-                console.log(123);
                 console.log("The info we search is " + $scope.var_search_info);
                 $scope.var_resources = [];
                 //console.log(res.data[1].fileLocation);
                 //console.log(res.data[2].fileLocation);
-                for (var i in res.data){
-                    console.log("The file name is "+ res.data[i].fileLocation.split("/")[2]);
-                    if(res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1){
+                for (var i in res.data) {
+                    console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
+                    if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
                         //display the info in html and set up the link for downloading
                         console.log("check passed");
-                        $scope.var_resources.push({"items": res.data[i].fileLocation.split("/")[2], "address":
-                        res.data[i].fileLocation, "display" : true});
-
-
+                        $scope.var_resources.push({
+                            "items": res.data[i].fileLocation.split("/")[2],
+                            "address": res.data[i].fileLocation,
+                            "display" : true});
                     }
                 }
             });
@@ -127,8 +192,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         $scope.isCurrentUser = function (userId) {
-            // hard code, assume current user is id 1 TODO
-            if (userId == 1) {
+            if (userId == CommonService.getUserId()) {
                 return true;
             } else {
                 return false;
@@ -138,164 +202,160 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.onChatMessageKeyPress = function ($event) {
             if ($event.which === 13) {
                 $scope.sendMsg();
+
             }
         };
 
-        $scope.init = function () {
-            $scope.var_forum = "chatroom"; // set Chat Room as default forum
-            // $scope.var_room = $scope.getRoomData($routeParams.courseid);
-            $scope.var_room_name = $scope.getRoomName();
-            $scope.var_user_list = ChatService.getAllClassMates();
-
-            $scope.var_messages.push({"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "message": "Hi, this is a test message from other user", "time": "2017-6-20 10:37:20"});
-
+        $scope.fetchMessages = function () {
+            ChatService.getMessages($routeParams.classid, $scope.lastMessageId, 100)
+                .then(function (result) {
+                    if (result.status == 200) {
+                        if (result.data.length > $scope.var_messages.length) {
+                            $scope.var_messages = result.data;
+                        }
+                    }
+                });
         };
 
-        $scope.init();
+        var submitmsgTimer;
+        $scope.sendMsg = function () {
+            ChatService.sendMessage($scope.room_data.participantId, CommonService.sqlEscapeString($scope.var_chat_message))
+                .then(function () {
+                    $scope.var_chat_message = "";
+
+                    // do not execute previous callback if this request is submitted multiple times within a short time
+                    if (submitmsgTimer) {
+                        clearTimeout(submitmsgTimer);
+                    }
+
+                    submitmsgTimer = setTimeout(function() {
+                        // fetch messages inmmediatly after posting succeed
+                        $scope.fetchMessages();
+                        // restart interval
+                        $scope.msgInterval = $interval($scope.fetchMessages, 2500);
+                    }, 200);
+                });
+            $interval.cancel($scope.msgInterval);
+        };
+
+        // ---------------POST FOURM FUNCTION--------------------------
+        $scope.loadPosts = function () {
+            PostService.getPosts($scope.room_data.courseId, function (postList) {
+                $scope.postList = postList;
+            });
+        }
+
+        $scope.postQuestion = function (summary, detail) {
+            console.log(CommonService.getUserId);
+            // TODO: Get userID and RoomID
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var post = {
+                title: summary,
+                description: detail,
+                timestamp: time,
+                parentPostID: -1,
+                roomID: $scope.room_data.courseId,
+                snipet: detail
+            };
+
+            PostService.sendPost(post, $scope.loadPosts);
+            $(post_ques_summary).val('');
+            $(post_ques_detail).val('');
+        }
+
+        $scope.displaySelectedPost = function (post) {
+            $scope.selectedPost = post;
+            $scope.displayFollowupList(post);
+        }
+
+
+        $scope.postFollowup = function (detail) {
+            //TODO: Allow user to post followup
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var followupPost = {
+                title: null,
+                description: detail,
+                timestamp: time,
+                parentPostID: $scope.selectedPost.po_id,
+                roomID: $scope.room_data.courseId,
+                snipet: null
+            };
+
+            PostService.sendPost(followupPost, function () {
+                $scope.displayFollowupList($scope.selectedPost);
+            });
+            $(followupTextInput).val('');
+
+        }
+
+        $scope.displayFollowupList = function (post) {
+            PostService.displayFollowupList(post.po_id, function (followupList) {
+                $scope.followupList = followupList;
+            });
+        }
+
+        // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        $scope.init = function () {
+            $scope.var_userValid = true;
+
+            // get room data with current user's permission on it
+            ChatService.getClassWithUserPermission($routeParams.classid)
+                .then(function (result) {
+                    $scope.room_data = result.data;
+                    // set room name
+                    $scope.var_room_name = $scope.getRoomName();
+                });
+            // set Chat Room as default forum
+            $scope.var_forum = "chatroom";
+
+            $scope.displayResource();
+
+            // pull messages
+            $scope.fetchMessages();
+            // poll for new messages every 2.5 seconds
+            if ($scope.msgInterval) {
+                $interval.cancel($scope.msgInterval);
+            }
+            $scope.msgInterval = $interval($scope.fetchMessages, 2500);
+
+            ChatService.getAllClassMates(function(data) { $scope.var_user_list = data; });
+
+            $scope.postList = [];
+            $scope.followupList = [];
+            $scope.selectedPost = {};
+        };
+
+        // only show chat room when user is enrolled in it
+        CommonService.checkIfInClass($routeParams.classid)
+            .then(function (result) {
+                if (result.data.inClass) {
+                    $scope.init();
+                } else {
+                    var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
+                    if (joinClass) {
+                        ChatService.joinClass($routeParams.classid)
+                            .then(function (result) {
+                                $scope.init();
+                            })
+                            .catch(function (e) {
+                                $location.path("/");
+                            });
+                    } else {
+                        $location.path("/"); // back to home page
+                    }
+                }
+            });
 
         $scope.$watch("var_forum", function () {
-            $scope.displayResource();
+            if ($scope.var_forum == "resources") {
+                $scope.displayResource();
+            }
         });
 
-        // $scope.onLogoutClicked
-        //
-        // $("#logout").click(function() {
-        //     logout();
-        // });
-        //
-        // // Set the user name to empty
-        // function logout() {
-        //     $.get("/logout", function(data) {
-        //         updateUI("");
-        //     });
-        // }
-        //
-        // // Stop polling for messages.  You will hvave to reload the
-        // // page to start polling again.
-        // $("#pause").click(function() {
-        //     var exit = confirm("Are you sure you want to end the session?");
-        //     if (exit == true) {
-        //         clearInterval(msgInterval);
-        //     }
-        // });
-        //
-        // // When the user enters a message send it to the server
-        // // The format of the message is: "username: message"
-        // // where username can be found in the content of the HTML
-        // // element of class "name", and the message comes from
-        // // the input text value.
-        // // Send it using a post message to "addmsg"
-        // var submitmsgTimer;
-        // $("#submitmsg").click(function() {
-        //     var username = $(".name").html();
-        //     var clientmsg = username + ": " + insertEmojiIfAny($("#usermsg").val());
-        //     $.post("/addmsg", {
-        //         text: clientmsg
-        //     }, function() {
-        //         // do not execute previous callback if this request is submitted
-        //         // multiple times within a short time
-        //         if (submitmsgTimer) {
-        //             clearTimeout(submitmsgTimer);
-        //         }
-        //
-        //         submitmsgTimer = setTimeout(function() {
-        //             // fetch messages inmmediatly after posting succeed
-        //             buildMessages();
-        //             // restart interval
-        //             msgInterval = setInterval(buildMessages, 2500);
-        //         }, 200);
-        //     });
-        //     $("#usermsg").val('');
-        //     // waiting for post callback
-        //     clearInterval(msgInterval);
-        //     return false;
-        // });
-        //
-        // // Map Enter key to submit message too
-        // $("#usermsg").keypress(function(e) {
-        //     if (e.which == 13) {
-        //         // by default it seems to refresh the page
-        //         e.preventDefault();
-        //         $('#submitmsg').click();
-        //     }
-        // });
-        //
-        // // Get the user name from the server by making an
-        // // ajax GET request to the url "/name"
-        // // The callback function on success will call updateUI
-        // // with the new value for name
-        // function getName() {
-        //     $.ajax({
-        //         type : "GET",
-        //         url : "/name",
-        //         dataType : "json",
-        //         contentType: "application/json; charset=utf-8",
-        //         success : function (response) {
-        //             var name = response['name'];
-        //             updateUI(name);
-        //         }
-        //
-        //     });
-        // }
-        //
-        // function setNameAndAvatar(avatar) {
-        //     $("#avatar_picker").hide();
-        //     postName(avatar.src);
-        //     // set focus on message input box for easy typing
-        //     $("#usermsg").focus();
-        // }
-        //
-        // // Send the user name to the server
-        // function postName(avatarSrc) {
-        //     var name = $("#user-name").val();
-        //     var avatar = '<img class="inline_pic" src="' + avatarSrc + '">'
-        //
-        //     // Clear the text field
-        //     $("#user-name").val("");
-        //
-        //     $.ajax({
-        //         url: "/name",
-        //         type: "POST",
-        //         dataType: "json",
-        //         contentType: "application/json; charset=utf-8",
-        //         data: JSON.stringify( { "name": avatar + " " + name } ),
-        //         success: function(response) {
-        //             var name = response['name'];
-        //             updateUI(name);
-        //         }
-        //     });
-        // }
-        //
-        //
-        //
-        // // If the user has not entered a name show the name entry input
-        // // Otherwise display the name
-        // function updateUI(name) {
-        //     $(".name").html(name);
-        //     if (name !== '') {
-        //         $("#name-form").hide();
-        //     } else {
-        //         $("#name-form").show();
-        //     }
-        // }
-        //
-        // // Get list of messages to display in the chat box
-        // function buildMessages() {
-        //     $.get('messages', function(data) {
-        //         var parent = $('#chatbox');
-        //         parent.empty();
-        //
-        //         var messages = JSON.parse(data);
-        //         for (var i = 0; i < messages.length; i++) {
-        //             var tmp = $('<p class="message">').html(messages[i]);
-        //             parent.append(tmp);
-        //         }
-        //         // scroll to latest message
-        //         parent.animate({
-        //             scrollTop: parent.children().last().offset().top
-        //         }, 500);
-        //     });
-        // }
-        //
+        $scope.$on("$destroy", function(){
+            console.log("destroy");
+            $interval.cancel($scope.msgInterval);
+        });
     }
 ]);

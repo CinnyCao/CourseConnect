@@ -58,15 +58,22 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
             IndexService.getClassroom($scope.var_course_code, $scope.var_semester, $scope.var_year)
                 .then(function (result) {
                     if (result.data.found) {
-                        $location.path("/chat/" + $scope.var_year + "/" + $scope.var_semester + "/" + $scope.var_course_code);
+                        if (CommonService.isLoggedIn()) {
+                            $location.path("/class/" + result.data.courseId);
+                        } else {
+                            var toLogin = confirm("Classroom found, please login to view the room.");
+                            if (toLogin) {
+                                $location.path("/login");
+                            }
+                        }
                     } else {
                         // check if user is logged in
                         if (CommonService.isLoggedIn()) { // if yes, ask him to create a class room
                             var createRoom = confirm("Sorry, room for this course does not exist.\nDo you want to create a room for it?");
                             if (createRoom) {
                                 IndexService.createClassroom(CommonService.getUserId(), $scope.var_course_code, $scope.var_semester, $scope.var_year)
-                                    .then(function () {
-                                        $location.path("/chat/" + $scope.var_year + "/" + $scope.var_semester + "/" + $scope.var_course_code);
+                                    .then(function (res) {
+                                        $location.path("/class/" + res.data.courseId);
                                     });
                             } else {
                                 document.getElementById("courseCodeInput").select();

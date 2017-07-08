@@ -11,10 +11,8 @@ exports.setRoom = function(req, res) {
 };
 
 exports.findFile = function(req, res){
-
-    var query;
-    query = "Select fileLocation from Resources AS r INNER JOIN Participant AS p ON r.ParticipantID=p.p_id INNER " +
-        "JOIN Class AS c ON c.c_id=p.ClassID WHERE c.CourseCode='" + req.body.coursecode + "';";
+    var query = "Select r_id, fileLocation from Resources AS r INNER JOIN Participant AS p ON r.ParticipantID=p.p_id INNER " +
+        "JOIN Class AS c ON c.c_id=p.ClassID WHERE c.c_id='" + req.params.classid + "';";
     db.executeQuery(query, function (err, result){
         if(err){
             console.log("ERROR: Failed to retrieve fileLocation. Error: " + err);
@@ -27,7 +25,6 @@ exports.findFile = function(req, res){
 exports.uploadFile = function(req, res){
     var fs = require('fs');
     var mkdirp = require('mkdirp');
-    //var chatroom = req.get('loc');
     console.log(req.files.file.name);
     console.log("The chatRoom is " + chatRoom);
 
@@ -48,46 +45,33 @@ exports.uploadFile = function(req, res){
 };
 
 exports.deleteFile = function(req, res) {
-    var courseCode = req.body.coursecode;
-    var userId;
-    var c_id;
+    var classid = req.body.classid;
+    var userId = req.session.userid;
     var p_id;
     var r_id;
 
-    userId = req.session.userid;
-
-    //var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
-    var query2 = "Select c_id from Class Where CourseCode='" + courseCode + "'; ";
-    db.executeQuery(query2, function (err, result) {
+    var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + classid + "';";
+    db.executeQuery(query3, function (err, result) {
         if (err) {
-            console.log("ERROR: Failed to retreive c_id. Error: " + err);
+            console.log("ERROR: Failed to retrive p_id. Error: " + err);
             res.status(404);
         }
-        c_id = result[0].c_id;
-        var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + c_id +
-            "';";
-        db.executeQuery(query3, function (err, result) {
-            if (err) {
-                console.log("ERROR: Failed to retrive p_id. Error: " + err);
+        //var resourceTime = new Date();
+        p_id = result[0].p_id;
+        var query4 = "Select r_id from Resources Where fileLocation='" + req.body.fileName + "' and ParticipantID='" + p_id + "';";
+        db.executeQuery(query4, function(err, result){
+            if(err){
+                console.log("ERROR: Failed to retrieve r_id. Error:" + err);
                 res.status(404);
             }
-            //var resourceTime = new Date();
-            p_id = result[0].p_id;
-            var query4 = "Select r_id from Resources Where fileLocation='" + req.body.fileName + "' and ParticipantID='" + p_id + "';";
-            db.executeQuery(query4, function(err, result){
+            r_id = result[0].r_id;
+            var queryDel = "DELETE FROM Resources Where r_id='" + r_id + "';";
+            db.executeQuery(queryDel, function(err, result){
                 if(err){
-                    console.log("ERROR: Failed to retrieve r_id. Error:" + err);
+                    console.log("ERROR: Failed to delete the file. Error: " + err);
                     res.status(404);
                 }
-                r_id = result[0].r_id;
-                var queryDel = "DELETE FROM Resources Where r_id='" + r_id + "';";
-                db.executeQuery(queryDel, function(err, result){
-                    if(err){
-                        console.log("ERROR: Failed to delete the file. Error: " + err);
-                        res.status(404);
-                    }
-                    res.status(200).send(true);
-                });
+                res.status(200).send(true);
             });
         });
     });
@@ -95,48 +79,36 @@ exports.deleteFile = function(req, res) {
 };
 
 exports.storeFile = function(req, res){
-    var courseCode = req.body.coursecode;
-    var userId;
-    var c_id;
+    var classid = req.body.classid;
+    var userId = req.session.userid;
     var p_id;
 
-    userId = req.session.userid;
-    //var query2 = "UPDATE Users SET fileLocation='" + "img/" + req.body.file + "' WHERE u_id=" + result[0].user_id + ";";
-    var query2 = "Select c_id from Class Where CourseCode='" + courseCode + "'; ";
-    db.executeQuery(query2, function(err, result){
+    var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + classid + "';";
+    db.executeQuery(query3, function(err, result){
         if(err){
-            console.log("ERROR: Failed to retreive c_id. Error: " + err);
+            console.log("ERROR: Failed to retrive p_id. Error: " + err);
             res.status(404);
         }
-        c_id = result[0].c_id;
-        var query3 = "Select p_id from Participant Where UserID='" + userId + "' and ClassID='" + c_id +
-            "';";
-        db.executeQuery(query3, function(err, result){
+        var resourceTime = new Date();
+        p_id = result[0].p_id;
+        var query4 = "Insert INTO Resources(resourceTime, fileLocation, ParticipantID) Select * FROM (Select '" + resourceTime +
+            "', 'file/" + chatRoom + "/" + req.body.file + "', '" + p_id + "') AS tmp WHERE NOT EXISTS (SELECT fileLocation, ParticipantID" +
+            " FROM Resources WHERE fileLocation='file/" + chatRoom + "/" + req.body.file + "' and ParticipantID='" + p_id + "') LIMIT 1;";
+        db.executeQuery(query4, function(err, result){
             if(err){
-                console.log("ERROR: Failed to retrive p_id. Error: " + err);
+                console.log("ERROR: Failed to insert filelocation to Resources. Error:" + err);
                 res.status(404);
             }
-            var resourceTime = new Date();
-            p_id = result[0].p_id;
-            var query4 = "Insert INTO Resources(resourceTime, fileLocation, ParticipantID) Select * FROM (Select '" + resourceTime +
-                "', 'file/" + chatRoom + "/" + req.body.file + "', '" + p_id + "') AS tmp WHERE NOT EXISTS (SELECT fileLocation, ParticipantID" +
-                " FROM Resources WHERE fileLocation='file/" + chatRoom + "/" + req.body.file + "' and ParticipantID='" + p_id + "') LIMIT 1;";
-            db.executeQuery(query4, function(err, result){
+            var query5 = "Select fileLocation from Resources Where fileLocation='" + "file/" + chatRoom + "/" + req.body.file + "';";
+            db.executeQuery(query5, function(err, result){
                 if(err){
-                    console.log("ERROR: Failed to insert filelocation to Resources. Error:" + err);
+                    console.log("ERROR: Failed to retrieve fileLocation from Reousrces. Error: " + err);
                     res.status(404);
                 }
-                var query5 = "Select fileLocation from Resources Where fileLocation='" + "file/" + chatRoom + "/" + req.body.file + "';";
-                db.executeQuery(query5, function(err, result){
-                    if(err){
-                        console.log("ERROR: Failed to retrieve fileLocation from Reousrces. Error: " + err);
-                        res.status(404);
-                    }
-                    res.status(200).send(result);
-                });
-
-
+                res.status(200).send(result);
             });
+
+
         });
     });
     /*var query3 = "SELECT fileLocation FROM Users WHERE u_id=" + result[0].user_id + ";";

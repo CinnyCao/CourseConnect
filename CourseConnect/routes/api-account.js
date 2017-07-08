@@ -161,7 +161,7 @@ exports.updateDescription = function (req, res) {
 
 exports.getCoursesEnrolled = function (req, res) {
     if (req.session.userid) {
-        var query2 = "SELECT CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
+        var query2 = "SELECT c_id, CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
         db.executeQuery(query2, function(err, result) {
             if (err) {
                 console.log("ERROR: Failed to retrieve courses user has enrolled. Error: " + err);
@@ -206,5 +206,25 @@ exports.getUser = function (req, res) {
     }
 
 };
+
+/**Get Friends */
+exports.getFriends = function (req, res) {
+    var friendQuery = "Call getFriendsByID('" + req.body.id + "')";
+    db.executeQuery(friendQuery, function (err, result) {
+		fs = [];
+        if (err) {
+            console.error("ERROR: Failed to execute token query." + err);
+            res.status(200).send({ isvalid: false, friends: [] });
+        }
+        if (result.length >= 1) {
+			
+            console.log("SUCCESS: " + req.body.id + "ID has friends." + result[0]);
+            res.status(200).send({ isvalid: true, friends: result[0] });
+        } else {
+            console.log("SUCCESS: " + req.body.id + "ID is a lone wolf. DangerZone!");
+            res.status(200).send({ isvalid: true, friends: result[0] });
+        }
+    })
+}
 
 
