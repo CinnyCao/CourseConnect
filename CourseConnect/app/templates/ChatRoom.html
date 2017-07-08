@@ -131,14 +131,14 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form>
-                                                            The content of the post will be automatically submitted with the contents of this form.<br/>
+                                                            <p style="color: red;">The content of the post will be automatically submitted with the contents of this form.</p>
                                                             <div class="form-group">
                                                                 <label for="subject">Subject</label>
-                                                                <input type="text" class="form-control" id="subject" ng-model="subject"/>
+                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]"/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="description">Description/Nature of Complaint</label>
-                                                                <textarea class="form-control" id="description" ng-model="description"></textarea>
+                                                                <textarea class="form-control" id="description" ng-model="$parent.description[followup.po_id]"></textarea>
                                                             </div>
                                                             <button type="submit" class="btn btn-warning" ng-click="submitReport(followup)">Submit</button>
                                                         </form>
