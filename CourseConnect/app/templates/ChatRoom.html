@@ -121,8 +121,8 @@
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
-                                        <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#reportModal">Report</button>
-                                        <div id="reportModal" class="modal fade" role="dialog">
+                                        <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
+                                        <div id="modal{{followup.po_id}}" class="modal">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -140,9 +140,8 @@
                                                                 <label for="description">Description/Nature of Complaint</label>
                                                                 <textarea class="form-control" id="description" ng-model="description"></textarea>
                                                             </div>
-                                                            <button type="submit" class="btn btn-warning" ng-click="submitReport(followup.FirstName, followup.LastName, followup.description)">Submit</button>
+                                                            <button type="submit" class="btn btn-warning" ng-click="submitReport(followup)">Submit</button>
                                                         </form>
-                                                        <p style="color:red;">{{message}}</p>
                                                     </div>
                                                 </div>
                                             </div>

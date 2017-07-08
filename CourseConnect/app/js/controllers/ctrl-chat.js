@@ -290,18 +290,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.displayFollowupList = function (post) {
             PostService.displayFollowupList(post.po_id, function (followupList) {
+                console.log(followupList);
                 $scope.followupList = followupList;
             });
         }
 
-        $scope.submitReport = function (firstname, lastname, content) {
-            $http.post('/api/reportComplaint', {fn: firstname, ln: lastname, title: $scope.subject, complaint: $scope.description, quote: content, roomid: $scope.room_data.courseId}).then(
-                function (res) {
-                    if (res.data.reported == true) {
-                        $('reportModal').modal('hide');
-                    }
-                }
-            )
+        $scope.submitReport = function (post) {
+            $http.post('/api/reportComplaint', {title: $scope.subject, quote: post, description: $scope.description}).then(function (res) {
+
+            })
+
         }
 
         // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
