@@ -290,13 +290,11 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.displayFollowupList = function (post) {
             PostService.displayFollowupList(post.po_id, function (followupList) {
-                console.log(followupList);
                 $scope.followupList = followupList;
             });
         }
 
         $scope.submitReport = function (post) {
-            console.log($scope);
             $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
                 if (res.data.reported == true) {
                     alert("Report successfully filed.");
