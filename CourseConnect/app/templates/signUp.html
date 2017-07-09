@@ -10,18 +10,19 @@
 </div>
 <div class="container" ng-app="CtrlUserSignup" ng-controller="SignUpCtrl">
     <div class="row">
+        <p><i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i> mandatory fields</p>
         <div class="col-md-6">
             <form>
                 <div class="form-group">
-                    <label for="userName">UserName (Your Email Address)</label>
+                    <label for="userName">UserName (Your Email Address)<i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i></label>
                     <input id="userNameInput" class="form-control" type="UserName" ng-model="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="FirstName">First Name</label>
+                    <label for="FirstName">First Name<i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i></label>
                     <input id="firstNameInput" class="form-control" type="firstName" ng-model="firstName" maxlength="15" required>
-                    <label for="LastName">Last Name</label>
+                    <label for="LastName">Last Name<i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i></label>
                     <input id="lastNameInput" class="form-control" type="lastName" ng-model="lastName" maxlength="15" required>
-                    <label for="UTorid">UTorid (Optional)</label>
+                    <label for="UTorid">UTorid</label>
                     <input id="utoridInput" class="form-control" type="UTorid" ng-model="utorid" maxlength="10">
                 </div>
             </form>
@@ -29,11 +30,11 @@
         <div class="col-md-6">
             <form>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Password<i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i></label>
                     <input id="passwordInput" class="form-control" type="passWord" ng-model="password" maxlength="10" required>
                 </div>
                 <div class="form-group">
-                    <label for="rePassword">Re-enter Password</label>
+                    <label for="rePassword">Re-enter Password<i style="color: red;" class="fa fa-asterisk" aria-hidden="true"></i></label>
                     <input id="rePasswordInput" class="form-control" type="PassWord" ng-model="repassword" maxlength="10" required>
                 </div>
             </form>
