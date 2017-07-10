@@ -110,6 +110,8 @@ chatCtrls.service('PostService', ['$http', function ($http) {
                 alert('Error: An unexpected error occured. Try refreshing the page.')
             });
     };
+
+
 }]);
 
 
@@ -242,8 +244,38 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.loadPosts = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
+                //$scope.postList = [];
             });
         }
+
+        $scope.searchPost = function(keyWord, authorName){
+            PostService.getPosts($scope.room_data.courseId, function(postList){ //make sure the iteration is not on
+                //an empty list
+
+            //var keyWord = $scope.keyWord;
+            if(typeof keyWord == 'undefined' || !keyWord){
+                keyWord = '';
+            }
+
+            if(typeof authorName == 'undefined' || !authorName){
+                authorName = '';
+            }
+
+
+               //var posts = $scope.postList;
+               var display = [];
+                console.log("We are searching" + keyWord);
+               for (var i in postList){
+                   console.log(postList[i]);
+                   var checkName = postList[i].FirstName + " " + postList[i].LastName;
+                    if((postList[i].description + postList[i].Title).indexOf(keyWord) != -1 && checkName.indexOf(authorName) != -1){
+                        display.push(postList[i]);
+                    }
+            }
+            $scope.postList = [];
+            $scope.postList = display;
+            });
+        };
 
         $scope.postQuestion = function (summary, detail) {
             console.log(CommonService.getUserId);
@@ -293,6 +325,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 $scope.followupList = followupList;
             });
         }
+
+        $scope.backToPage = function(){
+            $scope.selectedPost = {};
+            $scope.loadPosts();
+
+        }
+
+
 
         // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
