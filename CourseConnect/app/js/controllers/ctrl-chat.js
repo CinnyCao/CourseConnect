@@ -284,6 +284,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             var post = {
                 title: summary,
                 description: detail,
+                solve: $scope.solve,
                 timestamp: time,
                 parentPostID: -1,
                 roomID: $scope.room_data.courseId,
@@ -310,7 +311,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 timestamp: time,
                 parentPostID: $scope.selectedPost.po_id,
                 roomID: $scope.room_data.courseId,
-                snipet: null
+                snipet: null, accepted: false
             };
 
             PostService.sendPost(followupPost, function () {
@@ -323,6 +324,20 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.displayFollowupList = function (post) {
             PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
+            });
+        }
+
+        $scope.adoptFollowup = function(post, parent){
+            //Choose the follow-up to accept as solution
+
+            //Access to database and store its id under the parent post
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent}).then(function(res){
+                if(res.status){
+                    console.log("Successfully adopted answer");
+                    post.accepted = true;
+                    $scope.displaySelectedPost(parent);
+                }
+                console.log("Failed");
             });
         }
 

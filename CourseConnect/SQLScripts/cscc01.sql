@@ -105,8 +105,12 @@ CREATE TABLE IF NOT EXISTS `Posts` (
   `Title` varchar(60) DEFAULT NULL,
   `postTime` datetime DEFAULT NULL,
   `description` varchar(160) DEFAULT NULL,
+  `solved` varchar(15) NOT NULL DEFAULT 'Unsolved',
+  `solution` int(11) DEFAULT NULL COMMENT 'It is the
+  id of follow-up for solution',
   `ParticipantID` int(11) DEFAULT NULL,
-  `parent_po_id` int(11) DEFAULT NULL COMMENT 'If post is a follow-up, put its parent post id here',
+  `parent_po_id` int(11) DEFAULT NULL COMMENT 'If
+   post is a follow-up, put its parent post id here',
   PRIMARY KEY (`po_id`),
   KEY `ParticipantID` (`ParticipantID`),
   KEY `Posts_ibfk_2` (`parent_po_id`)

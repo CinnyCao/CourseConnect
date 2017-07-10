@@ -5,13 +5,14 @@ var db = require('./db_connection');  // db manager
 
 // Query DB to inject post.
 exports.sendPost = function(req, res){
+    //var isSolved = (req.body.solve == 'solved');
     var injectPostQuery = 
-        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet) " +
+        "INSERT INTO cscc01.Posts (Title, postTime, description, solved, ParticipantID, Parent_PO_id, room_id, snipet) " +
         "VALUES (" + 
             '"' + req.body.title + '",' +
             '"' + req.body.timestamp + '",' +
             '"' + req.body.description + '",' +
-            '"' + req.session.userid + '",' +
+            '"' + req.session.userid + '",' + '"' + req.body.solve + '",' +
             '"' + req.body.parentPostID + '",' +
             '"' + req.body.roomID + '",' +
             '"' + req.body.snipet + '"' +
@@ -91,4 +92,30 @@ exports.getFollowups = function(req, res){
         }
         
     })    
-}
+};
+
+exports.adoptAFollowup = function(req, res){
+    //var getParents = "SELECT parent_po_id From cscc01.Posts Where po_id='" + req.body.id + "';";
+
+    //db.executeQuery(getParents, function(err, result){
+       //if(err){
+           //console.error("ERROR: Failed to get followup posts from DB. Query: " + getParents + err);
+         //  res.status(500).json({error: "An unexpected error occured when querying the database", success: false});
+       //}else{
+           //console.log("SUCCESS: Retrieved list of post.");
+           var parentID = req.body.parent.po_id;//result[0].parent_po_id;
+           var addSolution = "UPDATE cscc01.Posts SET solution=" + req.body.post.po_id + ", solved='solved' " +
+               "Where po_id=" + parentID + ";";
+           db.executeQuery(addSolution, function(err, result){
+                if(err){
+                    console.error("ERROR: Failed to get followup posts from DB. Query: " + addSolution + err);
+                    res.status(500).json({error: "An unexpected error occured when querying the database",
+                        success: false});
+                }else{
+                   res.status(200).send(true);
+                }
+           })
+       //}
+    //});
+};
+

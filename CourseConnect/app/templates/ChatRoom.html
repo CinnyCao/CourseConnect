@@ -46,6 +46,7 @@
                                     <div class="title">{{post.Title}}</div>
                                     <div class="timestamp">{{post.postTime}}</div>
                                     <div class="snipet">{{post.snipet}}</div>
+                                    <div class="solve">{{post.solved}}</div>
                                 </div>
                             </li>
                         </ul>
@@ -107,6 +108,7 @@
                             <div class="media-body">
                                 <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
                                 <p>{{selectedPost.description}}</p>
+                                <h5>{{selectedPost.solved}}</h5>
                             </div>
                         </div>
                     </div>
@@ -124,6 +126,7 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="!followup.accepted" ng-click="adoptFollowup(followup, selectedPost)">Adopt</button>
                                     </h4>
                                     <p>{{followup.description}}</p>
                                 </div>
@@ -250,6 +253,16 @@
                 <div class="form-group">
                     <label for="post_ques_detail">Detail:</label>
                     <textarea class="form-control" rows="5" id="post_ques_detail" ng-model="ques_detail"></textarea>
+                </div>
+                <div class="form-group float-left">
+                	<form action="" class="form-inline">
+                		<div class="form-group">
+                			<input type="radio" name="solve" ng-model="solve" value="unsolved">Unsolved<br>
+                		</div>
+                		<div class="form-group">
+                			<input type="radio" name="solve" ng-model="solve" value="solved">Solved<br>
+                		</div>
+                	</form>
                 </div>
 
             </div>
