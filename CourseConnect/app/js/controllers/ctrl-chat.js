@@ -236,6 +236,16 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $interval.cancel($scope.msgInterval);
         };
 
+        // Grabbing course ID for direct unenrollment and going back to courseenrollment.html page.
+        $scope.var_course_id = $routeParams.classid;
+        $scope.directUnenrollment = function(course_id) {
+            console.log(course_id);
+            $http.post('/api/crsunenroll', {classid : course_id}).then(function(res) {
+                console.log("Unenrolled from course!");
+                window.location.replace('#/courseenroll');
+            });
+        };
+
         // ---------------POST FOURM FUNCTION--------------------------
         $scope.loadPosts = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
