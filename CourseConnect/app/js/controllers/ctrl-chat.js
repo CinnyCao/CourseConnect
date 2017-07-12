@@ -115,8 +115,8 @@ chatCtrls.service('PostService', ['$http', function ($http) {
 }]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout', '$window',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout, $window) {
         console.log('ChatCtrl is running');
 
         $scope.var_userValid = false;
@@ -325,21 +325,39 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
             });
+
         }
 
         $scope.adoptFollowup = function(post, parent){
             //Choose the follow-up to accept as solution
-
             //Access to database and store its id under the parent post
-            $http.post("/api/adoptAFollowup", {post: post, parent: parent}).then(function(res){
-                if(res.status){
-                    console.log("Successfully adopted answer");
-                    post.accepted = true;
-                    $scope.displaySelectedPost(parent);
-                }
-                console.log("Failed");
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent}).then(function(select){
+
+                    console.log("Successfully adopted answer and display " + select);
+                    //post.accepted = true;
+                    //$scope.displaySelectedPost(parent);
+                    //$scope.backToPage();
+                    //$scope.loadPosts();
+                    //$window.location.reload();
+                    $scope.init();
+                    $scope.var_forum = 'posts';
+                    $scope.loadPosts();
+                    //$scope.selectedPost = select;
+                    //$scope.displayFollowupList(parent);
+                PostService.displayFollowupList(select, function (followupList) {
+                    $scope.followupList = followupList;
+                });
+
+                    //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                    //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
             });
-        }
+        };
+
+        $scope.unadoptFollowup = function(post, parent){
+
+        };
 
         $scope.backToPage = function(){
             $scope.selectedPost = {};

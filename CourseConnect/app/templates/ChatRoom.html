@@ -126,7 +126,8 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
-                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="!followup.accepted" ng-click="adoptFollowup(followup, selectedPost)">Adopt</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solution != followup.po_id" ng-click="adoptFollowup(followup, selectedPost)">Adopt</button>
+                                         <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solution == followup.po_id" ng-click="">Unadopt</button>
                                     </h4>
                                     <p>{{followup.description}}</p>
                                 </div>

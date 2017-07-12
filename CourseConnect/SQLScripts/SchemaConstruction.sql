@@ -90,7 +90,8 @@ Create Table IF NOT EXISTS Posts(
     Title varchar(60),
 	postTime DATETIME,
     description varchar(160),
-    solved Boolean,
+    solution int,
+    solved varchar(15),
     ParticipantID int,
     foreign key(ParticipantID) references Participant(p_id)
 ) ENGINE = INNODB;
