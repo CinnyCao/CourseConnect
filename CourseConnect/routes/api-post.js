@@ -92,3 +92,22 @@ exports.getFollowups = function(req, res){
         
     })    
 }
+
+exports.submitComplaint = function (req, res) {
+    console.log(req.body.quote.po_id);
+    var recordComplaint = "INSERT INTO Complaints (User, Summary, PostNum, Description) VALUES (" + req.session.userid + ", '" + req.body.title + "', " + req.body.quote.po_id + ", '" +
+        req.body.description + "');";
+    db.executeQuery(recordComplaint, function(err, result) {
+        if (err) {
+            coneole.error("ERRPR: failed to submit complaint. Error: " + err);
+            res.status(500).json({
+                error: "An unexpected error occurred when querying the database",
+                reported: false
+            });
+        }
+        res.status(200).json({
+            result: result,
+            reported: true
+        });
+    })
+}

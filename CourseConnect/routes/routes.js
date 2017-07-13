@@ -59,6 +59,7 @@ router.post('/file-store', fileService.storeFile);
 router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
+router.post('/reportComplaint', postService.submitComplaint);
 
 
 router.get('/messages/:classid', chatService.getMessages);
