@@ -107,9 +107,19 @@ chatCtrls.service('PostService', ['$http', function ($http) {
                 callback(res.followupList);
             })
             .error(function (res) {
-                alert('Error: An unexpected error occured. Try refreshing the page.')
+                alert('Error: An unexpected error occured. Try refreshing the page.');
             });
     };
+
+    this.displayPostTags = function(callback){
+        $http.get('/api/getPostTags')
+            .success(function (res) {
+                callback(res.postTagList);
+            })
+            .error(function (res){
+                alert('Error: An unexpected error occured for fetch post tags.');
+            })
+    }
 }]);
 
 
@@ -239,10 +249,15 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         // ---------------POST FOURM FUNCTION--------------------------
-        $scope.loadPosts = function () {
+        $scope.loadPostFourm = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
             });
+
+            PostService.displayPostTags(function(postTagList){
+                $scope.postTagList = postTagList;
+                $scope.tagSelected = postTagList[0];
+            })
         }
 
         $scope.postQuestion = function (summary, detail) {
@@ -255,7 +270,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 timestamp: time,
                 parentPostID: -1,
                 roomID: $scope.room_data.courseId,
-                snipet: detail
+                snipet: detail,
+                tagID: $scope.tagSelected.tag_ID
             };
 
             PostService.sendPost(post, $scope.loadPosts);
@@ -294,6 +310,11 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             });
         }
 
+        $scope.selectTag = function(tag){
+            $scope.tagSelected = tag;
+           
+        }
+
         // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         $scope.init = function () {
@@ -324,6 +345,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.postList = [];
             $scope.followupList = [];
             $scope.selectedPost = {};
+            $scope.postTagList = [];
+            $scope.selectedtTag = {};
         };
 
         // only show chat room when user is enrolled in it

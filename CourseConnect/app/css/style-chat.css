@@ -171,3 +171,17 @@
     background-color: #ACD8F0;
     display: inline-block;
 }
+
+.tag{
+    border: 1px solid  #ACD8F0;
+    border-radius: 5px;
+}
+
+.tag:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+}
+
+.tag-selected {
+    background-color: lightblue;
+}

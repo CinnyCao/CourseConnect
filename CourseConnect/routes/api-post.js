@@ -6,7 +6,7 @@ var db = require('./db_connection');  // db manager
 // Query DB to inject post.
 exports.sendPost = function(req, res){
     var injectPostQuery = 
-        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet) " +
+        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet, tag_ID) " +
         "VALUES (" + 
             '"' + req.body.title + '",' +
             '"' + req.body.timestamp + '",' +
@@ -14,7 +14,8 @@ exports.sendPost = function(req, res){
             '"' + req.session.userid + '",' +
             '"' + req.body.parentPostID + '",' +
             '"' + req.body.roomID + '",' +
-            '"' + req.body.snipet + '"' +
+            '"' + req.body.snipet + '",' +
+            '"' + req.body.tagID + '"' +
         ")";
 
     db.executeQuery(injectPostQuery, function(err){
@@ -91,4 +92,27 @@ exports.getFollowups = function(req, res){
         }
         
     })    
+}
+
+//Todo: get all tag
+exports.getPostTags = function(req, res){
+    var getTagsQuery = 
+        "SELECT * " + 
+        "FROM cscc01.PostTag";
+    
+    db.executeQuery(getTagsQuery, function(err, result){
+        if (err){
+            console.error("ERROR: Failed to list of post tag. Query: " + getTagsQuery + err);
+            res.status(500).json({
+                error: "An unexpected error occurred when querying the database",
+                success:false
+            });
+        }else{
+            console.log("SUCCESS: Retrieved list of tags.");
+             res.status(200).json({
+                postTagList: result,
+                success:true
+            });
+        }
+    })
 }

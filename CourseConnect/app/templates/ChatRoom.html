@@ -21,7 +21,7 @@
                     <div class="forum_tab">
                         <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
                         <label class="forum_tab" for="forumPosts">
-                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPosts()">
+                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPostFourm()">
                             <p ng-hide="var_forum == 'posts'">Posts</p>
                             <p ng-show="var_forum == 'posts'" class="forum_name_selected">Posts</p>
                         </label>
@@ -85,7 +85,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
+                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"
+                    />
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
 
@@ -180,8 +181,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form id="uploadForm">
-                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
-                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
+                                                    <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70" />
+                                                    <button type="submit" class="btn-primary" ng-click="uploadFile()">Upload</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -234,6 +235,20 @@
             <div class="modal-body">
                 <!--summary input-->
                 <div class="form-group">
+                    <!--<div class="row">
+                        <div ng-repeat="tag in postTagList" id="'tag'{{tag.tag_ID}}" class="col-md-2 tag" ng-click="selectTag(tag)"> {{tag.tag_name}}</div>
+                    </div>-->
+
+                    <!--Tags-->
+                    <div class="dropdown">
+                        <label>Tag: </label>
+                        <button class="btn btn-primary dropdown-toggle" type="button" 
+                                data-toggle="dropdown" ng-model="tagSelected">{{tagSelected.tag_name}}<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a ng-repeat="tag in postTagList" ng-click="selectTag(tag)">{{tag.tag_name}}</a></li>
+                        </ul>
+                    </div>
+
                     <label for="post_ques_summary">Summary:</label>
                     <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
                 </div>
