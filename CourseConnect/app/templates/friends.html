@@ -5,14 +5,18 @@
   		<li><a href="#!courseenroll">Courses Enrolled</a></li>
   		<li><a href="#!settings">Settings</a></li>
 		<li class="active"><a href="#!friends">Friends</a></li>
-  	</ul><br/>
+  		</ul>
+	</div>
 	<table class="table">
 		<tr ng-repeat="friend in var_friends">
-			<td> 
-				<img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
+			<td>
+				<img on-error-src="img/profilePicDefault.jpg" ng-src="{{ friend.PictureLocation }}" alt="{{friend.First}} {{friend.Last}}" class="friendTablePic">
 			</td>
-			<td>{{friend.First }}{{ friend.Last }} ({{friend.DisplayName}})</td>
-			<td> <button ng-click="unfriend({{ friend.ID }})" type="button" class="btn btn-danger">Unfriend</button> </td>
+			<td>{{friend.First }} {{ friend.Last }} ({{friend.DisplayName}})</td>
+			<td>
+				<button ng-click="unfriend(friend.ID)" type="button" class="btn btn-danger"><i class="fa fa-user-times"></i> Unfriend</button>
+				<a ng-href="#!private/{{friend.ID}}" type="button" class="btn btn-primary"><i class="fa fa-comments"></i> Chat</a>
+			</td>
 		</tr>
 	</table>
 </div>

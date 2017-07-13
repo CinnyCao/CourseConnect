@@ -2,6 +2,18 @@
 
 var CtrlFriends = angular.module('CtrlFriends', []);
 
+CtrlFriends.directive('onErrorSrc', function($http) {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('error', function() {
+                if (attrs.src != attrs.onErrorSrc) {
+                    attrs.$set('src', attrs.onErrorSrc);
+                }
+            });
+        }
+    };
+});
+
 CtrlFriends.service('FriendsService', ['$http', function ($http) {
 	this.getFriends = function () {
         return $http.get('/api/getFriends');
@@ -22,14 +34,9 @@ CtrlFriends.controller('FriendsCtrl', ['$scope', '$http', '$cookies', 'FriendsSe
 
 	FriendsService.getFriends()
 		.then(function(data){
-			//$scope.var_friends = data;
-			console.log(data.data);
+			console.log(data);
 			if (data.data.isvalid){
-			$scope.var_friends = data.data.friends;
-				console.log(data.data.friends);
-			}else {
-				$scope.var_friends = data.friends;
-				console.log(data.friends);
+				$scope.var_friends = data.data.friends;
 			}
 		});
 
