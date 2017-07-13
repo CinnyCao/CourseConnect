@@ -155,3 +155,4 @@ privateCtrls.controller('PrivateCtrl', ['$scope', '$http', 'fileUpload', '$cooki
         });
     }
 ]);
+

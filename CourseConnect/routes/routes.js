@@ -31,7 +31,6 @@ router.post('/profpic-upload', accountService.uploadProfPic);
 router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
 router.post('/updateddesc', accountService.updateDescription);
-router.post('/getFriends', accountService.getFriends);
 
 router.post('/allClassmatesInClass', classService.getStudents);
 
@@ -69,6 +68,6 @@ router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 
 router.get('/friendInfo/:userid', friendService.getFriendInfo);
 router.get('/isFriend/:userid', friendService.checkIsFriend);
-
+router.get('/getFriends', friendService.getFriends);
 
 module.exports = router; // exports router as a module

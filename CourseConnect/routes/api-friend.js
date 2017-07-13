@@ -4,6 +4,32 @@
 var db = require('./db_connection');  // db manager
 
 
+/**Get Friends */
+exports.getFriends = function (req, res) {
+    if (req.session.userid) {
+        var friendQuery = "Call getFriendsByID('" + req.session.userid + "')";
+        db.executeQuery(friendQuery, function (err, result) {
+            if (err) {
+                console.error("ERROR: Failed to execute token query." + err);
+                res.status(200).send({ isvalid: false, friends: [] });
+            }
+            console.log(result);
+            if (result.length >= 1) {
+
+                console.log("SUCCESS: " + req.session.userid + " ID has friends." + result[0]);
+                res.status(200).send({ isvalid: true, friends: result[0] });
+            } else {
+                console.log("SUCCESS: " + req.session.userid + " ID is a lone wolf. DangerZone!");
+                res.status(200).send({ isvalid: true, friends: result[0] });
+            }
+        });
+    } else {
+        res.status(401).json({
+            error: "User not logged in"
+        });
+    }
+};
+
 exports.getFriendInfo = function (req, res) {
     if (req.session.userid) {
         var query = "SELECT fileLocation AS profilePic, " +
