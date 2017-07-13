@@ -14,7 +14,7 @@ userLoginCtrls.controller('LoginCtrl', ['$scope', '$http', '$cookies', 'CommonSe
         $http.post('/api/authenticate', {email: $scope.email, pwd: $scope.pwd}).then(function (res) {
             if (res.data.isvalid) {
                 CommonService.setUser();
-                window.location.replace('#/userprofile');
+                window.location.replace('#!userprofile');
             } else{
                 $('#loginFailedAlert').show();
             }
