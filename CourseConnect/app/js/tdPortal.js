@@ -12,6 +12,7 @@ var tdPortal = angular.module('courseConnect', [
     'Filters',
     'CtrlIndex',
     'CtrlChat',
+    'CtrlPrivate',
     'CtrlUserLogin',
     'CtrlUserSignup',
     'CtrlUserProfile',
@@ -47,6 +48,10 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/ChatRoom.html',
         controller: 'ChatCtrl'
     })
+    .when('/private/:userid', {
+        templateUrl: '/templates/PrivateChat.html',
+        controller: 'PrivateCtrl'
+    })
     .when('/signup', {
         templateUrl: '/templates/signUp.html',
         controller: 'SignUpCtrl'
@@ -69,10 +74,11 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
 
 /* Global functions and constants */
 tdPortal.service('CommonService', CommonService);
-CommonService.$inject = ['$http', '$cookies'];
-function CommonService($http, $cookies) {
+CommonService.$inject = ['$http'];
+function CommonService($http) {
     // User info
     var curr_user = {
+        initialized: 0,
         loggedIn: 0
     };
 
@@ -87,9 +93,8 @@ function CommonService($http, $cookies) {
 
         $http(req)
             .then(function (result) {
-                console.log(result);
                 if (result.status == 200) {
-                    console.log("true");
+                    curr_user.initialized = 1;
                     curr_user.loggedIn = 1;
                     curr_user.userId = result.data.userId;
                     curr_user.lastName = result.data.lastName;
@@ -106,6 +111,10 @@ function CommonService($http, $cookies) {
 
     // on init and on refresh, check user login status
     setUser();
+
+    var userReady = function () {
+        return curr_user.initialized;
+    };
 
     var logout = function () {
         $http.get('/api/logout').then(function (res) {
