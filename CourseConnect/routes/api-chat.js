@@ -27,7 +27,8 @@ exports.sendMessage = function (req, res) {
 exports.getMessages = function (req, res) {
     if (req.session.userid) {
         var query = "SELECT Message.m_id AS messageId, Users.u_id AS userId, Users.fileLocation AS profilePic, " +
-            "CONCAT(Users.FirstName, ' ', Users.LastName) AS name, Message.message AS message, DATE_FORMAT(Message.messageTime, '%Y-%m-%d %T') as time "+
+            "CASE WHEN Users.DisplayName IS NULL OR Users.DisplayName = '' THEN CONCAT(Users.FirstName, ' ', Users.LastName) ELSE Users.DisplayName END AS name, " +
+            "Message.message AS message, DATE_FORMAT(CONVERT_TZ(Message.messageTime, '-01:00', '-05:00'), '%Y-%m-%d %T') as time "+
             "FROM Message, Participant, Users WHERE Message.ParticipantID = Participant.p_id AND Participant.UserID = Users.u_id AND " +
             "Participant.ClassID = '" + req.params.classid + "' ORDER BY Message.m_id ASC";
         db.executeQuery(query, function (err, result) {
@@ -51,7 +52,7 @@ exports.getMessages = function (req, res) {
 
 exports.getPrivateMessages = function (req, res) {
     if (req.session.userid) {
-        var query = "SELECT pm.pm_id AS messageId, pm.message AS message, DATE_FORMAT(pm.messageTime, '%Y-%m-%d %T') AS time, " +
+        var query = "SELECT pm.pm_id AS messageId, pm.message AS message, DATE_FORMAT(CONVERT_TZ(pm.messageTime, '-01:00', '-05:00'), '%Y-%m-%d %T') AS time, " +
             "fromU.u_id AS userId, fromU.fileLocation AS profilePic, " +
             "CASE WHEN fromU.DisplayName IS NULL OR fromU.DisplayName = '' THEN CONCAT(fromU.FirstName, ' ', fromU.LastName) ELSE fromU.DisplayName END AS name " +
             "FROM PrivateMessage AS pm, Users AS fromU, Users AS toU WHERE pm.from_user_id = fromU.u_id AND pm.to_user_id = toU.u_id AND " +
