@@ -294,6 +294,17 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             });
         }
 
+        $scope.submitReport = function (post) {
+            $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
+                if (res.data.reported == true) {
+                    alert("Report successfully filed.");
+                } else {
+                    alert("Report failed. Please try again or contacy system administrator.");
+                }
+            })
+
+        }
+
         // ^^^^^^^^^^^^^^POST FOURM FUNCTION^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         $scope.init = function () {
