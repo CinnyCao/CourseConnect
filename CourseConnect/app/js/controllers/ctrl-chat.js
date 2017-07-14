@@ -355,7 +355,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     console.log(post.po_id);
                     console.log("Is it adopted: " + res.select[0].solution == post.po_id);
                     $scope.loadPosts();
-                    $scope.displayFollowupList(res.select[0]);
+                    $scope.displaySelectedPost(res.select[0]);
+                    //$scope.displayFollowupList(res.select[0]);
                 //PostService.displayFollowupList(select, function (followupList) {
                   //  $scope.followupList = followupList;
                 //});
@@ -380,7 +381,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 //console.log("Is it adopted: " + res.select[0].solution == post.po_id);
                 $scope.displaySolution(res.select[0]);
                 $scope.loadPosts();
-                $scope.displayFollowupList(res.select[0]);
+                $scope.displaySelectedPost(res.select[0]);
+                //$scope.displayFollowupList(res.select[0]);
                 //PostService.displayFollowupList(select, function (followupList) {
                 //  $scope.followupList = followupList;
                 //});
@@ -401,6 +403,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
           $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
               //TODO: Display the info in the modal
               $scope.solutionPost = res.solInfo[0];
+              console.log("Name is")
 
 
           });

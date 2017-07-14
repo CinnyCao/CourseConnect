@@ -95,7 +95,8 @@ exports.getFollowups = function(req, res){
 };
 
 exports.displaySol = function(req, res){
-    var query = "Select * from cscc01.Posts Where po_id=" + req.body.solution + ";";
+    var query = "Select * from cscc01.Posts INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
+        "Where po_id=" + req.body.solution + ";";
     db.executeQuery(query, function(err, result){
         if(err){
             console.error("ERROR: Failed to retrieve the solution from required post" + query + err);
@@ -140,7 +141,9 @@ exports.adoptAFollowup = function(req, res){
                         success: false});
                 }else{
                     console.log("The parent id is "+ parentID);
-                    var retrieveParent = "Select * from cscc01.Posts Where po_id=" + parentID + ";";
+                    var retrieveParent = "Select * from cscc01.Posts INNER JOIN cscc01.Users" +
+                        " ON Posts.participantID=Users.u_id " +
+                        "Where po_id=" + parentID + ";";
                     db.executeQuery(retrieveParent, function(err, result){
                         if(err){
                             console.error("ERROR: Failed to retrieve the parent id from DB. Query: " + retrieveParent +

@@ -324,12 +324,11 @@
                 <div class="media-body">
                     <button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
                  	<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>                
-                    <p>{{solutuionPost.FirstName}} {{solutionPost.LastName}}</p>
-
-                                    <p>{{solutionPost.description}}</p>
-                                </div>
-                                <hr>
-                            </div>
+                    <label>{{solutionPost.FirstName}} {{solutionPost.LastName}}</label>
+                    <p>{{solutionPost.description}}</p>
+                </div>
+                <hr>
+            </div>
          </div>
          <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
