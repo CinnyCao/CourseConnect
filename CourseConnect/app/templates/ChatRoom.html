@@ -38,7 +38,14 @@
                 <div class="row">
                     <!--Posts-->
                     <div ng-show="var_forum == 'posts'">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                    	<form>
+                    		<div class="form-group">
+                        		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                        	</div>
+                        	<div class="form-group">
+                        		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
+                        	</div>
+                        </form>
                         <hr>
                         <ul class="list-group pre-scrollable">
                             <li id="question_tiem" class="list-group-item" ng-repeat="post in postList" ng-click="displaySelectedPost(post)">
@@ -51,7 +58,6 @@
                             </li>
                         </ul>
                         <hr>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
                     </div>
                 </div>
             </div>
@@ -109,6 +115,7 @@
                                 <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
                                 <p>{{selectedPost.description}}</p>
                                 <h5>{{selectedPost.solved}}</h5>
+                                <button type="button" class="btn btn-xs btn-primary float-right" ng-show="selectedPost.solved == 'solved'" data-toggle="modal" data-target="#display_solution" ng-click="displaySolution(selectedPost)">Show Solution</button>
                             </div>
                         </div>
                     </div>
@@ -126,8 +133,8 @@
                                 <div class="media-body">
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
-                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solution != followup.po_id" ng-click="adoptFollowup(followup, selectedPost)">Adopt</button>
-                                         <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solution == followup.po_id" ng-click="">Unadopt</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
+                                         <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
                                     </h4>
                                     <p>{{followup.description}}</p>
                                 </div>
@@ -138,7 +145,8 @@
                         <!--Input text-->
                         <div class="form-group">
                             <label for="followupTextInput">Start a new followup discussion.</label>
-                            <textarea id="followupTextInput" class="form-control" rows="5" ng-model="ques_followup"></textarea>
+                            <textarea id="followupTextInput" class="form-control" rows="5"
+                             ng-model="ques_followup"></textarea>
                         </div>
 
                         <!--Submit button-->
@@ -298,5 +306,33 @@
 			</div>
 		</div>
 
+	</div>
+</div>
+
+<!--Display Solution Form-->
+
+<div class="modal fade" id="display_solution" role="dialog">
+	<div class="modal-dialog">
+		<!--Header-->
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Solution</h4>
+		</div>
+		<div class="modal-body">
+			<!--Display the content of recorded solution here-->   
+            <div class="media">                    
+                <div class="media-body">
+                    <button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
+                 	<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>                
+                    <p>{{solutuionPost.FirstName}} {{solutionPost.LastName}}</p>
+
+                                    <p>{{solutionPost.description}}</p>
+                                </div>
+                                <hr>
+                            </div>
+         </div>
+         <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
 	</div>
 </div>

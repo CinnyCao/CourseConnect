@@ -29,6 +29,7 @@ router.get('/userinfo', accountService.getUserInfo);
 router.post('/profpic-upload', accountService.uploadProfPic);
 router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
+
 router.post('/updateddesc', accountService.updateDescription);
 router.post('/getFriends', accountService.getFriends);
 
@@ -59,7 +60,9 @@ router.post('/file-store', fileService.storeFile);
 router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
+router.post('/displaySol', postService.displaySol);
 router.post('/adoptAFollowup', postService.adoptAFollowup);
+router.post('/checkIdentity', postService.checkIdentity);
 
 
 router.get('/messages/:classid', chatService.getMessages);
