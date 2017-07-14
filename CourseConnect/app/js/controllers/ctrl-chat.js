@@ -268,7 +268,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                for (var i in postList){
                    console.log(postList[i]);
                    var checkName = postList[i].FirstName + " " + postList[i].LastName;
-                    if((postList[i].description + postList[i].Title).indexOf(keyWord) != -1 && checkName.indexOf(authorName) != -1){
+                    if((postList[i].description + postList[i].Title).toUpperCase().indexOf(keyWord.toUpperCase()) != -1
+                        && checkName.toUpperCase().indexOf(authorName.toUpperCase()) != -1){
                         display.push(postList[i]);
                     }
             }

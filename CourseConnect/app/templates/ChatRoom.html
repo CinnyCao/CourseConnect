@@ -38,7 +38,14 @@
                 <div class="row">
                     <!--Posts-->
                     <div ng-show="var_forum == 'posts'">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                    	<form>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
+                            </div>
+                        </form>
                         <hr>
                         <ul class="list-group pre-scrollable">
                             <li id="question_tiem" class="list-group-item" ng-repeat="post in postList" ng-click="displaySelectedPost(post)">
@@ -50,7 +57,6 @@
                             </li>
                         </ul>
                         <hr>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
                     </div>
                 </div>
             </div>
