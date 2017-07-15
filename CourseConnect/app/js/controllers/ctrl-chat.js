@@ -180,7 +180,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 //console.log(res.data[2].fileLocation);
                 for (var i in res.data) {
                     console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
-                    if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
+                    if (res.data[i].fileLocation.split("/")[2].toUpperCase().indexOf
+                        ($scope.var_search_info.toUpperCase()) != -1) {
                         //display the info in html and set up the link for downloading
                         console.log("check passed");
                         $scope.var_resources.push({
