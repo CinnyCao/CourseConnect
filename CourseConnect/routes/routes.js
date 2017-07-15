@@ -60,6 +60,8 @@ router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
 router.get('/getPostTags', postService.getPostTags);
+router.post('/reportComplaint', postService.submitComplaint);
+
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
