@@ -32,10 +32,8 @@
     <script src="/bower_components/angular-animate/angular-animate.js"></script>
     <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="/bower_components/ng-scroll-glue/dist/ng-scroll-glue.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.js"></script>
-    <script src="/bower_components/angular-aria/angular-aria.js"></script>
-    <script src="/bower_components/angular-animate/angular-animate.js"></script>
-    <script src="/bower_components/angular-material/angular-material.js"></script>
+     
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.js"></script>
 
     <!--Controller-->
     <script src="/js/controllers/ctrl-settings.js"></script>
@@ -62,13 +60,13 @@
 
 <div ng-controller="IndexCtrl" >
     <div id="registration" ng-model="mainNavbar">
-        <a href="#!login" ng-hide="var_logged_in">
+        <a href="#/login" ng-hide="var_logged_in">
             <button id="loginbtn" class="btn btn-primary">Login</button>
         </a>
-        <a href="#!signup" ng-hide="var_logged_in">
+        <a href="#/signup" ng-hide="var_logged_in">
             <button id="signupbtn" class="btn btn-primary">SignUp</button>
         </a>
-        <a href="#!userprofile" ng-show="var_logged_in">
+        <a href="#/userprofile" ng-show="var_logged_in">
             <button class="btn btn-primary">Profile</button>
         </a>
         <a ng-click="logout()" ng-show="var_logged_in">
@@ -77,7 +75,7 @@
     </div>
     <form class="form-inline">
         <!--Logo-->
-        <a class="form-group" id="logo" href="#/!">
+        <a class="form-group" id="logo" href="#/">
             <img src="img/logo.png" alt="">
         </a>
         <!--Search Bar-->

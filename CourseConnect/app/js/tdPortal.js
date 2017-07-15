@@ -19,8 +19,7 @@ var tdPortal = angular.module('courseConnect', [
     'CtrlSettings',
     'CtrlCourseEnroll',
 	'CtrlFriends',
-    'ngCookies',
-    'ngMaterial'
+    'ngCookies'
 ]);
 
 /* App route */
@@ -123,7 +122,7 @@ function CommonService($http) {
                 loggedIn: 0
             };
             notifyUserLoginLogout();
-            window.location.href = '#/!';
+            window.location.href = '#/';
         });
     };
 
