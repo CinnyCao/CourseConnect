@@ -325,10 +325,17 @@
                 	<div class="media-body">
                     	<button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
                  		<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
-                    	<label>Writer: {{solutionPost.FirstName}} {{solutionPost.LastName}}</label>
-                    	
-                    	<p>{{solutionPost.description}}</p>
+                    	<label>Writer:</label><br>
+                    	<p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
                     	<hr>
+                    	<form>
+   	 						<div class="form-group">
+      							<label for="comment" class="float-left">Content:</label>
+      							<textarea class="form-control" rows="8" id="comment" readonly>{{solutionPost.description}}</textarea>
+    						</div>
+  						</form>
+                    	<!--<p>{{solutionPost.description}}</p>-->
+                    	
                 	</div>
                 	<hr>
             	</div>
