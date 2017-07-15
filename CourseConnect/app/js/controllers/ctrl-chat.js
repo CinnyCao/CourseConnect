@@ -262,7 +262,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             })
         }
 
-        $scope.searchPost = function(keyWord, authorName){
+        $scope.searchPost = function(keyWord, authorName, tag){
             PostService.getPosts($scope.room_data.courseId, function(postList){ //make sure the iteration is not on
                 //an empty list
 
@@ -284,7 +284,11 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                    var checkName = postList[i].FirstName + " " + postList[i].LastName;
                     if((postList[i].description + postList[i].Title).toUpperCase().indexOf(keyWord.toUpperCase()) != -1
                         && checkName.toUpperCase().indexOf(authorName.toUpperCase()) != -1){
-                        display.push(postList[i]);
+
+                        // filter post if does not have selected filter tag 
+                        if($scope.filterTag.tag_name == "All Tag" || postList[i].tag_ID == $scope.filterTag.tag_ID){
+                            display.push(postList[i]);
+                        }
                     }
             }
             $scope.postList = [];
@@ -347,6 +351,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
            
         }
 
+        $scope.selectFilterTag = function(tag){
+            $scope.filterTag = tag;
+        }
+
         $scope.submitReport = function (post) {
             $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
                 if (res.data.reported == true) {
@@ -398,6 +406,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.selectedPost = {};
             $scope.postTagList = [];
             $scope.selectedtTag = {};
+            $scope.filterTag = {tag_name: "All Tag"};
         };
 
         // only show chat room when user is enrolled in it

@@ -38,7 +38,7 @@
                 <div class="row">
                     <!--Posts-->
                     <div ng-show="var_forum == 'posts'">
-                    	<form>
+                        <form>
                             <div class="form-group">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
                             </div>
@@ -140,10 +140,11 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form>
-                                                            <p style="color: red;">The content of the post will be automatically submitted with the contents of this form.</p>
+                                                            <p style="color: red;">The content of the post will be automatically submitted with
+                                                                the contents of this form.</p>
                                                             <div class="form-group">
                                                                 <label for="subject">Subject</label>
-                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]"/>
+                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="description">Description/Nature of Complaint</label>
@@ -180,7 +181,7 @@
                                     <li>As You</li>
 
                                 </ul>
-                             	
+
                             </div>
                             <button type="button" class="btn btn-primary btn-s" ng-click="backToPage()">Back</button>
 
@@ -218,8 +219,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form id="uploadForm">
-                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
-                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()" data-dismiss="modal">Upload</button>
+                                                    <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70" />
+                                                    <button type="submit" class="btn-primary" ng-click="uploadFile()" data-dismiss="modal">Upload</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -281,8 +282,7 @@
                     <!--Tags-->
                     <div class="dropdown">
                         <label>Tag: </label>
-                        <button class="btn btn-primary dropdown-toggle" type="button" 
-                                data-toggle="dropdown" ng-model="tagSelected">{{tagSelected.tag_name}}<span class="caret"></span></button>
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-model="tagSelected">{{tagSelected.tag_name}}<span class="caret"></span></button>
                         <ul class="dropdown-menu">
                             <li><a ng-repeat="tag in postTagList" ng-click="selectTag(tag)">{{tag.tag_name}}</a></li>
                         </ul>
@@ -309,25 +309,35 @@
 <!--Search Question Form-->
 <div class="modal fade" id="search_post_modal" role="dialog">
 
-	<div class="modal-dialog">
-		<!--Header-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog">
+        <!--Header-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Search Question</h4>
-			</div>
-			<div class="modal-body">
-				<label>Key Word:</label>
-				<input type="text" class="form-control" ng-model="key">
-				<label>Name of Author:</label>
-				<input type="text" class="form-control" ng-model="writer">
-				
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" ng-click="searchPost(key, writer)" data-dismiss="modal">Search</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			</div>
-		</div>
+            </div>
+            <div class="modal-body">
+                <label>Key Word:</label>
+                <input type="text" class="form-control" ng-model="key">
+                <label>Name of Author:</label>
+                <input type="text" class="form-control" ng-model="writer">
+                
+                <!--Tag Search-->
+                <label>Tag:</label>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-model="filterTag">{{filterTag.tag_name}}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="selectFilterTag({tag_name:'All Tag'})">All Tag</a></li>
+                        <li><a ng-repeat="tag in postTagList" ng-click="selectFilterTag(tag)">{{tag.tag_name}}</a></li>
+                    </ul>
+                </div>
 
-	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="searchPost(key, writer)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
 </div>
