@@ -151,8 +151,15 @@
     border-radius: 10px;
 }
 
+#post_forum_solution {
+    background: white;
+    border: lightgray solid 1px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
 #post_forum_answers{
-    background:white;  
+    background:white; 
     border: lightgray solid 1px;
     border-radius: 10px;
     margin-top: 15px;

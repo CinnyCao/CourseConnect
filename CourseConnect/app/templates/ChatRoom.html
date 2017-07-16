@@ -115,11 +115,36 @@
                                 <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
                                 <p>{{selectedPost.description}}</p>
                                 <h5>{{selectedPost.solved}}</h5>
-                                <button type="button" class="btn btn-xs btn-primary float-right" ng-show="selectedPost.solved == 'solved'" data-toggle="modal" data-target="#display_solution" ng-click="displaySolution(selectedPost)">Show Solution</button>
+                                <!--<button type="button" class="btn btn-xs btn-primary float-right" ng-show="selectedPost.solved == 'solved'" data-toggle="modal" data-target="#display_solution" ng-click="displaySolution(selectedPost)">Show Solution</button>-->
                             </div>
                         </div>
                     </div>
-
+                    <!--Posts Solution-->
+                    <div id="post_forum_solution" ng-show="selectedPost.solved == 'solved'">
+                    	<h4 class="txt-left"> Adopted Solution</h4>
+                        <hr>
+                    	<div class="media">      
+                    		<div class="media-left">
+                                    <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                            </div>              
+                			<div class="media-body">
+                    			<button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
+                 				<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
+                    			<label>Writer:</label><br>
+                    			<p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
+                    			<hr>
+                    			<form>
+   	 								<div class="form-group">
+      								<label for="comment" class="float-left">Content:</label>
+      								<textarea class="form-control" rows="8" id="comment" readonly>{{solutionPost.description}}</textarea>
+    								</div>
+  								</form>
+                    			<!--<p>{{solutionPost.description}}</p>-->
+                    	
+                			</div>
+                			<hr>
+            			</div>
+                    </div>
                     <!--Followup Section-->
                     <div id="post_forum_answers">
                         <div id="followupSection" class="pre-scrollable">
@@ -306,43 +331,5 @@
 			</div>
 		</div>
 
-	</div>
-</div>
-
-<!--Display Solution Form-->
-
-<div class="modal fade" id="display_solution" role="dialog">
-	<div class="modal-dialog">
-		<!--Header-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Solution</h4>
-			</div>
-			<div class="modal-body">
-				<!--Display the content of recorded solution here-->   
-            	<div class="media">                    
-                	<div class="media-body">
-                    	<button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
-                 		<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
-                    	<label>Writer:</label><br>
-                    	<p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
-                    	<hr>
-                    	<form>
-   	 						<div class="form-group">
-      							<label for="comment" class="float-left">Content:</label>
-      							<textarea class="form-control" rows="8" id="comment" readonly>{{solutionPost.description}}</textarea>
-    						</div>
-  						</form>
-                    	<!--<p>{{solutionPost.description}}</p>-->
-                    	
-                	</div>
-                	<hr>
-            	</div>
-         	</div>
-         	<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         	</div>
-         </div>
 	</div>
 </div>

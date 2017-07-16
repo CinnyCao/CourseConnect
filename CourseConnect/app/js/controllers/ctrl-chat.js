@@ -302,6 +302,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.displaySelectedPost = function (post) {
             $scope.selectedPost = post;
+            $scope.displaySolution(post);
             $scope.displayFollowupList(post);
         }
 
@@ -357,6 +358,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     console.log("Is it adopted: " + res.select[0].solution == post.po_id);
                     $scope.loadPosts();
                     $scope.displaySelectedPost(res.select[0]);
+                    $scope.displaySolution(res.select[0]);
                     //$scope.displayFollowupList(res.select[0]);
                 //PostService.displayFollowupList(select, function (followupList) {
                   //  $scope.followupList = followupList;
