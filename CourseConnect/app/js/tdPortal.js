@@ -72,16 +72,39 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
     });
 }]);
 
+tdPortal.factory('myInterceptor', ['$q', '$cookies', function($q, $cookies) {
+    return {
+        responseError: function(rejection) {
+            if(rejection.status <= 0) {
+                $cookies.remove('currUser');
+                return;
+            }
+            return $q.reject(rejection);
+        }
+    };
+}]);
+
+tdPortal.config(['$httpProvider', function($httpProvider) {
+    // watch server status and clear cookie when server down
+    $httpProvider.interceptors.push('myInterceptor');
+}]);
+
 /* Global functions and constants */
 tdPortal.service('CommonService', CommonService);
-CommonService.$inject = ['$http'];
-function CommonService($http) {
-    // User info
-    var curr_user = {
-        initialized: 0,
-        loggedIn: 0
-    };
+CommonService.$inject = ['$http', '$cookies'];
+function CommonService($http, $cookies) {
+    console.log("CommoneService is running");
 
+    // User info
+    var curr_user;
+    if ($cookies.getObject("currUser")) {
+        curr_user = $cookies.getObject("currUser");
+    } else {
+        curr_user = {
+            initialized: 0,
+            loggedIn: 0
+        };
+    }
 
     // setUser when logged in and when update profile
     // TODO: call setUser when profile is updated
@@ -105,6 +128,11 @@ function CommonService($http) {
                     curr_user.utorId = result.data.utorId;
                     curr_user.profilePic = result.data.profilePic;
                     notifyUserLoginLogout();
+                    $cookies.putObject('currUser', curr_user);
+                } else {
+                    curr_user.initialized = 1;
+                    curr_user.loggedIn = 0;
+                    $cookies.putObject('currUser', curr_user);
                 }
             });
     };
@@ -122,6 +150,7 @@ function CommonService($http) {
                 loggedIn: 0
             };
             notifyUserLoginLogout();
+            $cookies.remove('currUser');
             window.location.href = '#/';
         });
     };

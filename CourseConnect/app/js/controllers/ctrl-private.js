@@ -67,11 +67,6 @@ privateCtrls.controller('PrivateCtrl', ['$scope', '$http', 'fileUpload', '$cooki
 
         $scope.var_userValid = false;
 
-        // only show chat room when user is logged in
-        if (!CommonService.isLoggedIn()) {
-            $location.path("/login");
-        }
-
         $scope.isCurrentUser = function (userId) {
             if (userId == CommonService.getUserId()) {
                 return true;
@@ -139,15 +134,20 @@ privateCtrls.controller('PrivateCtrl', ['$scope', '$http', 'fileUpload', '$cooki
                 });
         };
 
-        // only allow to chat when goal user and current user are friends
-        PrivateService.checkIsFriend($routeParams.userid)
-            .then(function (result) {
-                if (result.data.isFriend) {
-                    $scope.init();
-                } else {
-                    $location.path("/"); // back to home page
-                }
-            });
+        // only show chat room when user is logged in
+        if (!CommonService.isLoggedIn()) {
+            $location.path("/login");
+        } else {
+            // only allow to chat when goal user and current user are friends
+            PrivateService.checkIsFriend($routeParams.userid)
+                .then(function (result) {
+                    if (result.data.isFriend) {
+                        $scope.init();
+                    } else {
+                        $location.path("/"); // back to home page
+                    }
+                });
+        }
 
         $scope.$on("$destroy", function(){
             console.log("Leave private chatroom");
