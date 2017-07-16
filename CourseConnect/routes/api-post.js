@@ -44,6 +44,7 @@ exports.getPosts = function(req, res){
         "FROM " +
         "cscc01.Posts " +
         "INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
+         "INNER JOIN cscc01.PostTag on Posts.tag_ID = PostTag.tag_ID " +
         "WHERE room_id=" + req.body.roomID + " " +
         "AND parent_po_id=-1 " + 
         "ORDER BY po_id DESC";

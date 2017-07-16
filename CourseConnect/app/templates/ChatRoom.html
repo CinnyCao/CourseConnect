@@ -112,8 +112,11 @@
                                 <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
+                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}
+                               <p class="tag-post"> {{selectedPost.tag_name}} </p>
+                               </h4>
                                 <p>{{selectedPost.description}}</p>
+                               
                             </div>
                         </div>
                     </div>
@@ -280,7 +283,7 @@
                     </div>-->
 
                     <!--Tags-->
-                    <div class="dropdown">
+                    <div class="dropdown tag-float-box">
                         <label>Tag: </label>
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-model="tagSelected">{{tagSelected.tag_name}}<span class="caret"></span></button>
                         <ul class="dropdown-menu">
@@ -288,8 +291,17 @@
                         </ul>
                     </div>
 
-                    <label for="post_ques_summary">Summary:</label>
-                    <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
+                    <!--Add tag button-->
+                    <!--<div class="tag-float-box">
+                        <a> <span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                    <br>
+                    <br>
+                    -->
+                    <div>
+                        <label for="post_ques_summary">Summary:</label>
+                        <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -321,7 +333,7 @@
                 <input type="text" class="form-control" ng-model="key">
                 <label>Name of Author:</label>
                 <input type="text" class="form-control" ng-model="writer">
-                
+
                 <!--Tag Search-->
                 <label>Tag:</label>
                 <div class="dropdown">
