@@ -115,3 +115,5 @@ Create Table IF NOT EXISTS Resources(
     /*isProfile bool,*/
     foreign key(ParticipantID) references Participant(p_id)
 ) ENGINE = INNODB;
+
+CREATE UNIQUE INDEX EmailIndex ON Users(Email);

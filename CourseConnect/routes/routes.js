@@ -18,6 +18,7 @@ var classService = require('./api-class');
 var postService = require('./api-post');
 var chatService = require('./api-chat');
 var fileService = require('./api-fileuploads');
+var friendService = require('./api-friend');
 
 // User login authentication - authentication implemented in routes
 router.post('/authenticate', accountService.authenticate);
@@ -31,7 +32,6 @@ router.post('/refreshProfile', accountService.refreshProfPic);
 router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
-router.post('/getFriends', accountService.getFriends);
 
 router.post('/allClassmatesInClass', classService.getStudents);
 
@@ -63,10 +63,16 @@ router.post('/getFollowups', postService.getFollowups);
 router.post('/displaySol', postService.displaySol);
 router.post('/adoptAFollowup', postService.adoptAFollowup);
 router.post('/checkIdentity', postService.checkIdentity);
+router.post('/reportComplaint', postService.submitComplaint);
 
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
+router.get('/privatemessages/:userid', chatService.getPrivateMessages);
+router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 
+router.get('/friendInfo/:userid', friendService.getFriendInfo);
+router.get('/isFriend/:userid', friendService.checkIsFriend);
+router.get('/getFriends', friendService.getFriends);
 
 module.exports = router; // exports router as a module

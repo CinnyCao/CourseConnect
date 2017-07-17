@@ -41,7 +41,7 @@ exports.authenticate = function (req, res) {
 
 exports.signupCheck = function (req, res) {
     var query = "INSERT INTO Users (Email, LastName, FirstName, Password, UTorID) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "', '" + 
-        req.body.utorid + "');";
+        req.body.uid + "');";
     db.executeQuery(query, function (err, result) {
         if (err) {
             if (err.code != "ER_DUP_ENTRY") {
@@ -206,25 +206,3 @@ exports.getUser = function (req, res) {
     }
 
 };
-
-/**Get Friends */
-exports.getFriends = function (req, res) {
-    var friendQuery = "Call getFriendsByID('" + req.body.id + "')";
-    db.executeQuery(friendQuery, function (err, result) {
-		fs = [];
-        if (err) {
-            console.error("ERROR: Failed to execute token query." + err);
-            res.status(200).send({ isvalid: false, friends: [] });
-        }
-        if (result.length >= 1) {
-			
-            console.log("SUCCESS: " + req.body.id + "ID has friends." + result[0]);
-            res.status(200).send({ isvalid: true, friends: result[0] });
-        } else {
-            console.log("SUCCESS: " + req.body.id + "ID is a lone wolf. DangerZone!");
-            res.status(200).send({ isvalid: true, friends: result[0] });
-        }
-    })
-}
-
-
