@@ -407,19 +407,19 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         };
 
-        $scope.displaySolution = function(post){
-          console.log("Now loading the answer to the question");
-          $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
-                $scope.adoptButton = res.equal;
-          });
-          $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
-              //TODO: Display the info in the modal
-              $scope.solutionPost = res.solInfo[0];
-              console.log("Name is")
+        // $scope.displaySolution = function(post){
+        //   console.log("Now loading the answer to the question");
+        //   $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
+        //         $scope.adoptButton = res.equal;
+        //   });
+        //   $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
+        //       //TODO: Display the info in the modal
+        //       $scope.solutionPost = res.solInfo[0];
+        //       console.log("Name is")
 
 
-          });
-        };
+        //   });
+        // };
         $scope.submitReport = function (post) {
             $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
                 if (res.data.reported == true) {
@@ -434,6 +434,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         $scope.adoptFollowup = function(post, parent, $event){
 
             var adoptSol = $event.currentTarget.value
+             $scope.solutionPost = post;
             //Choose the follow-up to accept as solution
             //Access to database and store its id under the parent post
             $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: adoptSol}).success(function(res){
