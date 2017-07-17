@@ -5,8 +5,9 @@ var db = require('./db_connection');  // db manager
 
 // Query DB to inject post.
 exports.sendPost = function(req, res){
+    //var isSolved = (req.body.solve == 'solved');
     var injectPostQuery = 
-        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet) " +
+        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet, solved) " +
         "VALUES (" + 
             '"' + req.body.title + '",' +
             '"' + req.body.timestamp + '",' +
@@ -14,7 +15,7 @@ exports.sendPost = function(req, res){
             '"' + req.session.userid + '",' +
             '"' + req.body.parentPostID + '",' +
             '"' + req.body.roomID + '",' +
-            '"' + req.body.snipet + '"' +
+            '"' + req.body.snipet + '",' + '"' + req.body.solve + '"' +
         ")";
 
     db.executeQuery(injectPostQuery, function(err){
@@ -91,7 +92,77 @@ exports.getFollowups = function(req, res){
         }
         
     })    
+};
+
+exports.displaySol = function(req, res){
+    var query = "Select * from cscc01.Posts INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
+        "Where po_id=" + req.body.solution + ";";
+    db.executeQuery(query, function(err, result){
+        if(err){
+            console.error("ERROR: Failed to retrieve the solution from required post" + query + err);
+            res.status(500).json({error: "An unexpected error occured when querying the database", success: false});
+        }else{
+            res.status(200).json({solInfo: result, success: true});
+        }
+    });
+
+};
+
+
+exports.checkIdentity = function(req, res){
+    var grabAuthor = "Select * from cscc01.Posts Where po_id=" + req.body.id + ";";
+    db.executeQuery(grabAuthor, function(err, result){
+       if(err){
+
+       } else{
+            res.status(200).json({equal: (result[0].ParticipantID == req.session.userid), success: true});
+       }
+    });
 }
+
+
+exports.adoptAFollowup = function(req, res){
+           var parentID = req.body.parent.po_id;
+            var addSolution;
+            console.log("adopt is " + req.body.adopt);
+           if(req.body.adopt == "adopt") {
+               addSolution = "UPDATE cscc01.Posts SET Posts.solved='solved', Posts.solution=" + req.body.post.po_id + " " +
+                   "Where po_id=" + parentID + ";";
+           } else if(req.body.adopt == "unadopt"){
+                console.log("Here to unadopt");
+                addSolution = "UPDATE cscc01.Posts SET Posts.solved='unsolved', Posts.solution=NULL Where po_id="
+               + parentID + ";";
+           }
+
+           db.executeQuery(addSolution, function(err, result){
+                if(err){
+                    console.error("ERROR: Failed to add the solution from DB. Query: " + addSolution + err);
+                    res.status(500).json({error: "An unexpected error occured when querying the database",
+                        success: false});
+                }else{
+                    console.log("The parent id is "+ parentID);
+                    var retrieveParent = "Select * from cscc01.Posts INNER JOIN cscc01.Users" +
+                        " ON Posts.participantID=Users.u_id " +
+                        "Where po_id=" + parentID + ";";
+                    db.executeQuery(retrieveParent, function(err, result){
+                        if(err){
+                            console.error("ERROR: Failed to retrieve the parent id from DB. Query: " + retrieveParent +
+                                err);
+                            res.status(500).json({error: "An unexpected error occured when querying the database",
+                                success: false});
+                        }else{
+                            console.log("Hello");
+                            console.log("The parent is " + result);
+                            res.status(200).json({select: result, success: true});
+                        }
+
+                    });
+                   //res.status(200).json({success: true})
+                }
+           })
+       //}
+    //});
+};
 
 exports.submitComplaint = function (req, res) {
     console.log(req.body.quote.po_id);
