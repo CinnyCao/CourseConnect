@@ -319,7 +319,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         }
 
-<<<<<<< HEAD
         $scope.adoptFollowup = function(post, parent, $event){
 
             var adoptSol = $event.currentTarget.value
@@ -394,7 +393,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
           });
         };
-=======
         $scope.submitReport = function (post) {
             $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
                 if (res.data.reported == true) {
@@ -405,7 +403,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             })
 
         }
->>>>>>> master
 
         $scope.backToPage = function(){
             $scope.selectedPost = {};
