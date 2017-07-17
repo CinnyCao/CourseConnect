@@ -57,8 +57,9 @@ router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
 
-// --------------- Post Foum API----------------------------
+// --------------- Post Forum API----------------------------
 router.post('/sendPost', postService.sendPost);
+router.post('/sendPostAnon', postService.sendPostAnon);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
 

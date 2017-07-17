@@ -138,15 +138,8 @@
 
                         <!--Submit button-->
                         <div>
-                            <button type="button" class="btn btn-info btn-s float-left" ng-click="postFollowup(ques_followup)">Post</button>
-                            <div class="dropup float-left">
-                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">As You
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li>As Anonymous</li>
-                                    <li>As You</li>
-                                </ul>
-                            </div>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postFollowup(ques_followup)">Post</button>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postAnonymouslyFollowup(ques_followup)">Post as Anonymous</button>
                         </div>
                     </div>
                 </div>
@@ -247,6 +240,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)" data-dismiss="modal">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestionAnonymously(ques_summary, ques_detail)" data-dismiss="modal">Submit As Anonymous</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
