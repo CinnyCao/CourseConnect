@@ -102,9 +102,6 @@ indexCtrl.controller('IndexCtrl', ['$scope', '$location', 'CommonService', 'Inde
 
             // show hide login/logout buttons
             $scope.var_logged_in = CommonService.isLoggedIn();
-            if ($scope.var_logged_in) {
-                window.location.href = '#/userprofile';
-            }
             // set listening on user login logout
             CommonService.onUserLoginLogout(function () {
                 $scope.var_logged_in = CommonService.isLoggedIn();

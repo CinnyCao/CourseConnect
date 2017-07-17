@@ -32,13 +32,6 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
             }
             callbackFcn(res.data);
         });
-        /*return [
-            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
-            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
-            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
-            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
-            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
-        ];*/
     };
 
     // pull messages for this classroom
@@ -53,7 +46,6 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
 
     // send out a message
     this.sendMessage = function (pId, message) {
-        console.log("pid: "+pId+" message"+message);
         var req = {
             method: "POST",
             url: "api/sendMsg",
@@ -121,11 +113,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.var_userValid = false;
 
-        // only show chat room when user is logged in
-        if (!CommonService.isLoggedIn()) {
-            $location.path("/login");
-        }
-
         $scope.var_messages = [];
         $scope.var_resources = [];//To store the file for display
 
@@ -174,15 +161,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 if (typeof $scope.var_search_info == 'undefined') {
                     $scope.var_search_info = '';
                 }
-                console.log("The info we search is " + $scope.var_search_info);
                 $scope.var_resources = [];
                 //console.log(res.data[1].fileLocation);
                 //console.log(res.data[2].fileLocation);
                 for (var i in res.data) {
-                    console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
                     if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
                         //display the info in html and set up the link for downloading
-                        console.log("check passed");
                         $scope.var_resources.push({
                             "items": res.data[i].fileLocation.split("/")[2],
                             "address": res.data[i].fileLocation,
@@ -264,9 +248,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
                //var posts = $scope.postList;
                var display = [];
-                console.log("We are searching" + keyWord);
                for (var i in postList){
-                   console.log(postList[i]);
                    var checkName = postList[i].FirstName + " " + postList[i].LastName;
                     if((postList[i].description + postList[i].Title).toUpperCase().indexOf(keyWord.toUpperCase()) != -1
                         && checkName.toUpperCase().indexOf(authorName.toUpperCase()) != -1){
@@ -279,7 +261,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         $scope.postQuestion = function (summary, detail) {
-            console.log(CommonService.getUserId);
             // TODO: Get userID and RoomID
             var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var post = {
@@ -378,26 +359,31 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.selectedPost = {};
         };
 
-        // only show chat room when user is enrolled in it
-        CommonService.checkIfInClass($routeParams.classid)
-            .then(function (result) {
-                if (result.data.inClass) {
-                    $scope.init();
-                } else {
-                    var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
-                    if (joinClass) {
-                        ChatService.joinClass($routeParams.classid)
-                            .then(function (result) {
-                                $scope.init();
-                            })
-                            .catch(function (e) {
-                                $location.path("/");
-                            });
+        // only show chat room when user is logged in
+        if (!CommonService.isLoggedIn()) {
+            $location.path("/login");
+        } else {
+            // only show chat room when user is enrolled in it
+            CommonService.checkIfInClass($routeParams.classid)
+                .then(function (result) {
+                    if (result.data.inClass) {
+                        $scope.init();
                     } else {
-                        $location.path("/"); // back to home page
+                        var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
+                        if (joinClass) {
+                            ChatService.joinClass($routeParams.classid)
+                                .then(function (result) {
+                                    $scope.init();
+                                })
+                                .catch(function (e) {
+                                    $location.path("/");
+                                });
+                        } else {
+                            $location.path("/"); // back to home page
+                        }
                     }
-                }
-            });
+                });
+        }
 
         $scope.$watch("var_forum", function () {
             if ($scope.var_forum == "resources") {
