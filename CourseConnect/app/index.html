@@ -61,16 +61,22 @@
 <div ng-controller="IndexCtrl" >
     <div id="registration" ng-model="mainNavbar">
         <a href="#/login" ng-hide="var_logged_in">
-            <button id="loginbtn" class="btn btn-primary">Login</button>
+            <button id="loginbtn" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
         </a>
         <a href="#/signup" ng-hide="var_logged_in">
-            <button id="signupbtn" class="btn btn-primary">SignUp</button>
+            <button id="signupbtn" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> SignUp</button>
         </a>
-        <a href="#/userprofile" ng-show="var_logged_in">
-            <button class="btn btn-primary">Profile</button>
-        </a>
+        <button ng-show="var_logged_in" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="#/userprofile"><i class="fa fa-user" aria-hidden="true"></i> User Profile</a></li>
+            <li><a href="#/courseenroll"><i class="fa fa-forumbee" aria-hidden="true"></i> Courses Enrolled</a></li>
+            <li><a href="#/friends"><i class="fa fa-plus-circle" aria-hidden="true"></i> Friends</a></li>
+            <li class="divider"></li>
+            <li><a href="#/settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+        </ul>
         <a ng-click="logout()" ng-show="var_logged_in">
-            <button id="logoutbtn" class="btn btn-danger">Log Out</button>
+            <button id="logoutbtn" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true"></i> Log Out</button>
         </a>
     </div>
     <form class="form-inline">
@@ -81,7 +87,7 @@
         <!--Search Bar-->
         <div class="form-group">
             <label class="sr-only" for="courseCodeInput">Course Code</label>
-            <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code" ng-model="var_course_code" required>
+            <input type="courseCode" class="form-control" id="courseCodeInput" placeholder="Course Code" ng-model="var_course_code" maxlength="30" required>
         </div>
         <div class="form-group">
             <label class="sr-only" for="semesterInput">Semester</label>
