@@ -287,7 +287,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             var post = {
                 title: summary,
                 description: detail,
-                solve: $scope.solve,
+                solve: "unsolved",
                 timestamp: time,
                 parentPostID: -1,
                 roomID: $scope.room_data.courseId,
