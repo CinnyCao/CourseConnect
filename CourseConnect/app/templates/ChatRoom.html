@@ -188,14 +188,16 @@
                                 </div>
                                 <div class="media-body">
 
-                                    <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
+                                    <!--<h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
                                         <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
                                          <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
-                                    </h4>
+                                    </h4>-->
 
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}</h4>
                                         <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
                                         <div id="modal{{followup.po_id}}" class="modal">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
