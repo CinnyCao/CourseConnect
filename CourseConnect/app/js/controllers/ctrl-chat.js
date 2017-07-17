@@ -404,6 +404,81 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         }
 
+        $scope.adoptFollowup = function(post, parent, $event){
+
+            var adoptSol = $event.currentTarget.value
+            //Choose the follow-up to accept as solution
+            //Access to database and store its id under the parent post
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: adoptSol}).success(function(res){
+
+                    console.log("Successfully adopted answer");
+                    //post.accepted = true;
+                    //$scope.displaySelectedPost(parent);
+                    //$scope.backToPage();
+                    //$scope.loadPosts();
+                    //$scope.init();
+                    $scope.var_forum = 'posts';
+                    //$scope.loadPosts();
+                    $scope.selectedPost = res.select[0];
+                    console.log(res.select[0].solution)
+                    console.log(post.po_id);
+                    console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                    $scope.loadPosts();
+                    $scope.displaySelectedPost(res.select[0]);
+                    $scope.displaySolution(res.select[0]);
+                    //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                  //  $scope.followupList = followupList;
+                //});
+
+                    //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                    //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+        };
+
+        $scope.unAdoptFollowup = function(post, parent){
+            console.log("We are here to unadopt the answer");
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: "unadopt"}).success(function(res){
+
+                console.log("Successfully unadopted answer");
+                $scope.var_forum = 'posts';
+                //$scope.loadPosts();
+                $scope.selectedPost = res.select[0];
+                console.log(res.select[0].solution)
+                //console.log(post.po_id);
+                //console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                $scope.displaySolution(res.select[0]);
+                $scope.loadPosts();
+                $scope.displaySelectedPost(res.select[0]);
+                //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                //  $scope.followupList = followupList;
+                //});
+
+                //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+
+        };
+
+        $scope.displaySolution = function(post){
+          console.log("Now loading the answer to the question");
+          $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
+                $scope.adoptButton = res.equal;
+          });
+          $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
+              //TODO: Display the info in the modal
+              $scope.solutionPost = res.solInfo[0];
+              console.log("Name is")
+
+
+          });
+        };
+
         $scope.backToPage = function(){
             $scope.selectedPost = {};
             $scope.loadPosts();

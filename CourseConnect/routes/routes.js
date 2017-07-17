@@ -63,7 +63,10 @@ router.post('/getFollowups', postService.getFollowups);
 router.post('/displaySol', postService.displaySol);
 router.post('/adoptAFollowup', postService.adoptAFollowup);
 router.post('/checkIdentity', postService.checkIdentity);
+<<<<<<< HEAD
 router.post('/reportComplaint', postService.submitComplaint);
+=======
+>>>>>>> ad1eea4b02f3dcd694a4f23141641985f6a7742c
 
 
 router.get('/messages/:classid', chatService.getMessages);
