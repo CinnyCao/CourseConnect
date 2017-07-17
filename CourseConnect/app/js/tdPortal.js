@@ -12,6 +12,7 @@ var tdPortal = angular.module('courseConnect', [
     'Filters',
     'CtrlIndex',
     'CtrlChat',
+    'CtrlPrivate',
     'CtrlUserLogin',
     'CtrlUserSignup',
     'CtrlUserProfile',
@@ -47,6 +48,10 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
         templateUrl: '/templates/ChatRoom.html',
         controller: 'ChatCtrl'
     })
+    .when('/private/:userid', {
+        templateUrl: '/templates/PrivateChat.html',
+        controller: 'PrivateCtrl'
+    })
     .when('/signup', {
         templateUrl: '/templates/signUp.html',
         controller: 'SignUpCtrl'
@@ -67,15 +72,39 @@ tdPortal.config(['$routeProvider', function ($routeProvider) {
     });
 }]);
 
+tdPortal.factory('myInterceptor', ['$q', '$cookies', function($q, $cookies) {
+    return {
+        responseError: function(rejection) {
+            if(rejection.status <= 0) {
+                $cookies.remove('currUser');
+                return;
+            }
+            return $q.reject(rejection);
+        }
+    };
+}]);
+
+tdPortal.config(['$httpProvider', function($httpProvider) {
+    // watch server status and clear cookie when server down
+    $httpProvider.interceptors.push('myInterceptor');
+}]);
+
 /* Global functions and constants */
 tdPortal.service('CommonService', CommonService);
 CommonService.$inject = ['$http', '$cookies'];
 function CommonService($http, $cookies) {
-    // User info
-    var curr_user = {
-        loggedIn: 0
-    };
+    console.log("CommoneService is running");
 
+    // User info
+    var curr_user;
+    if ($cookies.getObject("currUser")) {
+        curr_user = $cookies.getObject("currUser");
+    } else {
+        curr_user = {
+            initialized: 0,
+            loggedIn: 0
+        };
+    }
 
     // setUser when logged in and when update profile
     // TODO: call setUser when profile is updated
@@ -87,9 +116,8 @@ function CommonService($http, $cookies) {
 
         $http(req)
             .then(function (result) {
-                console.log(result);
                 if (result.status == 200) {
-                    console.log("true");
+                    curr_user.initialized = 1;
                     curr_user.loggedIn = 1;
                     curr_user.userId = result.data.userId;
                     curr_user.lastName = result.data.lastName;
@@ -100,6 +128,11 @@ function CommonService($http, $cookies) {
                     curr_user.utorId = result.data.utorId;
                     curr_user.profilePic = result.data.profilePic;
                     notifyUserLoginLogout();
+                    $cookies.putObject('currUser', curr_user);
+                } else {
+                    curr_user.initialized = 1;
+                    curr_user.loggedIn = 0;
+                    $cookies.putObject('currUser', curr_user);
                 }
             });
     };
@@ -107,12 +140,17 @@ function CommonService($http, $cookies) {
     // on init and on refresh, check user login status
     setUser();
 
+    var userReady = function () {
+        return curr_user.initialized;
+    };
+
     var logout = function () {
         $http.get('/api/logout').then(function (res) {
             curr_user = {
                 loggedIn: 0
             };
             notifyUserLoginLogout();
+            $cookies.remove('currUser');
             window.location.href = '#/';
         });
     };

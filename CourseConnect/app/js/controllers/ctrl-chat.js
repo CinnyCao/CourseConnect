@@ -32,13 +32,6 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
             }
             callbackFcn(res.data);
         });
-        /*return [
-            {"userId": 1, "profilePic": "img/profilePicDefault.jpg", "name": "aa", "friendOfCurrentUser": 0},
-            {"userId": 2, "profilePic": "img/profilePicDefault.jpg", "name": "bb", "friendOfCurrentUser": 1},
-            {"userId": 3, "profilePic": "img/profilePicDefault.jpg", "name": "cc", "friendOfCurrentUser": 1},
-            {"userId": 4, "profilePic": "img/profilePicDefault.jpg", "name": "dd", "friendOfCurrentUser": 0},
-            {"userId": 5, "profilePic": "img/profilePicDefault.jpg", "name": "ee", "friendOfCurrentUser": 0},
-        ];*/
     };
 
     // pull messages for this classroom
@@ -53,7 +46,6 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
 
     // send out a message
     this.sendMessage = function (pId, message) {
-        console.log("pid: "+pId+" message"+message);
         var req = {
             method: "POST",
             url: "api/sendMsg",
@@ -124,16 +116,11 @@ chatCtrls.service('PostService', ['$http', function ($http) {
 }]);
 
 
-chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout',
-    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout) {
+chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '$location', '$routeParams', '$interval', 'CommonService', 'ChatService', 'PostService', '$timeout', '$window',
+    function ($scope, $http, fileUpload, $cookies, $location, $routeParams, $interval,  CommonService, ChatService, PostService, $timeout, $window) {
         console.log('ChatCtrl is running');
 
         $scope.var_userValid = false;
-
-        // only show chat room when user is logged in
-        if (!CommonService.isLoggedIn()) {
-            $location.path("/login");
-        }
 
         $scope.var_messages = [];
         $scope.var_resources = [];//To store the file for display
@@ -183,15 +170,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 if (typeof $scope.var_search_info == 'undefined') {
                     $scope.var_search_info = '';
                 }
-                console.log("The info we search is " + $scope.var_search_info);
                 $scope.var_resources = [];
                 //console.log(res.data[1].fileLocation);
                 //console.log(res.data[2].fileLocation);
                 for (var i in res.data) {
                     console.log("The file name is " + res.data[i].fileLocation.split("/")[2]);
-                    if (res.data[i].fileLocation.split("/")[2].indexOf($scope.var_search_info) != -1) {
+                    if (res.data[i].fileLocation.split("/")[2].toUpperCase().indexOf
+                        ($scope.var_search_info.toUpperCase()) != -1) {
                         //display the info in html and set up the link for downloading
-                        console.log("check passed");
                         $scope.var_resources.push({
                             "items": res.data[i].fileLocation.split("/")[2],
                             "address": res.data[i].fileLocation,
@@ -254,6 +240,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
                 //$scope.postList = [];
+
             });
 
             PostService.displayPostTags(function(postTagList){
@@ -278,14 +265,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
                //var posts = $scope.postList;
                var display = [];
-                console.log("We are searching" + keyWord);
                for (var i in postList){
-                   console.log(postList[i]);
                    var checkName = postList[i].FirstName + " " + postList[i].LastName;
-                    if((postList[i].description + postList[i].Title).toUpperCase().indexOf(keyWord.toUpperCase()) != -1
-                        && checkName.toUpperCase().indexOf(authorName.toUpperCase()) != -1){
-
-                        // filter post if does not have selected filter tag 
+                    if((postList[i].description.toUpperCase() + postList[i].Title.toUpperCase()).
+                        indexOf(keyWord.toUpperCase()) != -1 && checkName.toUpperCase().
+                        indexOf(authorName.toUpperCase()) != -1){
+                        
                         if($scope.filterTag.tag_name == "All Tag" || postList[i].tag_ID == $scope.filterTag.tag_ID){
                             display.push(postList[i]);
                         }
@@ -297,12 +282,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         $scope.postQuestion = function (summary, detail) {
-            console.log(CommonService.getUserId);
             // TODO: Get userID and RoomID
             var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var post = {
                 title: summary,
                 description: detail,
+                solve: $scope.solve,
                 timestamp: time,
                 parentPostID: -1,
                 roomID: $scope.room_data.courseId,
@@ -317,6 +302,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.displaySelectedPost = function (post) {
             $scope.selectedPost = post;
+            $scope.displaySolution(post);
             $scope.displayFollowupList(post);
         }
 
@@ -330,7 +316,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 timestamp: time,
                 parentPostID: $scope.selectedPost.po_id,
                 roomID: $scope.room_data.courseId,
-                snipet: null
+                snipet: null, accepted: false
             };
 
             PostService.sendPost(followupPost, function () {
@@ -341,9 +327,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         }
 
         $scope.displayFollowupList = function (post) {
+            $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
+                $scope.adoptButton = res.equal;
+            });
             PostService.displayFollowupList(post.po_id, function (followupList) {
                 $scope.followupList = followupList;
+                //$scope.adoptButton = true; // subject to change
             });
+
         }
 
         $scope.selectTag = function(tag){
@@ -355,6 +346,80 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.filterTag = tag;
         }
 
+        $scope.adoptFollowup = function(post, parent, $event){
+
+            var adoptSol = $event.currentTarget.value
+            //Choose the follow-up to accept as solution
+            //Access to database and store its id under the parent post
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: adoptSol}).success(function(res){
+
+                    console.log("Successfully adopted answer");
+                    //post.accepted = true;
+                    //$scope.displaySelectedPost(parent);
+                    //$scope.backToPage();
+                    //$scope.loadPosts();
+                    //$scope.init();
+                    $scope.var_forum = 'posts';
+                    //$scope.loadPosts();
+                    $scope.selectedPost = res.select[0];
+                    console.log(res.select[0].solution)
+                    console.log(post.po_id);
+                    console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                    $scope.loadPosts();
+                    $scope.displaySelectedPost(res.select[0]);
+                    $scope.displaySolution(res.select[0]);
+                    //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                  //  $scope.followupList = followupList;
+                //});
+
+                    //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                    //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+        };
+
+        $scope.unAdoptFollowup = function(post, parent){
+            console.log("We are here to unadopt the answer");
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: "unadopt"}).success(function(res){
+
+                console.log("Successfully unadopted answer");
+                $scope.var_forum = 'posts';
+                //$scope.loadPosts();
+                $scope.selectedPost = res.select[0];
+                console.log(res.select[0].solution)
+                //console.log(post.po_id);
+                //console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                $scope.displaySolution(res.select[0]);
+                $scope.loadPosts();
+                $scope.displaySelectedPost(res.select[0]);
+                //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                //  $scope.followupList = followupList;
+                //});
+
+                //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+
+        };
+
+        $scope.displaySolution = function(post){
+          console.log("Now loading the answer to the question");
+          $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
+                $scope.adoptButton = res.equal;
+          });
+          $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
+              //TODO: Display the info in the modal
+              $scope.solutionPost = res.solInfo[0];
+              console.log("Name is")
+
+
+          });
+        };
         $scope.submitReport = function (post) {
             $http.post('/api/reportComplaint', {title: $scope.subject[post.po_id], quote: post, description: $scope.description[post.po_id]}).then(function (res) {
                 if (res.data.reported == true) {
@@ -365,6 +430,81 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             })
 
         }
+
+        $scope.adoptFollowup = function(post, parent, $event){
+
+            var adoptSol = $event.currentTarget.value
+            //Choose the follow-up to accept as solution
+            //Access to database and store its id under the parent post
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: adoptSol}).success(function(res){
+
+                    console.log("Successfully adopted answer");
+                    //post.accepted = true;
+                    //$scope.displaySelectedPost(parent);
+                    //$scope.backToPage();
+                    //$scope.loadPosts();
+                    //$scope.init();
+                    $scope.var_forum = 'posts';
+                    //$scope.loadPosts();
+                    $scope.selectedPost = res.select[0];
+                    console.log(res.select[0].solution)
+                    console.log(post.po_id);
+                    console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                    $scope.loadPosts();
+                    $scope.displaySelectedPost(res.select[0]);
+                    $scope.displaySolution(res.select[0]);
+                    //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                  //  $scope.followupList = followupList;
+                //});
+
+                    //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                    //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+        };
+
+        $scope.unAdoptFollowup = function(post, parent){
+            console.log("We are here to unadopt the answer");
+            $http.post("/api/adoptAFollowup", {post: post, parent: parent, adopt: "unadopt"}).success(function(res){
+
+                console.log("Successfully unadopted answer");
+                $scope.var_forum = 'posts';
+                //$scope.loadPosts();
+                $scope.selectedPost = res.select[0];
+                console.log(res.select[0].solution)
+                //console.log(post.po_id);
+                //console.log("Is it adopted: " + res.select[0].solution == post.po_id);
+                $scope.displaySolution(res.select[0]);
+                $scope.loadPosts();
+                $scope.displaySelectedPost(res.select[0]);
+                //$scope.displayFollowupList(res.select[0]);
+                //PostService.displayFollowupList(select, function (followupList) {
+                //  $scope.followupList = followupList;
+                //});
+
+                //$window.setTimeout(function() {  $scope.displaySelectedPost(parent);
+                //}, 2000);
+
+                //console.log($scope.selectedPost.po_id);
+            });
+
+        };
+
+        $scope.displaySolution = function(post){
+          console.log("Now loading the answer to the question");
+          $http.post('/api/checkIdentity', {id: post.po_id}).success(function(res){
+                $scope.adoptButton = res.equal;
+          });
+          $http.post("/api/displaySol", {solution: post.solution}).success(function(res){
+              //TODO: Display the info in the modal
+              $scope.solutionPost = res.solInfo[0];
+              console.log("Name is")
+
+
+          });
+        };
 
         $scope.backToPage = function(){
             $scope.selectedPost = {};
@@ -409,26 +549,31 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.filterTag = {tag_name: "All Tag"};
         };
 
-        // only show chat room when user is enrolled in it
-        CommonService.checkIfInClass($routeParams.classid)
-            .then(function (result) {
-                if (result.data.inClass) {
-                    $scope.init();
-                } else {
-                    var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
-                    if (joinClass) {
-                        ChatService.joinClass($routeParams.classid)
-                            .then(function (result) {
-                                $scope.init();
-                            })
-                            .catch(function (e) {
-                                $location.path("/");
-                            });
+        // only show chat room when user is logged in
+        if (!CommonService.isLoggedIn()) {
+            $location.path("/login");
+        } else {
+            // only show chat room when user is enrolled in it
+            CommonService.checkIfInClass($routeParams.classid)
+                .then(function (result) {
+                    if (result.data.inClass) {
+                        $scope.init();
                     } else {
-                        $location.path("/"); // back to home page
+                        var joinClass = confirm("You are not enrolled in this class. Do you want to join as Student?");
+                        if (joinClass) {
+                            ChatService.joinClass($routeParams.classid)
+                                .then(function (result) {
+                                    $scope.init();
+                                })
+                                .catch(function (e) {
+                                    $location.path("/");
+                                });
+                        } else {
+                            $location.path("/"); // back to home page
+                        }
                     }
-                }
-            });
+                });
+        }
 
         $scope.$watch("var_forum", function () {
             if ($scope.var_forum == "resources") {
