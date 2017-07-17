@@ -182,3 +182,7 @@
     background-color: #ACD8F0;
     display: inline-block;
 }
+
+.centre {
+    margin:auto;
+}

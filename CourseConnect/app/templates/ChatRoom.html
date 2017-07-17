@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style-chat.css">
 
-<div class="row" ng-app="CtrlChat" ng-show="var_userValid">
+<div class="row container-fluid" ng-app="CtrlChat" ng-show="var_userValid">
     <!--Padding Trick-->
     <div class="col-lg-1"></div>
     <!--Chat Room-->
@@ -50,10 +50,13 @@
                         <ul class="list-group pre-scrollable">
                             <li id="question_tiem" class="list-group-item" ng-repeat="post in postList" ng-click="displaySelectedPost(post)">
                                 <div class="content">
-                                    <div class="title">{{post.Title}}</div>
+                                    <div class="title">
+                                        <span class="glyphicon glyphicon-question-sign" style="color:red" ng-hide="post.solved == 'solved'"></span>
+                                        <span class="glyphicon glyphicon-ok-sign" style="color:lightgreen" ng-show="post.solved == 'solved'"></span>
+                                    {{post.Title}}</div>
                                     <div class="timestamp">{{post.postTime}}</div>
                                     <div class="snipet">{{post.snipet}}</div>
-                                    <div class="solve">{{post.solved}}</div>
+                                    <!--<div class="solve">{{<post></post>.solved}}</div>-->
                                 </div>
                             </li>
                         </ul>
