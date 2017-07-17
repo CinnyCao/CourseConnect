@@ -65,5 +65,6 @@ router.post('/getFollowups', postService.getFollowups);
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
+router.post('/sendMsgAnon', chatService.sendMessageAnonymously);
 
 module.exports = router; // exports router as a module

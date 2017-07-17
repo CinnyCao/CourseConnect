@@ -25,9 +25,11 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
         return $http(req);
     };
 
+    // Gets list of classmates in current chatroom.
     this.getAllClassMates = function (callbackFcn) {
         $http.post('/api/allClassmatesInClass', {classid : $routeParams.classid}).then(function(res) {
             for(var i = 0; i < res.data.length; i++) {
+                // We start off with no friends inside the chatroom (unless the user's friends list has already been defined...)
                 res.data[i]["friendOfCurrentUser"] = 0;
             }
             callbackFcn(res.data);
@@ -63,6 +65,22 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
             }
         };
 
+        return $http(req);
+    };
+
+    // Allows user to send anonymously WITHOUT the need to reveal any info.
+    this.sendAnonymously = function(pID, uID, classid, message) {
+        console.log("Sending message anonymously: " + message);
+        var req = {
+            method: "POST",
+            url: "api/sendMsgAnon",
+            data: {
+                pID: pID,
+                uID: uID,
+                classid: classid,
+                message: message
+            }
+        };
         return $http(req);
     };
 
@@ -231,6 +249,23 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                         $scope.fetchMessages();
                         // restart interval
                         $scope.msgInterval = $interval($scope.fetchMessages, 2500);
+                    }, 200);
+                });
+            $interval.cancel($scope.msgInterval);
+        };
+
+        // Sending message anonymously.
+        $scope.sendMsgAnon = function() {
+            ChatService.sendAnonymously($scope.room_data.participantID, CommonService.getUserId(), $routeParams.classid, CommonService.sqlEscapeString($scope.var_chat_message))
+                .then(function() {
+                    $scope.var_chat_message = "";
+                    if(submitmsgTimer) {
+                        clearTimeout(submitmsgTimer);
+                    }
+
+                    submitmsgTimer = setTimeout(function() {
+                        $scope.fetchMessages();
+                        $scope.msgInterval = $interval($scope.fetchMessages,2500);
                     }, 200);
                 });
             $interval.cancel($scope.msgInterval);
