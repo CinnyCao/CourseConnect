@@ -7,7 +7,7 @@ var db = require('./db_connection');  // db manager
 exports.sendPost = function(req, res){
     //var isSolved = (req.body.solve == 'solved');
     var injectPostQuery = 
-        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet, solved) " +
+        "INSERT INTO cscc01.Posts (Title, postTime, description, ParticipantID, Parent_PO_id, room_id, snipet, tag_ID, solved) " +
         "VALUES (" + 
             '"' + req.body.title + '",' +
             '"' + req.body.timestamp + '",' +
@@ -15,7 +15,9 @@ exports.sendPost = function(req, res){
             '"' + req.session.userid + '",' +
             '"' + req.body.parentPostID + '",' +
             '"' + req.body.roomID + '",' +
-            '"' + req.body.snipet + '",' + '"' + req.body.solve + '"' +
+            '"' + req.body.snipet + '",' +
+            '"' + req.body.tagID + '",' +
+            '"' + req.body.solve + '"' +
         ")";
 
     db.executeQuery(injectPostQuery, function(err){
@@ -44,6 +46,7 @@ exports.getPosts = function(req, res){
         "FROM " +
         "cscc01.Posts " +
         "INNER JOIN cscc01.Users ON Posts.participantID=Users.u_id " +
+         "INNER JOIN cscc01.PostTag on Posts.tag_ID = PostTag.tag_ID " +
         "WHERE room_id=" + req.body.roomID + " " +
         "AND parent_po_id=-1 " + 
         "ORDER BY po_id DESC";
@@ -120,6 +123,28 @@ exports.checkIdentity = function(req, res){
     });
 }
 
+//Todo: get all tag
+exports.getPostTags = function(req, res){
+    var getTagsQuery = 
+        "SELECT * " + 
+        "FROM cscc01.PostTag";
+    
+    db.executeQuery(getTagsQuery, function(err, result){
+        if (err){
+            console.error("ERROR: Failed to list of post tag. Query: " + getTagsQuery + err);
+            res.status(500).json({
+                error: "An unexpected error occurred when querying the database",
+                success:false
+            });
+        }else{
+            console.log("SUCCESS: Retrieved list of tags.");
+             res.status(200).json({
+                postTagList: result,
+                success:true
+            });
+        }
+    })
+}
 
 exports.adoptAFollowup = function(req, res){
            var parentID = req.body.parent.po_id;

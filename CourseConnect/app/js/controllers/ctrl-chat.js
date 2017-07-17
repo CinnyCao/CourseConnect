@@ -99,10 +99,19 @@ chatCtrls.service('PostService', ['$http', function ($http) {
                 callback(res.followupList);
             })
             .error(function (res) {
-                alert('Error: An unexpected error occured. Try refreshing the page.')
+                alert('Error: An unexpected error occured. Try refreshing the page.');
             });
     };
 
+    this.displayPostTags = function(callback){
+        $http.get('/api/getPostTags')
+            .success(function (res) {
+                callback(res.postTagList);
+            })
+            .error(function (res){
+                alert('Error: An unexpected error occured for fetch post tags.');
+            })
+    }
 
 }]);
 
@@ -227,15 +236,20 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         // ---------------POST FOURM FUNCTION--------------------------
-        $scope.loadPosts = function () {
+        $scope.loadPostFourm = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
                 //$scope.postList = [];
 
             });
+
+            PostService.displayPostTags(function(postTagList){
+                $scope.postTagList = postTagList;
+                $scope.tagSelected = postTagList[0];
+            })
         }
 
-        $scope.searchPost = function(keyWord, authorName){
+        $scope.searchPost = function(keyWord, authorName, tag){
             PostService.getPosts($scope.room_data.courseId, function(postList){ //make sure the iteration is not on
                 //an empty list
 
@@ -256,7 +270,10 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     if((postList[i].description.toUpperCase() + postList[i].Title.toUpperCase()).
                         indexOf(keyWord.toUpperCase()) != -1 && checkName.toUpperCase().
                         indexOf(authorName.toUpperCase()) != -1){
-                        display.push(postList[i]);
+                        
+                        if($scope.filterTag.tag_name == "All Tag" || postList[i].tag_ID == $scope.filterTag.tag_ID){
+                            display.push(postList[i]);
+                        }
                     }
             }
             $scope.postList = [];
@@ -274,7 +291,8 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 timestamp: time,
                 parentPostID: -1,
                 roomID: $scope.room_data.courseId,
-                snipet: detail
+                snipet: detail,
+                tagID: $scope.tagSelected.tag_ID
             };
 
             PostService.sendPost(post, $scope.loadPosts);
@@ -317,6 +335,15 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 //$scope.adoptButton = true; // subject to change
             });
 
+        }
+
+        $scope.selectTag = function(tag){
+            $scope.tagSelected = tag;
+           
+        }
+
+        $scope.selectFilterTag = function(tag){
+            $scope.filterTag = tag;
         }
 
         $scope.adoptFollowup = function(post, parent, $event){
@@ -517,6 +544,9 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.postList = [];
             $scope.followupList = [];
             $scope.selectedPost = {};
+            $scope.postTagList = [];
+            $scope.selectedtTag = {};
+            $scope.filterTag = {tag_name: "All Tag"};
         };
 
         // only show chat room when user is logged in

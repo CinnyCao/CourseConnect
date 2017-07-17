@@ -21,7 +21,7 @@
                     <div class="forum_tab">
                         <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
                         <label class="forum_tab" for="forumPosts">
-                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPosts()">
+                            <img src="img/postIcon.png" alt="Posts" ng-click="loadPostFourm()">
                             <p ng-hide="var_forum == 'posts'">Posts</p>
                             <p ng-show="var_forum == 'posts'" class="forum_name_selected">Posts</p>
                         </label>
@@ -97,7 +97,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"/>
+                    <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"
+                    />
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
                 </div>
 
@@ -115,7 +116,9 @@
                                 <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}</h4>
+                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}
+                                     <p class="tag-post"> {{selectedPost.tag_name}} </p>
+                                </h4>
                                 <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{selectedPost.po_id}}">Report</button>
                                 <div id="modal{{selectedPost.po_id}}" class="modal">
                                     <div class="modal-dialog">
@@ -185,14 +188,16 @@
                                 </div>
                                 <div class="media-body">
 
-                                    <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
+                                    <!--<h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}
                                         <button type="button" class="btn btn-xs btn-danger float-right">Report</button>
                                         <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
                                          <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
-                                    </h4>
+                                    </h4>-->
 
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}</h4>
                                         <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
+                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
                                         <div id="modal{{followup.po_id}}" class="modal">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -202,10 +207,11 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form>
-                                                            <p style="color: red;">The content of the post will be automatically submitted with the contents of this form.</p>
+                                                            <p style="color: red;">The content of the post will be automatically submitted with
+                                                                the contents of this form.</p>
                                                             <div class="form-group">
                                                                 <label for="subject">Subject</label>
-                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]"/>
+                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]" />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="description">Description/Nature of Complaint</label>
@@ -242,7 +248,7 @@
                                     <li>As You</li>
 
                                 </ul>
-                             	
+
                             </div>
                             <button type="button" class="btn btn-primary btn-s" ng-click="backToPage()">Back</button>
 
@@ -280,8 +286,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form id="uploadForm">
-                                                     <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70"/>
-                                                     <button type="submit" class="btn-primary" ng-click="uploadFile()" data-dismiss="modal">Upload</button>
+                                                    <input type="file" class="form-control" file-model="userFile" id="studentFile" name="Upload File" size="70" />
+                                                    <button type="submit" class="btn-primary" ng-click="uploadFile()" data-dismiss="modal">Upload</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -336,8 +342,30 @@
             <div class="modal-body">
                 <!--summary input-->
                 <div class="form-group">
-                    <label for="post_ques_summary">Summary:</label>
-                    <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
+                    <!--<div class="row">
+                        <div ng-repeat="tag in postTagList" id="'tag'{{tag.tag_ID}}" class="col-md-2 tag" ng-click="selectTag(tag)"> {{tag.tag_name}}</div>
+                    </div>-->
+
+                    <!--Tags-->
+                    <div class="dropdown tag-float-box">
+                        <label>Tag: </label>
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-model="tagSelected">{{tagSelected.tag_name}}<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a ng-repeat="tag in postTagList" ng-click="selectTag(tag)">{{tag.tag_name}}</a></li>
+                        </ul>
+                    </div>
+
+                    <!--Add tag button-->
+                    <!--<div class="tag-float-box">
+                        <a> <span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                    <br>
+                    <br>
+                    -->
+                    <div>
+                        <label for="post_ques_summary">Summary:</label>
+                        <input type="text" class="form-control" id="post_ques_summary" ng-model="ques_summary">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -367,25 +395,35 @@
 <!--Search Question Form-->
 <div class="modal fade" id="search_post_modal" role="dialog">
 
-	<div class="modal-dialog">
-		<!--Header-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog">
+        <!--Header-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Search Question</h4>
-			</div>
-			<div class="modal-body">
-				<label>Key Word:</label>
-				<input type="text" class="form-control" ng-model="key">
-				<label>Name of Author:</label>
-				<input type="text" class="form-control" ng-model="writer">
-				
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" ng-click="searchPost(key, writer)" data-dismiss="modal">Search</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			</div>
-		</div>
+            </div>
+            <div class="modal-body">
+                <label>Key Word:</label>
+                <input type="text" class="form-control" ng-model="key">
+                <label>Name of Author:</label>
+                <input type="text" class="form-control" ng-model="writer">
 
-	</div>
+                <!--Tag Search-->
+                <label>Tag:</label>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" ng-model="filterTag">{{filterTag.tag_name}}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="selectFilterTag({tag_name:'All Tag'})">All Tag</a></li>
+                        <li><a ng-repeat="tag in postTagList" ng-click="selectFilterTag(tag)">{{tag.tag_name}}</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="searchPost(key, writer)" data-dismiss="modal">Search</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
 </div>

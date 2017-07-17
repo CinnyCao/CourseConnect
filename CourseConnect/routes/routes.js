@@ -60,6 +60,7 @@ router.post('/file-store', fileService.storeFile);
 router.post('/sendPost', postService.sendPost);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
+router.get('/getPostTags', postService.getPostTags);
 router.post('/displaySol', postService.displaySol);
 router.post('/adoptAFollowup', postService.adoptAFollowup);
 router.post('/checkIdentity', postService.checkIdentity);
