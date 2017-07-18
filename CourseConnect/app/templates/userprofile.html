@@ -4,6 +4,7 @@
   		<li class="active"><a href="#/userprofile">User Profile</a></li>
   		<li><a href="#/courseenroll">Courses Enrolled</a></li>
   		<li><a href="#/settings">Settings</a></li>
+		<li><a href="#/friends">Friends</a></li>
   	</ul><br/>
     <h2>Hello, {{name}}</h2>
 	<div class="col-md-2">
@@ -19,7 +20,7 @@
 						<div class="modal-body">
 							<form id="uploadForm">
 								<input type="file" name="foo" file-model = "myFile"/>
-								<input type="submit" value="Upload" ng-click = "uploadFile()">
+								<input type="submit" data-dismiss="modal" value="Upload" ng-click = "uploadFile()">
 							</form>
 						</div>
 					</div>

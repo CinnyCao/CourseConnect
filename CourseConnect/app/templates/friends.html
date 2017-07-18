@@ -1,0 +1,22 @@
+<div class="container" ng-app="CtrlFriends" ng-controller="FriendsCtrl">
+	<div class="row">
+		<ul class="nav nav-tabs  nav-justified">
+  		<li><a href="#/userprofile">User Profile</a></li>
+  		<li><a href="#/courseenroll">Courses Enrolled</a></li>
+  		<li><a href="#/settings">Settings</a></li>
+		<li class="active"><a href="#/friends">Friends</a></li>
+  		</ul>
+	</div>
+	<table class="table">
+		<tr ng-repeat="friend in var_friends">
+			<td>
+				<img on-error-src="img/profilePicDefault.jpg" ng-src="{{ friend.PictureLocation }}" alt="{{friend.First}} {{friend.Last}}" class="friendTablePic">
+			</td>
+			<td>{{friend.First }} {{ friend.Last }} ({{friend.DisplayName}})</td>
+			<td>
+				<button ng-click="unfriend(friend.ID)" type="button" class="btn btn-danger"><i class="fa fa-user-times"></i> Unfriend</button>
+				<a ng-href="#private/{{friend.ID}}" type="button" class="btn btn-primary"><i class="fa fa-comments"></i> Chat</a>
+			</td>
+		</tr>
+	</table>
+</div>

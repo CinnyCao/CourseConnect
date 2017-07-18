@@ -137,6 +137,10 @@
     text-align: left;
 }
 
+.solve{
+    float: left;
+}
+
 .media {
     text-align: left;
 }
@@ -147,8 +151,15 @@
     border-radius: 10px;
 }
 
+#post_forum_solution {
+    background: white;
+    border: lightgray solid 1px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
 #post_forum_answers{
-    background:white;  
+    background:white; 
     border: lightgray solid 1px;
     border-radius: 10px;
     margin-top: 15px;
@@ -170,4 +181,51 @@
     padding: 5px;
     background-color: #ACD8F0;
     display: inline-block;
+}
+
+.tag{
+    border: 1px solid  #ACD8F0;
+    border-radius: 5px;
+}
+
+.tag:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+}
+
+.tag-selected {
+    background-color: lightblue;
+}
+
+.tag-float-box {
+    display: inline-block;
+}
+
+.clear-box{
+    clear:left;
+}
+
+.tag-post {
+    float:right; 
+    border: 1px solid;
+    background-color: lightskyblue;
+    margin-right: 5px;
+}
+
+#friendReq {
+    width: 200px;
+}
+
+#friendReq :hover {
+    background: lightblue;
+    cursor: pointer;
+}
+
+#privMsg {
+    width: 200px;
+}
+
+#privMsg :hover {
+    background: lightblue;
+    cursor: pointer;
 }

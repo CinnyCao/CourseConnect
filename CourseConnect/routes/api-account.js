@@ -41,7 +41,7 @@ exports.authenticate = function (req, res) {
 
 exports.signupCheck = function (req, res) {
     var query = "INSERT INTO Users (Email, LastName, FirstName, Password, UTorID) VALUES ('" + req.body.username + "', '" + req.body.ln + "', '" + req.body.fn + "', '" + req.body.pwd + "', '" + 
-        req.body.utorid + "');";
+        req.body.uid + "');";
     db.executeQuery(query, function (err, result) {
         if (err) {
             if (err.code != "ER_DUP_ENTRY") {
@@ -235,5 +235,3 @@ exports.getUser = function (req, res) {
     }
 
 };
-
-

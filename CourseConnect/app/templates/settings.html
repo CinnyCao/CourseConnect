@@ -3,6 +3,7 @@
 		<li><a href="#/userprofile">User Profile</a></li>
 		<li><a href="#/courseenroll">Courses Enrolled</a></li>
 		<li class="active"><a href="#/settings">Settings</a></li>
+		<li><a href="#/friends">Friends</a></li>
 	</ul><br/>
 	<h3>Personal Information</h3><hr/>
 	<p><b>Display Name</b>: {{dispname}}<a id="dispname_toggle" style="float:right;" data-toggle="collapse" data-target="#changedispname">Change your display name</a></p>
@@ -11,7 +12,7 @@
 		<form>
 			<div class="form-group">
 				<label for="dispname">Enter your new display name:</label>
-    			<input type="text" class="form-control" id="dispname" ng-model="newDisplayName" placeholder={{dispname}}>
+    			<input type="text" class="form-control" id="dispname" ng-model="newDisplayName" placeholder={{dispname}} maxlength="30">
 			</div>
 			<button type="submit" class="btn btn-success" ng-click="changeDispName()">Submit</button>
 		</form>
@@ -22,7 +23,7 @@
 		<form>
 			<div class="form-group">
 				<label for="description">Description:</label>
-				<textarea class="form-control" rows="5" id="description" ng-model="newDesc" placeholder={{desc}}></textarea>
+				<textarea class="form-control" rows="5" id="description" ng-model="newDesc" placeholder={{desc}} maxlength="255"></textarea>
 			</div>
 			<button type="submit" class="btn btn-success" ng-click="changeDesc()">Submit</button>
 		</form>
