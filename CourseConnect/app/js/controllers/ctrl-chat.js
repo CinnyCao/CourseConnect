@@ -281,6 +281,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $interval.cancel($scope.msgInterval);
         };
 
+        $scope.checkIfAnonymous = function(user) {
+            if(user.u_id !== 50) {
+                return user;
+            }
+        }
+
         // Grabbing course ID for direct unenrollment and going back to courseenrollment.html page.
         $scope.var_course_id = $routeParams.classid;
         $scope.directUnenrollment = function(course_id) {

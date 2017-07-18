@@ -195,17 +195,17 @@
                 <div class="user_list_wrapper">
                     <p>My Classmates</p>
                     <p>Friends</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1}">
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1} | filter: checkIfAnonymous">
                         <a class="user_card_li" href="">
                             <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
-                            <p>{{ user.FirstName }} {{user.LastName}}</p>
+                            <p>{{ user.FirstName }} {{ user.LastName }}</p>
                         </a>
                     </div>
                     <p>Others</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0} | filter: checkIfAnonymous">
                         <a class="user_card_li" href="">
                             <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
-                            <p>{{ user.FirstName }} {{user.LastName}}</p>
+                            <p>{{ user.FirstName }} {{ user.LastName }}</p>
                         </a>
                     </div>
                 </div>
