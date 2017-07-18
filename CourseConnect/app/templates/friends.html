@@ -21,4 +21,16 @@
 		</tr>
 	</table><br/>
     <h3>Friend Requests</h3><hr/>
+    <table class="table">
+        <tr ng-repeat="friendreqs in var_reqfriends">
+            <td>
+                <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ friendreqs.fileLocation }}" alt="{{friendreqs.FirstName}} {{friendreqs.LastName}}" class="friendTablePic">
+            </td>
+            <td>{{friendeqs.FirstName }} {{ friendreqs.LastName }}</td>
+            <td>
+                <button type="button" class="btn btn-success">Accept</button>
+                <a type="button" class="btn btn-danger">Decline</a>
+            </td>
+        </tr>
+    </table>
 </div>

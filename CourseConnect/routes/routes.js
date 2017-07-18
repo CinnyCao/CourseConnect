@@ -72,8 +72,7 @@ router.post('/sendMsg', chatService.sendMessage);
 router.get('/privatemessages/:userid', chatService.getPrivateMessages);
 router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 
-router.get('/friendInfo/:userid', friendService.getFriendInfo);
-router.get('/isFriend/:userid', friendService.checkIsFriend);
+router.post('/unfriendUser', friendService.unfriendUser);
 router.get('/getFriends', friendService.getFriends);
 
 module.exports = router; // exports router as a module
