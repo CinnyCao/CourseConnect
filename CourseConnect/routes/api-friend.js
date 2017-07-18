@@ -83,16 +83,23 @@ exports.sendFriendRequest = function(req, res){
 exports.acceptFriendRequest = function (req, res){
     var acceptFriendSQL = 
         "INSERT INTO cscc01.UsersFriends " +
-        "VALUES (" + req.body.userOne + "," + req.body.UserTwo + ")," +
-         "VALUES (" + req.body.userTwo + "," + req.body.UserOne + ")";
+        "VALUES (" + req.session.userid + "," + req.body.userTwo + ")," +
+         " (" + req.body.userTwo + "," + req.session.userid + ")";
     
     db.executeQuery(acceptFriendSQL, function(err, result){
         if (err){
             console.error("ERROR: Failed to execute query " + acceptFriendSQL + err);
-            res.status(403).send({msg:"An unexpected error occured. Please try again."});
+            res.status(403).send({msg:"An unexpected error occured. Please try again.", accepted: false});
         }else{
             console.info("INFO: Successfully added friend to DB.");
-            res.status(200).send({msg:"Accepted friend request."})
+            var queryAccepted = "UPDATE Friends SET hasAccepted='1' WHERE User1=" + req.body.userTwo + " AND User2=" + req.session.userid + ";";
+            db.executeQuery(queryAccepted, function(err, result) {
+                if (err) {
+                    console.error("ERROR: Failed to execute query. Error: " + err);
+                    res.status(403).json({msg: err, accepted: false});
+                }
+                res.status(200).json({msg: result, accepted: true});
+            })
         }
     })
 }
@@ -100,15 +107,28 @@ exports.acceptFriendRequest = function (req, res){
 exports.rejectFriendRequest = function (req, res){
     var deleteReqSQL = 
         "DELETE FROM cscc01.Friends " +
-        "WHERE f_id=" + req.body.f_id;
+        "WHERE User1=" + req.body.userOne + " AND User2=" + req.session.userid + ";";
     
     db.executeQuery(deleteReqSQL, function(err, result){
         if (err){
             console.error("ERROR: Failed to execute query " + deleteReqSQL + err);
-            res.status(403).send({msg:"An unexpected error occured. Please try again."});
+            res.status(403).send({msg:"An unexpected error occured. Please try again.", rejected: false});
         }else{
             console.info("INFO: Successfully removed friend request from DB.");
-            res.status(200).send({msg:"Rejected friend request."})
+            res.status(200).send({msg:"Rejected friend request.", rejected: true})
         }
     })
+}
+
+exports.getFriendRequests = function (req, res) {
+    if (req.session.userid) {
+        var query = "SELECT User1, fileLocation, LastName, FirstName, DisplayName FROM Friends INNER JOIN Users WHERE User2=" + req.session.userid + " AND User1=u_id AND hasAccepted=0;";
+        db.executeQuery(query, function(err, result) {
+            if (err) {
+                console.error("ERROR: Failed to execute query. Error: " + err);
+                res.status(403).send("failed to execute query");
+            }
+            res.status(200).send(result);
+        })
+    }
 }
