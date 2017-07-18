@@ -211,3 +211,21 @@
     background-color: lightskyblue;
     margin-right: 5px;
 }
+
+#friendReq {
+    width: 200px;
+}
+
+#friendReq :hover {
+    background: lightblue;
+    cursor: pointer;
+}
+
+#privMsg {
+    width: 200px;
+}
+
+#privMsg :hover {
+    background: lightblue;
+    cursor: pointer;
+}

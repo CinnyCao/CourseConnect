@@ -38,13 +38,13 @@
                 <div class="row">
                     <!--Posts-->
                     <div ng-show="var_forum == 'posts'">
-                    	<form>
-                    		<div class="form-group">
-                        		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
-                        	</div>
-                        	<div class="form-group">
-                        		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
-                        	</div>
+                        <form>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_question_modal">Post Question!</button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#search_post_modal">Search The Post</button>
+                            </div>
                         </form>
                         <hr>
                         <ul class="list-group pre-scrollable">
@@ -52,8 +52,8 @@
                                 <div class="content">
                                     <div class="title">
                                         <span class="glyphicon glyphicon-question-sign" style="color:red" ng-hide="post.solved == 'solved'"></span>
-                                        <span class="glyphicon glyphicon-ok-sign" style="color:lightgreen" ng-show="post.solved == 'solved'"></span>
-                                    {{post.Title}}</div>
+                                        <span class="glyphicon glyphicon-ok-sign" style="color:lightgreen" ng-show="post.solved == 'solved'"></span>                                        {{post.Title}}
+                                    </div>
                                     <div class="timestamp">{{post.postTime}}</div>
                                     <div class="snipet">{{post.snipet}}</div>
                                     <!--<div class="solve">{{<post></post>.solved}}</div>-->
@@ -117,7 +117,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}
-                                     <p class="tag-post"> {{selectedPost.tag_name}} </p>
+                                    <p class="tag-post"> {{selectedPost.tag_name}} </p>
                                 </h4>
                                 <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{selectedPost.po_id}}">Report</button>
                                 <div id="modal{{selectedPost.po_id}}" class="modal">
@@ -129,10 +129,11 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form>
-                                                    <p style="color: red;">The content of the post will be automatically submitted with the contents of this form.</p>
+                                                    <p style="color: red;">The content of the post will be automatically submitted with the contents
+                                                        of this form.</p>
                                                     <div class="form-group">
                                                         <label for="subject">Subject</label>
-                                                        <input type="text" class="form-control" id="subjectQ" ng-model="$parent.subject[selectedPost.po_id]"/>
+                                                        <input type="text" class="form-control" id="subjectQ" ng-model="$parent.subject[selectedPost.po_id]" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="description">Description/Nature of Complaint</label>
@@ -152,29 +153,30 @@
                     </div>
                     <!--Posts Solution-->
                     <div id="post_forum_solution" ng-show="selectedPost.solved == 'solved'">
-                    	<h4 class="txt-left"> Adopted Solution</h4>
+                        <h4 class="txt-left"> Adopted Solution</h4>
                         <hr>
-                    	<div class="media">      
-                    		<div class="media-left">
-                                    <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
-                            </div>              
-                			<div class="media-body">
-                    			<button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
-                 				<button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL" ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
-                    			<label>Writer:</label><br>
-                    			<p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
-                    			<hr>
-                    			<form>
-   	 								<div class="form-group">
-      								<label for="comment" class="float-left">Content:</label>
-      								<textarea class="form-control" rows="8" id="comment" readonly>{{solutionPost.description}}</textarea>
-    								</div>
-  								</form>
-                    			<!--<p>{{solutionPost.description}}</p>-->
-                    	
-                			</div>
-                			<hr>
-            			</div>
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                            </div>
+                            <div class="media-body">
+                                <button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
+                                <button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL"
+                                    ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
+                                <label>Writer:</label><br>
+                                <p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
+                                <hr>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="comment" class="float-left">Content:</label>
+                                        <textarea class="form-control" rows="8" id="comment" readonly>{{solutionPost.description}}</textarea>
+                                    </div>
+                                </form>
+                                <!--<p>{{solutionPost.description}}</p>-->
+
+                            </div>
+                            <hr>
+                        </div>
                     </div>
                     <!--Followup Section-->
                     <div id="post_forum_answers">
@@ -195,35 +197,37 @@
                                     </h4>-->
 
                                     <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}</h4>
-                                        <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
-                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
-                                        <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
-                                        
-                                        <div id="modal{{followup.po_id}}" class="modal">    
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Report Post As Inappropriate/Spam</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form>
-                                                            <p style="color: red;">The content of the post will be automatically submitted with
-                                                                the contents of this form.</p>
-                                                            <div class="form-group">
-                                                                <label for="subject">Subject</label>
-                                                                <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="description">Description/Nature of Complaint</label>
-                                                                <textarea class="form-control" id="description" ng-model="$parent.description[followup.po_id]"></textarea>
-                                                            </div>
-                                                            <button type="submit" data-dismiss="modal" class="btn btn-warning" ng-click="submitReport(followup)">Submit</button>
-                                                        </form>
-                                                    </div>
+                                    <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
+                                    <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton"
+                                        ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
+                                    <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton"
+                                        ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
+
+                                    <div id="modal{{followup.po_id}}" class="modal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Report Post As Inappropriate/Spam</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <p style="color: red;">The content of the post will be automatically submitted with the
+                                                            contents of this form.</p>
+                                                        <div class="form-group">
+                                                            <label for="subject">Subject</label>
+                                                            <input type="text" class="form-control" id="subject" ng-model="$parent.subject[followup.po_id]" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="description">Description/Nature of Complaint</label>
+                                                            <textarea class="form-control" id="description" ng-model="$parent.description[followup.po_id]"></textarea>
+                                                        </div>
+                                                        <button type="submit" data-dismiss="modal" class="btn btn-warning" ng-click="submitReport(followup)">Submit</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                     <p>{{followup.description}}</p>
                                 </div>
                                 <hr>
@@ -233,8 +237,7 @@
                         <!--Input text-->
                         <div class="form-group">
                             <label for="followupTextInput">Start a new followup discussion.</label>
-                            <textarea id="followupTextInput" class="form-control" rows="5"
-                             ng-model="ques_followup"></textarea>
+                            <textarea id="followupTextInput" class="form-control" rows="5" ng-model="ques_followup"></textarea>
                         </div>
 
                         <!--Submit button-->
@@ -315,10 +318,12 @@
                         </a>
                     </div>
                     <p>Others</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
+                    <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'"
+                        popover-title="{{friendReqPopover.title}}" 
+                        class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
                         <a class="user_card_li" href="">
                             <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
-                            <p>{{ user.FirstName }} {{user.LastName}}</p>
+                            <p>{{user.FirstName }} {{user.LastName}}</p>
                         </a>
                     </div>
                 </div>
