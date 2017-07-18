@@ -1,4 +1,4 @@
-<div class="container" ng-app="CtrlFriends" ng-controller="FriendsCtrl">
+<div class="container" ng-init="loadFriends()">
 	<div class="row">
 		<ul class="nav nav-tabs  nav-justified">
   		<li><a href="#/userprofile">User Profile</a></li>
@@ -7,16 +7,18 @@
 		<li class="active"><a href="#/friends">Friends</a></li>
   		</ul>
 	</div>
+	<h3>Your Friends</h3>
 	<table class="table">
 		<tr ng-repeat="friend in var_friends">
 			<td>
-				<img on-error-src="img/profilePicDefault.jpg" ng-src="{{ friend.PictureLocation }}" alt="{{friend.First}} {{friend.Last}}" class="friendTablePic">
+				<img on-error-src="img/profilePicDefault.jpg" ng-src="{{ friend.fileLocation }}" alt="{{friend.FirstName}} {{friend.LastName}}" class="friendTablePic">
 			</td>
-			<td>{{friend.First }} {{ friend.Last }} ({{friend.DisplayName}})</td>
+			<td>{{friend.FirstName }} {{ friend.LastName }}</td>
 			<td>
-				<button ng-click="unfriend(friend.ID)" type="button" class="btn btn-danger"><i class="fa fa-user-times"></i> Unfriend</button>
-				<a ng-href="#private/{{friend.ID}}" type="button" class="btn btn-primary"><i class="fa fa-comments"></i> Chat</a>
+				<button ng-click="unfriend(friend.User2)" type="button" class="btn btn-danger"><i class="fa fa-user-times"></i> Unfriend</button>
+				<a ng-href="#private/{{friend.User2}}" type="button" class="btn btn-primary"><i class="fa fa-comments"></i> Chat</a>
 			</td>
 		</tr>
-	</table>
+	</table><br/>
+    <h3>Friend Requests</h3><hr/>
 </div>
