@@ -33,9 +33,13 @@ router.post('/updatedispname', accountService.updateDispName);
 
 router.post('/updateddesc', accountService.updateDescription);
 
+// Check out and get all classmates currently enrolled in a particular chatroom
 router.post('/allClassmatesInClass', classService.getStudents);
 
+// Allow users to look at courses/chatrooms enrolled
 router.get('/getcrsenrolled', accountService.getCoursesEnrolled);
+router.post('/crsunenroll', accountService.courseUnenroll);
+// User logs out
 router.get('/logout', accountService.logout);
 
 // Get class room by courseid, semester and year
@@ -55,9 +59,9 @@ router.post('/file-upload', fileService.uploadFile);
 router.post('/deleteFile', fileService.deleteFile);
 router.post('/file-store', fileService.storeFile);
 
-
-// --------------- Post Foum API----------------------------
+// --------------- Post Forum API----------------------------
 router.post('/sendPost', postService.sendPost);
+router.post('/sendPostAnon', postService.sendPostAnon);
 router.post('/getPosts', postService.getPosts);
 router.post('/getFollowups', postService.getFollowups);
 router.get('/getPostTags', postService.getPostTags);
@@ -69,6 +73,7 @@ router.post('/reportComplaint', postService.submitComplaint);
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
+router.post('/sendMsgAnon', chatService.sendMessageAnonymously);
 router.get('/privatemessages/:userid', chatService.getPrivateMessages);
 router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 

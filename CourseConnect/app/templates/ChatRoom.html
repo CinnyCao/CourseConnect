@@ -100,6 +100,7 @@
                     <input type="text" class="chat_message_input" ng-model="var_chat_message" ng-keypress="onChatMessageKeyPress($event)" size="70"
                     />
                     <button type="button" class="btn btn-default" ng-click="sendMsg()">Send</button>
+                    <button type="button" class="btn btn-default" ng-click="sendMsgAnon()">Send Anonymously</button>
                 </div>
 
                 <!--Posts Content-->
@@ -242,20 +243,9 @@
 
                         <!--Submit button-->
                         <div>
-                            <button type="button" class="btn btn-info btn-s float-left" ng-click="postFollowup(ques_followup)">Post</button>
-
-                            <div class="dropup float-left">
-                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">As You
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li>As Anonymous</li>
-                                    <li>As You</li>
-
-                                </ul>
-
-                            </div>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postFollowup(ques_followup)">Post</button>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postAnonymouslyFollowup(ques_followup)">Post as Anonymous</button>
                             <button type="button" class="btn btn-primary btn-s" ng-click="backToPage()">Back</button>
-
                         </div>
                     </div>
                 </div>
@@ -306,21 +296,21 @@
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--Contact Prof-->
-                <button type="button" class="contact_prof_btn btn btn-primary">Contact Prof</button>
+                <button type="button" class="contact_prof_btn btn btn-primary" ng-click="directUnenrollment(var_course_id)">Drop {{ var_room_name }} </button>
                 <!--User List-->
                 <div class="user_list_wrapper">
                     <p>My Classmates</p>
                     <p>Friends</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1}">
+                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1} | filter: checkIfAnonymous">
                         <a class="user_card_li" href="">
                             <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
-                            <p>{{ user.FirstName }} {{user.LastName}}</p>
+                            <p>{{ user.FirstName }} {{ user.LastName }}</p>
                         </a>
                     </div>
                     <p>Others</p>
                     <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'"
                         popover-title="{{friendReqPopover.title}}" 
-                        class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0}">
+                        class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0} | filter: checkIfAnonymous">
                         <a class="user_card_li" href="">
                             <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
                             <p>{{user.FirstName }} {{user.LastName}}</p>
@@ -392,6 +382,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)" data-dismiss="modal">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestionAnonymously(ques_summary, ques_detail)" data-dismiss="modal">Submit As Anonymous</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

@@ -25,6 +25,7 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
         return $http(req);
     };
 
+    // Gets list of classmates in current chatroom.
     this.getAllClassMates = function (callbackFcn) {
         $http.post('/api/allClassmatesInClass', { classid: $routeParams.classid }).then(function (res) {
             for (var i = 0; i < res.data.length; i++) {
@@ -58,6 +59,22 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
         return $http(req);
     };
 
+    // Allows user to send anonymously WITHOUT the need to reveal any info.
+    this.sendAnonymously = function(pID, uID, classid, message) {
+        console.log("Sending message anonymously: " + message);
+        var req = {
+            method: "POST",
+            url: "api/sendMsgAnon",
+            data: {
+                pID: pID,
+                uID: uID,
+                classid: classid,
+                message: message
+            }
+        };
+        return $http(req);
+    };
+
     // join class as Student
     this.joinClass = function (classid) {
         var req = {
@@ -88,6 +105,16 @@ chatCtrls.service('PostService', ['$http', function ($http) {
                 callback();
             })
             .error(function (res) {
+                alert('Error: An unexpected error occured.');
+            });
+    };
+
+    this.sendPostAnonymously = function(postMsg, callback) {
+        $http.post('/api/sendPostAnon', postMsg)
+            .success(function() {
+                callback();
+            })
+            .error(function(res) {
                 alert('Error: An unexpected error occured.');
             });
     };
@@ -246,6 +273,39 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $interval.cancel($scope.msgInterval);
         };
 
+        // Sending message anonymously.
+        $scope.sendMsgAnon = function() {
+            ChatService.sendAnonymously($scope.room_data.participantID, CommonService.getUserId(), $routeParams.classid, CommonService.sqlEscapeString($scope.var_chat_message))
+                .then(function() {
+                    $scope.var_chat_message = "";
+                    if(submitmsgTimer) {
+                        clearTimeout(submitmsgTimer);
+                    }
+
+                    submitmsgTimer = setTimeout(function() {
+                        $scope.fetchMessages();
+                        $scope.msgInterval = $interval($scope.fetchMessages,2500);
+                    }, 200);
+                });
+            $interval.cancel($scope.msgInterval);
+        };
+
+        $scope.checkIfAnonymous = function(user) {
+            if(user.u_id !== 50) {
+                return user;
+            }
+        }
+
+        // Grabbing course ID for direct unenrollment and going back to courseenrollment.html page.
+        $scope.var_course_id = $routeParams.classid;
+        $scope.directUnenrollment = function(course_id) {
+            console.log(course_id);
+            $http.post('/api/crsunenroll', {classid : course_id}).then(function(res) {
+                console.log("Unenrolled from course!");
+                window.location.replace('#/courseenroll');
+            });
+        };
+
         // ---------------POST FOURM FUNCTION--------------------------
         $scope.loadPostFourm = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
@@ -311,6 +371,22 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $(post_ques_detail).val('');
         }
 
+        $scope.postQuestionAnonymously = function(summary, detail) {
+            console.log("Posting question anonymously!");
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var post = {
+                title: summary,
+                description: detail,
+                timestamp: time,
+                parentPostID: -1,
+                roomID:$scope.room_data.courseId,
+                snipet: detail
+            };
+            PostService.sendPostAnonymously(post, $scope.loadPosts);
+            $(post_ques_summary).val('');
+            $(post_ques_detail).val('');
+        }
+
         $scope.displaySelectedPost = function (post) {
             $scope.selectedPost = post;
             $scope.displaySolution(post);
@@ -335,6 +411,23 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             });
             $(followupTextInput).val('');
 
+        }
+
+        $scope.postAnonymouslyFollowup = function(detail) {
+            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
+            var followupAnonPost = {
+                title: null,
+                description: detail,
+                timestamp: time,
+                parentPostID: $scope.selectedPost.po_id,
+                roomID: $scope.room_data.courseId,
+                snipet: null
+            };
+
+            PostService.sendPostAnonymously(followupAnonPost, function() {
+                $scope.displayFollowupList($scope.selectedPost);
+            });
+            $(followupTextInput).val('');
         }
 
         $scope.displayFollowupList = function (post) {
