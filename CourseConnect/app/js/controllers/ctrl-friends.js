@@ -2,45 +2,58 @@
 
 var CtrlFriends = angular.module('CtrlFriends', []);
 
-CtrlFriends.directive('onErrorSrc', function($http) {
-    return {
-        link: function(scope, element, attrs) {
-            element.bind('error', function() {
-                if (attrs.src != attrs.onErrorSrc) {
-                    attrs.$set('src', attrs.onErrorSrc);
-                }
-            });
-        }
-    };
-});
-
-CtrlFriends.service('FriendsService', ['$http', function ($http) {
-	this.getFriends = function () {
-        return $http.get('/api/getFriends');
-    };
-
-	this.removeFriend = function (friendID){
-		return $http.post('/api/removeFriend', {
-			fid: friendID
-        });
-	};
-}]);
-
-
-CtrlFriends.controller('FriendsCtrl', ['$scope', '$http', '$cookies', 'FriendsService', function ($scope, $http, $cookies, FriendsService) {
+CtrlFriends.controller('FriendsCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log('FriendsCtrl is running');
 
-	$scope.var_friends = [];
+	$scope.loadFriends = function() {
+        $http.get('/api/getFriends').success(function (res) {
+            $scope.var_friends = res;
+        }).error(function (res) {
+            console.log(res);
+        })
 
-	FriendsService.getFriends()
-		.then(function(data){
-			console.log(data);
-			if (data.data.isvalid){
-				$scope.var_friends = data.data.friends;
-			}
-		});
+        $http.get('/api/getFriendRequest').success(function (res) {
+            $scope.var_reqfriends = res;
+        }).error(function (res) {
+            console.log(res);
+        })
+    }
 
-	$scope.unfriend = function (id) {
-		FriendsService.removeFriend(id);
-	};
+    $http.get('/api/getFriends').success(function (res) {
+        $scope.var_friends = res;
+    }).error(function (res) {
+        console.log(res);
+    })
+
+    $http.get('/api/getFriendRequest').success(function (res) {
+        console.log(res);
+        $scope.var_reqfriends = res;
+    }).error(function (res) {
+        console.log(res);
+    })
+
+    $scope.unfriend = function(userid) {
+	    $http.post('/api/unfriendUser', {user: userid}).then(function (res) {
+            console.log(res.data);
+            if (res.data.deletion == true) {
+                window.location.reload();
+            }
+        })
+    }
+
+    $scope.acceptRequest = function(userid) {
+	    $http.post('/api/acceptFriendRequest', {userTwo: userid}).then(function (res) {
+            if (res.data.accepted == true) {
+                window.location.reload();
+            }
+        })
+    }
+
+    $scope.declineRequest = function(userid) {
+        $http.post('/api/rejectFriendRequest', {userOne: userid}).then(function (res) {
+            if (res.data.rejected == true) {
+                window.location.reload();
+            }
+        })
+    }
 }]);

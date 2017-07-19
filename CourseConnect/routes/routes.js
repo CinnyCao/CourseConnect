@@ -72,9 +72,9 @@ router.post('/sendMsg', chatService.sendMessage);
 router.get('/privatemessages/:userid', chatService.getPrivateMessages);
 router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 
-router.get('/friendInfo/:userid', friendService.getFriendInfo);
-router.get('/isFriend/:userid', friendService.checkIsFriend);
+router.post('/unfriendUser', friendService.unfriendUser);
 router.get('/getFriends', friendService.getFriends);
+router.get('/getFriendRequest', friendService.getFriendRequests);
 router.post('/sendFriendRequest', friendService.sendFriendRequest);
 router.post('/acceptFriendRequest', friendService.acceptFriendRequest);
 router.post('/rejectFriendRequest', friendService.rejectFriendRequest);
