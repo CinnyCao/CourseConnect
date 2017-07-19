@@ -77,6 +77,9 @@ router.post('/sendMsgAnon', chatService.sendMessageAnonymously);
 router.get('/privatemessages/:userid', chatService.getPrivateMessages);
 router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 
+router.get('/friendInfo/:userid', friendService.getFriendInfo);
+router.get('/isFriend/:userid', friendService.checkIsFriend);
+
 router.post('/unfriendUser', friendService.unfriendUser);
 router.get('/getFriends', friendService.getFriends);
 router.get('/getFriendRequest', friendService.getFriendRequests);
