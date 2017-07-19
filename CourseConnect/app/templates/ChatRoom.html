@@ -76,7 +76,7 @@
                             <div class="left_avatar col-lg-1">
                                 <div ng-hide="isCurrentUser(m.userId)">
                                     <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
-                                    <p>{{ m.name }}</p>
+                                    <p>{{ m.name | limitTo:7 }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-10">
