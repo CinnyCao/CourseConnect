@@ -25,8 +25,13 @@ var app = express();
 
 // Configurations
 
-// use port value in local config file
-app.set('port', config.port);
+if (process.env.PORT) {
+	// port for heroku deploy
+	app.set('port', process.env.PORT);
+} else {
+	// use port value in local config file
+	app.set('port', config.port);
+}
 
 // change param value to control level of logging
 app.use(morgan('dev'));   // 'default', 'short', 'tiny', 'dev'
