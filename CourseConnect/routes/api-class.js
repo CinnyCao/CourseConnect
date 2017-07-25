@@ -45,7 +45,7 @@ exports.getStudents = function(req, res) {
         }
     });*/
     if(req.session.userid) {
-        var mainQuery = "SELECT u_id,fileLocation,FirstName,LastName,DisplayName FROM Participant CROSS JOIN Class CROSS JOIN Users WHERE ClassID=c_id and c_id='" + req.body.classid + "' and UserID=u_id";
+        var mainQuery = "SELECT u_id,fileLocation,FirstName,LastName,DisplayName FROM Participant CROSS JOIN Class CROSS JOIN Users WHERE ClassID=c_id and c_id='" + req.body.classid + "' and UserID=u_id AND UserID != " + req.session.userid + " ";
         console.log(req.body.classid);
         db.executeQuery(mainQuery, function(err, data) {
             if(err) {
