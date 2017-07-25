@@ -122,7 +122,7 @@
                                 <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{selectedPost.FirstName}} {{selectedPost.LastName}}
+                                <h4 class="media-heading">{{selectedPost.name}}
                                     <p class="tag-post"> {{selectedPost.tag_name}} </p>
                                 </h4>
                                 <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{selectedPost.po_id}}">Report</button>
@@ -170,7 +170,7 @@
                                 <button type="button" class="btn btn-xs btn-info float-right" ng-show="adoptButton && selectedPost.solved == 'solved' && selectedPost.solution != NULL"
                                     ng-click="unAdoptFollowup(solutionPost, selectedPost, $event)" value="unadopt">Unadopt</button>
                                 <label>Writer:</label><br>
-                                <p>{{solutionPost.FirstName}} {{solutionPost.LastName}}</p>
+                                <p>{{solutionPost.name}}</p>
                                 <hr>
                                 <form>
                                     <div class="form-group">
@@ -202,7 +202,7 @@
                                          <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'solved' && selectedPost.solution == followup.po_id && selectedPost.solution != NULL && adoptButton" ng-click="adoptFollowup(followup, selectedPost, $event)" value="unadopt">Unadopt</button>
                                     </h4>-->
 
-                                    <h4 class="media-heading">{{followup.FirstName}} {{followup.LastName}}</h4>
+                                    <h4 class="media-heading">{{followup.name}}</h4>
                                     <button type="button" class="btn btn-xs btn-danger float-right" data-toggle="modal" data-target="#modal{{followup.po_id}}">Report</button>
                                     <button type="button" class="btn btn-xs btn-info float-right" ng-show="selectedPost.solved == 'unsolved' && selectedPost.solution != followup.po_id && adoptButton"
                                         ng-click="adoptFollowup(followup, selectedPost, $event)" value="adopt">Adopt</button>
@@ -248,8 +248,8 @@
 
                         <!--Submit button-->
                         <div>
-                            <button type="button" class="btn btn-info btn-s" ng-click="postFollowup(ques_followup)">Post</button>
-                            <button type="button" class="btn btn-info btn-s" ng-click="postAnonymouslyFollowup(ques_followup)">Post as Anonymous</button>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postFollowup(ques_followup, false)">Post</button>
+                            <button type="button" class="btn btn-info btn-s" ng-click="postFollowup(ques_followup, true)">Post as Anonymous</button>
                             <button type="button" class="btn btn-primary btn-s" ng-click="backToPage()">Back</button>
                         </div>
                     </div>
@@ -397,8 +397,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail)" data-dismiss="modal">Submit</button>
-                <button type="button" class="btn btn-success" ng-click="postQuestionAnonymously(ques_summary, ques_detail)" data-dismiss="modal">Submit As Anonymous</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail, false)" data-dismiss="modal">Submit</button>
+                <button type="button" class="btn btn-success" ng-click="postQuestion(ques_summary, ques_detail, true)" data-dismiss="modal">Submit As Anonymous</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

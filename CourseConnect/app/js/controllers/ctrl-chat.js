@@ -306,18 +306,21 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
         };
 
         // ---------------POST FOURM FUNCTION--------------------------
-        $scope.loadPostFourm = function () {
+
+        $scope.loadPosts = function () {
             PostService.getPosts($scope.room_data.courseId, function (postList) {
                 $scope.postList = postList;
-                //$scope.postList = [];
-
             });
+        };
+
+        $scope.loadPostFourm = function () {
+            $scope.loadPosts();
 
             PostService.displayPostTags(function (postTagList) {
                 $scope.postTagList = postTagList;
                 $scope.tagSelected = postTagList[0];
-            })
-        }
+            });
+        };
 
         $scope.searchPost = function (keyWord, authorName, tag) {
             PostService.getPosts($scope.room_data.courseId, function (postList) { //make sure the iteration is not on
@@ -351,7 +354,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             });
         };
 
-        $scope.postQuestion = function (summary, detail) {
+        $scope.postQuestion = function (summary, detail, anonymously) {
             // TODO: Get userID and RoomID
             var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var post = {
@@ -365,35 +368,23 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 tagID: $scope.tagSelected.tag_ID
             };
 
-            PostService.sendPost(post, $scope.loadPosts);
+            if (anonymously) {
+                PostService.sendPostAnonymously(post, $scope.loadPosts);
+            } else {
+                PostService.sendPost(post, $scope.loadPosts);
+            }
             $(post_ques_summary).val('');
             $(post_ques_detail).val('');
-        }
-
-        $scope.postQuestionAnonymously = function(summary, detail) {
-            console.log("Posting question anonymously!");
-            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
-            var post = {
-                title: summary,
-                description: detail,
-                timestamp: time,
-                parentPostID: -1,
-                roomID:$scope.room_data.courseId,
-                snipet: detail
-            };
-            PostService.sendPostAnonymously(post, $scope.loadPosts);
-            $(post_ques_summary).val('');
-            $(post_ques_detail).val('');
-        }
+        };
 
         $scope.displaySelectedPost = function (post) {
             $scope.selectedPost = post;
             $scope.displaySolution(post);
             $scope.displayFollowupList(post);
-        }
+        };
 
 
-        $scope.postFollowup = function (detail) {
+        $scope.postFollowup = function (detail, anonymously) {
             //TODO: Allow user to post followup
             var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
             var followupPost = {
@@ -405,29 +396,19 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 snipet: null, accepted: false
             };
 
-            PostService.sendPost(followupPost, function () {
-                $scope.displayFollowupList($scope.selectedPost);
-            });
+            if (anonymously) {
+                PostService.sendPostAnonymously(followupPost, function() {
+                    $scope.displayFollowupList($scope.selectedPost);
+                });
+            } else {
+                PostService.sendPost(followupPost, function () {
+                    $scope.displayFollowupList($scope.selectedPost);
+                });
+            }
+
             $(followupTextInput).val('');
 
-        }
-
-        $scope.postAnonymouslyFollowup = function(detail) {
-            var time = new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate();
-            var followupAnonPost = {
-                title: null,
-                description: detail,
-                timestamp: time,
-                parentPostID: $scope.selectedPost.po_id,
-                roomID: $scope.room_data.courseId,
-                snipet: null
-            };
-
-            PostService.sendPostAnonymously(followupAnonPost, function() {
-                $scope.displayFollowupList($scope.selectedPost);
-            });
-            $(followupTextInput).val('');
-        }
+        };
 
         $scope.displayFollowupList = function (post) {
             $http.post('/api/checkIdentity', { id: post.po_id }).success(function (res) {
