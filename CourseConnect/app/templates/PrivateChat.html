@@ -18,7 +18,7 @@
                         <div class="chat_message row" ng-repeat="m in var_messages">
                             <div class="left_avatar col-lg-1">
                                 <div ng-hide="isCurrentUser(m.userId)">
-                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                             </div>
                             <div class="right_avatar col-lg-1">
                                 <div ng-show="isCurrentUser(m.userId)">
-                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -48,13 +48,15 @@
             <!--Right Section-->
             <div class="col-lg-2">
                 <!--User List-->
-                <div class="user_list_wrapper">
-                    <p>Users</p>
-                    <div class="user_list" ng-repeat="user in var_user_list">
-                        <a class="user_card_li" href="">
-                            <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.profilePic }}" alt="{{user.name}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
-                            <p>{{ user.name }}</p>
-                        </a>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Users</div>
+                    <div class="panel-body">
+                        <div class="user_list" ng-repeat="user in var_user_list">
+                            <a class="user_card_li" href="">
+                                <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{user.name}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
+                                <p>{{ user.name }}</p>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
