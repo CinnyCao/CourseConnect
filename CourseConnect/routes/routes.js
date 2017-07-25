@@ -73,7 +73,6 @@ router.post('/reportComplaint', postService.submitComplaint);
 
 router.get('/messages/:classid', chatService.getMessages);
 router.post('/sendMsg', chatService.sendMessage);
-router.post('/sendMsgAnon', chatService.sendMessageAnonymously);
 router.get('/privatemessages/:userid', chatService.getPrivateMessages);
 router.post('/sendPrivateMsg', chatService.sendPrivateMessage);
 

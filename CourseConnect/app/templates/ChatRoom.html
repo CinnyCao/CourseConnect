@@ -96,7 +96,7 @@
                             </div>
                             <div class="right_avatar col-lg-1" title="{{ m.name }}">
                                 <div ng-show="isCurrentUser(m.userId)">
-                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>

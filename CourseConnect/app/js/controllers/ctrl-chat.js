@@ -60,18 +60,17 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
     };
 
     // Allows user to send anonymously WITHOUT the need to reveal any info.
-    this.sendAnonymously = function(pID, uID, classid, message) {
-        console.log("Sending message anonymously: " + message);
+    this.sendAnonymously = function(pId, message) {
         var req = {
             method: "POST",
-            url: "api/sendMsgAnon",
+            url: "api/sendMsg",
             data: {
-                pID: pID,
-                uID: uID,
-                classid: classid,
+                pId: pId,
+                anon: 1,
                 message: message
             }
         };
+
         return $http(req);
     };
 
@@ -275,7 +274,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         // Sending message anonymously.
         $scope.sendMsgAnon = function() {
-            ChatService.sendAnonymously($scope.room_data.participantID, CommonService.getUserId(), $routeParams.classid, CommonService.sqlEscapeString($scope.var_chat_message))
+            ChatService.sendAnonymously($scope.room_data.participantId, CommonService.sqlEscapeString($scope.var_chat_message))
                 .then(function() {
                     $scope.var_chat_message = "";
                     if(submitmsgTimer) {
