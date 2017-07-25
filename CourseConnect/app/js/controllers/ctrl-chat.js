@@ -644,6 +644,14 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 templateUrl:'/../templates/FriendRequest.html' ,
                 title: 'Wanna be friend?'
             };
+
+            $scope.friendChatPopover = {
+                templateUrl:'/../templates/FriendChatPopover.html'
+            };
+
+            $scope.goTo = function (url) {
+                $location.path(url);
+            };
         };
 
         // only show chat room when user is logged in

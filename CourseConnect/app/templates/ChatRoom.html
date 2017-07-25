@@ -304,34 +304,30 @@
                 <button type="button" class="contact_prof_btn btn btn-primary" ng-click="directUnenrollment(var_course_id)">Drop {{ var_room_name }} </button>
                 <!--User List-->
                 <div class="user_list_wrapper">
-                    <!--<p>Friends</p>
-                    <div class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 1} | filter: checkIfAnonymous">
-                        <a class="user_card_li" href="">
-                            <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation }}" alt="{{user.FirstName}} {{user.LastName}}" fall-back-src="img/profilePicDefault.jpg" class="img-thumbnail">
-                            <p>{{ user.FirstName }} {{ user.LastName }}</p>
-                        </a>
-                    </div>-->
                     <div class="panel panel-default">
-                        <div class="panel-heading">Classmates</div>
+                        <div class="panel-heading">Friends</div>
                         <div class="panel-body">
-                            <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'" popover-title="{{friendReqPopover.title}}"
-                                class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0} | filter: checkIfAnonymous">
-                                <a class="user_card_li" href="" title="{{user.FirstName }} {{user.LastName}}">
+                            <div uib-popover-template="friendChatPopover.templateUrl" popover-trigger="'outsideClick'" popover-title="{{user.DisplayName || user.FirstName + ' ' + user.LastName }}"
+                                class="user_list" ng-repeat="user in var_user_list | filter: {'friend': 1}">
+                                <a class="user_card_li" href="" title="{{user.DisplayName || user.FirstName + ' ' + user.LastName }}">
                                     <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.DisplayName || user.FirstName + ' ' + user.LastName }}" class="img-thumbnail">
                                     <p>{{user.DisplayName || user.FirstName + " " + user.LastName }}</p>
                                 </a>
                             </div>
                         </div>
                     </div>
-
-                    <!--<p>My Classmates</p>
-                    <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'" popover-title="{{friendReqPopover.title}}"
-                        class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0} | filter: checkIfAnonymous">
-                        <a class="user_card_li" href="">
-                            <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
-                            <p>{{user.FirstName }} {{user.LastName}}</p>
-                        </a>
-                    </div>-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Classmates</div>
+                        <div class="panel-body">
+                            <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'" popover-title="{{friendReqPopover.title}}"
+                                 class="user_list" ng-repeat="user in var_user_list | filter: {'friend': 0}">
+                                <a class="user_card_li" href="" title="{{user.DisplayName || user.FirstName + ' ' + user.LastName }}">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.DisplayName || user.FirstName + ' ' + user.LastName }}" class="img-thumbnail">
+                                    <p>{{user.DisplayName || user.FirstName + " " + user.LastName }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

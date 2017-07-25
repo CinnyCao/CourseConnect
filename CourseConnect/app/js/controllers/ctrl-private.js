@@ -138,15 +138,16 @@ privateCtrls.controller('PrivateCtrl', ['$scope', '$http', 'fileUpload', '$cooki
         if (!CommonService.isLoggedIn()) {
             $location.path("/login");
         } else {
-            // only allow to chat when goal user and current user are friends
-            PrivateService.checkIsFriend($routeParams.userid)
-                .then(function (result) {
-                    if (result.data.isFriend) {
-                        $scope.init();
-                    } else {
-                        $location.path("/"); // back to home page
-                    }
-                });
+            // // only allow to chat when goal user and current user are friends
+            // PrivateService.checkIsFriend($routeParams.userid)
+            //     .then(function (result) {
+            //         if (result.data.isFriend) {
+            //             $scope.init();
+            //         } else {
+            //             $location.path("/"); // back to home page
+            //         }
+            //     });
+            $scope.init();
         }
 
         $scope.$on("$destroy", function(){

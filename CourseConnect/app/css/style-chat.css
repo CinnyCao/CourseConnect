@@ -238,11 +238,11 @@
     margin-right: 5px;
 }
 
-#friendReq {
+.friendReq {
     width: 200px;
 }
 
-#friendReq :hover {
+.friendReq :hover {
     background: lightblue;
     cursor: pointer;
 }
