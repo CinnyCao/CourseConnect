@@ -29,6 +29,13 @@
     width: 50px;
 }
 
+@media screen and (max-width: 1310px) {
+    .forum_tab img {
+        height: 35px;
+        width: 35px;
+    }
+}
+
 .chatbox {
     width: 95%;
     height: 65vh;
@@ -90,6 +97,25 @@
     display: inline-block;
     font-size: 18px;
     vertical-align: bottom;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 50px);
+    overflow: hidden;
+    white-space: pre;
+}
+
+.left_avatar, .right_avatar {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.left_avatar p, .right_avatar p {
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: block;
+    display: -webkit-box;
 }
 
 .left_avatar img, .right_avatar img {

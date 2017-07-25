@@ -1,10 +1,15 @@
 <link rel="stylesheet" href="css/style-chat.css">
+<style>
+    body {
+        padding: 0 15px;
+    }
+</style>
 
 <div class="row container-fluid" ng-app="CtrlChat" ng-show="var_userValid">
     <!--Padding Trick-->
-    <div class="col-lg-1"></div>
+    <!--<div class="col-lg-1"></div>-->
     <!--Chat Room-->
-    <div class="chat_room col-lg-10">
+    <div class="chat_room col-lg-12">
         <div class="row">
             <!--Left Section-->
             <div class="col-lg-2">
@@ -73,10 +78,10 @@
                 <div class="chat_forum_content" ng-show="var_forum == 'chatroom'">
                     <div class="chatbox" scroll-glue>
                         <div class="chat_message row" ng-repeat="m in var_messages">
-                            <div class="left_avatar col-lg-1">
+                            <div class="left_avatar col-lg-1" title="{{ m.name }}">
                                 <div ng-hide="isCurrentUser(m.userId)">
                                     <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
-                                    <p>{{ m.name | limitTo:7 }}</p>
+                                    <p>{{ m.name }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-10">
@@ -89,7 +94,7 @@
                                     <p class="message_right">{{ m.message }}</p>
                                 </div>
                             </div>
-                            <div class="right_avatar col-lg-1">
+                            <div class="right_avatar col-lg-1" title="{{ m.name }}">
                                 <div ng-show="isCurrentUser(m.userId)">
                                     <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
@@ -311,7 +316,7 @@
                         <div class="panel-body">
                             <div uib-popover-template="friendReqPopover.templateUrl" popover-trigger="'outsideClick'" popover-title="{{friendReqPopover.title}}"
                                 class="user_list" ng-repeat="user in var_user_list | filter: {'friendOfCurrentUser': 0} | filter: checkIfAnonymous">
-                                <a class="user_card_li" href="">
+                                <a class="user_card_li" href="" title="{{user.FirstName }} {{user.LastName}}">
                                     <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ user.fileLocation || 'img/profilePicDefault.jpg' }}" alt="{{user.FirstName}} {{user.LastName}}" class="img-thumbnail">
                                     <p>{{user.FirstName }} {{user.LastName}}</p>
                                 </a>
@@ -332,7 +337,7 @@
         </div>
     </div>
     <!--Padding Trick-->
-    <div class="col-lg-1"></div>
+    <!--<div class="col-lg-1"></div>-->
 </div>
 
 
