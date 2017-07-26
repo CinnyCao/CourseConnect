@@ -80,7 +80,7 @@
                         <div class="chat_message row" ng-repeat="m in var_messages">
                             <div class="left_avatar col-lg-1" title="{{ m.name }}">
                                 <div ng-hide="isCurrentUser(m.userId)">
-                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.name == 'Anonymous' ? 'img/profilePicDefault.jpg' : m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                             </div>
                             <div class="right_avatar col-lg-1" title="{{ m.name }}">
                                 <div ng-show="isCurrentUser(m.userId)">
-                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
+                                    <img on-error-src="img/profilePicDefault.jpg" ng-src="{{ m.name == 'Anonymous' ? 'img/profilePicDefault.jpg' : m.profilePic || 'img/profilePicDefault.jpg' }}" alt="{{ m.name }}" class="img-thumbnail">
                                     <p>{{ m.name }}</p>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                         <!--Question posted-->
                         <div class="media">
                             <div class="media-left">
-                                <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                                <img ng-src="{{ selectedPost.name == 'Anonymous' ? '/../img/img_avatar1.png' : selectedPost.fileLocation || '/../img/img_avatar1.png' }}" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">{{selectedPost.name}}
@@ -163,7 +163,7 @@
                         <hr>
                         <div class="media">
                             <div class="media-left">
-                                <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                                <img ng-src="{{ solutionPost.name == 'Anonymous' ? '/../img/img_avatar1.png' : solutionPost.fileLocation || '/../img/img_avatar1.png' }}" class="media-object" style="width:100px">
                             </div>
                             <div class="media-body">
                                 <button type="button" class="btn btn-xs btn-danger float-right" ng-show="selectedPost.solution != NULL && selectedPost.solved =='solved'">Report</button>
@@ -192,7 +192,7 @@
                             <!--Followups-->
                             <div class="media" ng-repeat="followup in followupList">
                                 <div class="media-left">
-                                    <img src="/../img/img_avatar1.png" class="media-object" style="width:100px">
+                                    <img ng-src="{{ followup.name == 'Anonymous' ? '/../img/img_avatar1.png' : followup.fileLocation || '/../img/img_avatar1.png' }}" class="media-object" style="width:100px">
                                 </div>
                                 <div class="media-body">
 
