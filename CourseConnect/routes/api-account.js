@@ -161,7 +161,8 @@ exports.updateDescription = function (req, res) {
 
 exports.getCoursesEnrolled = function (req, res) {
     if (req.session.userid) {
-        var query2 = "SELECT c_id, CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + " AND ClassID=c_id;";
+        var query2 = "SELECT c_id, CourseCode, Semester, Year FROM Participant inner join Class WHERE UserID=" + req.session.userid + 
+        " AND ClassID=c_id AND Droped=0;";
         db.executeQuery(query2, function(err, result) {
             if (err) {
                 console.log("ERROR: Failed to retrieve courses user has enrolled. Error: " + err);
@@ -183,21 +184,19 @@ exports.courseUnenroll = function(req, res) {
         var replaceAcct = "UPDATE Message SET Anonymously=1 WHERE ParticipantID= " + 
             "(SELECT p_id FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ")";
         
-        db.executeQuery(replaceAcct, function(baderr, result) {
+        db.executeQuery(replaceAcct, function(baderr) {
             if(baderr) {
                 console.log("ERROR: Cannot replace user account in Chatroom. Please try again later. Error: " + baderr);
                 res.status(404).send("Failed to leave chatroom.");
-            }else{
-                res.status(200).send(result);
             }
-            //var query = "DELETE FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
-            // db.executeQuery(query, function(err, result) {
-            //     if(err) {
-            //         console.log("ERROR: Failed to unenroll from course. Error: " + err);
-            //         res.status(404).send("Failed to un-enroll from this course.");
-            //     }
-            //     res.status(200).send(result);
-            // })
+            var query = "UPDATE Participant SET Droped=1 WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
+            db.executeQuery(query, function(err, result) {
+                if(err) {
+                    console.log("ERROR: Failed to unenroll from course. Error: " + err);
+                    res.status(404).send("Failed to un-enroll from this course.");
+                }
+                res.status(200).send(result);
+            })
         })
         /*var query = "DELETE FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
         db.executeQuery(query, function(err, result) {

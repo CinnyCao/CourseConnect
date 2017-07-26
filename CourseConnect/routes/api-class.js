@@ -131,17 +131,36 @@ exports.getClassWithUserPermission = function (req, res) {
 };
 
 function joinClassRoom(userid, classid, roleid, res) {
-    var query = "INSERT INTO Participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
-    db.executeQuery(query, function (err, data) {
-        if (err) {
-            console.error(err);
-            res.status(500).json({
-                error: "Failed joining class: An unexpected error occurred when querying the database"
-            });
-        } else {
-            res.status(200).send({courseId:classid});
+    // var query = "IF " + 
+    //     "NOT EXIST (Select * FROM Participant WHERE UserID=" + userid + " AND ClassID=c_id) " + 
+    //         "INSERT INTO Participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')" +
+    //     "ELSE " + 
+    //         "UPDATE Participant SET Droped=0 WHERE WHERE UserID=" + userid + 
+    //         " AND ClassID=c_id AND Droped=0;";
+    
+    var check = "Select * FROM Participant WHERE UserID=" + userid + " AND ClassID=" + classid;
+
+    db.executeQuery(check, function(err, result){
+        var query;
+
+        if (result.length > 0){
+           var query =  "UPDATE Participant SET Droped=0 WHERE UserID=" + userid + 
+            " AND ClassID=" + classid + " AND Droped=1;";
+        }else{
+            var query = "INSERT INTO Participant (UserID, ClassID, RoleID) VALUES ('" + userid + "', '" + classid + "', '" + roleid + "')";
         }
-    });
+
+        db.executeQuery(query, function (err, data) {
+            if (err) {
+                console.error(err);
+                res.status(500).json({
+                    error: "Failed joining class: An unexpected error occurred when querying the database"
+                });
+            } else {
+                res.status(200).send({courseId:classid});
+            }
+        });
+    })
 }
 
 exports.joinClass = function (req, res) {
@@ -184,7 +203,9 @@ exports.createClass = function (req, res) {
 
 exports.checkIsInClass = function (req, res) {
     if (req.session.userid) {
-        var query = "SELECT * FROM Participant WHERE UserID = " + req.session.userid + " AND ClassID = " + req.params.classid;
+        var query = "SELECT * FROM Participant WHERE UserID = " + req.session.userid + 
+            " AND ClassID = " + req.params.classid + 
+            " AND Droped=0";
         db.executeQuery(query, function (err, data) {
             if (err) {
                 console.error(err);
