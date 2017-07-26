@@ -157,6 +157,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
 
         $scope.var_messages = [];
         $scope.var_resources = [];//To store the file for display
+        $scope.postList = [];
+        $scope.followupList = [];
+        $scope.selectedPost = {};
+        $scope.postTagList = [];
+        $scope.selectedtTag = {};
+        $scope.filterTag = { tag_name: "All Tag" };
 
         // get name of classroom
         $scope.getRoomName = function () {
@@ -619,6 +625,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     $scope.room_data = result.data;
                     // set room name
                     $scope.var_room_name = $scope.getRoomName();
+                    $scope.loadPostFourm();
                 });
             // set Chat Room as default forum
             $scope.var_forum = "chatroom";
@@ -635,13 +642,6 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
             $scope.msgInterval = $interval($scope.fetchMessages, 2500);
 
             ChatService.getAllClassMates(function (data) { $scope.var_user_list = data; });
-
-            $scope.postList = [];
-            $scope.followupList = [];
-            $scope.selectedPost = {};
-            $scope.postTagList = [];
-            $scope.selectedtTag = {};
-            $scope.filterTag = { tag_name: "All Tag" };
 
             $scope.friendReqPopover = {
                 content: 'Hello, World!',
