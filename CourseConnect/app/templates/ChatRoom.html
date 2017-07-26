@@ -23,7 +23,7 @@
                             <p ng-show="var_forum == 'chatroom'" class="forum_name_selected">Chat Room</p>
                         </label>
                     </div>
-                    <div class="forum_tab">
+                    <div class="forum_tab" ng-click="loadPosts()">
                         <input type="radio" id="forumPosts" ng-model="var_forum" value="posts">
                         <label class="forum_tab" for="forumPosts">
                             <img src="img/postIcon.png" alt="Posts">
