@@ -179,20 +179,25 @@ exports.getCoursesEnrolled = function (req, res) {
 exports.courseUnenroll = function(req, res) {
     if(req.session.userid) {
         //console.log(req.body.classid);
-        var replaceAcct = "UPDATE Participant SET UserID=50 WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
-        db.executeQuery(replaceAcct, function(baderr) {
+        // var replaceAcct = "UPDATE Participant SET UserID=50 WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
+        var replaceAcct = "UPDATE Message SET Anonymously=1 WHERE ParticipantID= " + 
+            "(SELECT p_id FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ")";
+        
+        db.executeQuery(replaceAcct, function(baderr, result) {
             if(baderr) {
                 console.log("ERROR: Cannot replace user account in Chatroom. Please try again later. Error: " + baderr);
                 res.status(404).send("Failed to leave chatroom.");
-            }
-            var query = "DELETE FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
-            db.executeQuery(query, function(err, result) {
-                if(err) {
-                    console.log("ERROR: Failed to unenroll from course. Error: " + err);
-                    res.status(404).send("Failed to un-enroll from this course.");
-                }
+            }else{
                 res.status(200).send(result);
-            })
+            }
+            //var query = "DELETE FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
+            // db.executeQuery(query, function(err, result) {
+            //     if(err) {
+            //         console.log("ERROR: Failed to unenroll from course. Error: " + err);
+            //         res.status(404).send("Failed to un-enroll from this course.");
+            //     }
+            //     res.status(200).send(result);
+            // })
         })
         /*var query = "DELETE FROM Participant WHERE UserID=" + req.session.userid + " AND ClassID=" + req.body.classid + ";";
         db.executeQuery(query, function(err, result) {
