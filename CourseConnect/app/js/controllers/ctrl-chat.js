@@ -28,9 +28,6 @@ chatCtrls.service('ChatService', ['$http', '$routeParams', function ($http, $rou
     // Gets list of classmates in current chatroom.
     this.getAllClassMates = function (callbackFcn) {
         $http.post('/api/allClassmatesInClass', { classid: $routeParams.classid }).then(function (res) {
-            for (var i = 0; i < res.data.length; i++) {
-                res.data[i]["friendOfCurrentUser"] = 0;
-            }
             callbackFcn(res.data);
         });
     };
@@ -246,6 +243,12 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                     if (result.status == 200) {
                         if (result.data.length > $scope.var_messages.length) {
                             $scope.var_messages = result.data;
+                            var lastUId = $scope.var_messages[$scope.var_messages.length - 1].userId;
+                            if ($scope.classmateWatcher.indexOf("" + lastUId) < 0) {
+                                $scope.classmateWatcher += " " + lastUId;
+                                ChatService.getAllClassMates(function (data) { $scope.var_user_list = data; });
+                            }
+
                         }
                     }
                 });
@@ -619,6 +622,7 @@ chatCtrls.controller('ChatCtrl', ['$scope', '$http', 'fileUpload', '$cookies', '
                 });
             // set Chat Room as default forum
             $scope.var_forum = "chatroom";
+            $scope.classmateWatcher = "";
 
             $scope.displayResource();
 
