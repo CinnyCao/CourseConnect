@@ -1,6 +1,6 @@
 Final Project Presentation Marking Rubric
 =========================================
-Team Name: Real Team
+Team Name: May The forks B with you
 
 Part I - Live Presentation - 30 marks
 -------------------------------------
@@ -41,7 +41,7 @@ Process[10 marks]:
  0-6 marks 
  [Each element 2 marks if presented professionally, 1 mark if presented adequately, 0 otherwise]
  ==========
- Your mark:2
+ Your mark:6
  ==========
  
 Software Architecture[10 marks]:
